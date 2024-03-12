@@ -1,5 +1,5 @@
 import { NavLink } from "react-router-dom";
-// import AuthStatus from "./security/AuthStatus";
+import AuthStatus from "./security/AuthStatus";
 // import React from "react";
 // import { useAuth } from "./security/AuthProvider";
 
@@ -23,7 +23,7 @@ export default function NavHeader() {
             <NavLink to="/addShowing">Add Showing</NavLink>
           </li>
         {/* )} */}
-        {/* <AuthStatus /> */}
+        <AuthStatus />
       </ul>
     </nav>
   );
