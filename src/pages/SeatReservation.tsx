@@ -1,13 +1,16 @@
 import { useState } from "react";
+import HallLayout from "../components/HallLayout";
 
-type SeatStatus = "available" | "reserved" | "selected";
+export type SeatStatus = "available" | "reserved" | "selected";
 
-type Seat = {
+export type Seat = {
   id: number;
   status: SeatStatus;
 };
 
 function SeatReservation() {
+  const numColumns = 10;
+
   const initialSeats: Seat[] = Array(50)
     .fill({ status: "available" })
     .map((seat, index) => ({ ...seat, id: index }));
@@ -15,7 +18,7 @@ function SeatReservation() {
 
   const handleSeatClick = (id: number) => {
     setSeats(
-      seats.map((seat) => {
+      seats.map(seat => {
         if (seat.id === id) {
           // If seat is available, change status to "selected"
           if (seat.status === "available") {
@@ -31,41 +34,11 @@ function SeatReservation() {
   };
 
   const handleConfirmClick = () => {
-    setSeats(seats.map((seat) => (seat.status === "selected" ? { ...seat, status: "reserved" } : seat)));
+    setSeats(seats.map(seat => (seat.status === "selected" ? { ...seat, status: "reserved" } : seat)));
   };
 
   return (
-    <div>
-      <div
-        style={{
-          display: "flex",
-          flexWrap: "wrap",
-          justifyContent: "center",
-          width: "100%", // Adjust this value based on your needs
-        }}
-      >
-        {seats.map((seat) => (
-          <button
-            key={seat.id}
-            style={{
-              backgroundColor: seat.status === "selected" ? "red" : seat.status === "reserved" ? "grey" : "green",
-              margin: "5px",
-              padding: "10px",
-              borderRadius: "5px",
-              color: "white",
-              fontWeight: "bold",
-              flex: "0 0 calc(10% - 10px)", // This will create a 3-column layout. Adjust the percentage for different number of columns.
-            }}
-            disabled={seat.status === "reserved"}
-            onClick={() => handleSeatClick(seat.id)}
-          >
-            {seat.status}
-          </button>
-        ))}
-      </div>
-      <button onClick={handleConfirmClick}>Confirm Reservation</button>
-    </div>
-  );
+    HallLayout({ numColumns, seats, handleSeatClick, handleConfirmClick }));
 }
 
 export default SeatReservation;
