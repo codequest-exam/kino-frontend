@@ -1,4 +1,4 @@
-import "./App.css";
+import "./app.css";
 import { Routes, Route } from "react-router-dom";
 import Layout from "./Layout";
 import Home from "./pages/Home";
@@ -8,8 +8,9 @@ import Login from "./security/Login";
 import Logout from "./security/Logout";
 import ShowingForm from "./showings/ShowingForm";
 import SeatReservation from "./pages/SeatReservation";
-import TicketPurchase from './pages/TicketPurchase'
-
+import TicketPurchase from "./pages/TicketPurchase";
+import RequireAuth from "./security/RequireAuth";
+import AllReservations from "./pages/AllReservations";
 
 function App() {
   return (
@@ -25,15 +26,22 @@ function App() {
           <Route path="/reservation" element={<SeatReservation />} />
 
           <Route
-            path="/addShowing"
-            element={<ShowingForm />}
-            // element={
-            //   <RequireAuth roles={["ADMIN"]}>
-            //     <RecipeForm />
-            //   </RequireAuth>
-            // }
+            path="/add-showing"
+            element={
+              <RequireAuth roles={["ADMIN", "USER"]}>
+                <ShowingForm />
+              </RequireAuth>
+            }
           />
-          <Route path="/ticketPurchase" element={<TicketPurchase />} />
+          <Route
+            path="/reservations"
+            element={
+              <RequireAuth roles={["ADMIN", "USER"]}>
+                <AllReservations />
+              </RequireAuth>
+            }
+          />
+          <Route path="/ticket-purchase" element={<TicketPurchase />} />
           <Route path="/login" element={<Login />} />
           <Route path="/logout" element={<Logout />} />
           <Route path="*" element={<h2>Page Not Found</h2>} />
