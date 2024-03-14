@@ -8,8 +8,8 @@ import Login from "./security/Login";
 import Logout from "./security/Logout";
 import ShowingForm from "./showings/ShowingForm";
 import SeatReservation from "./pages/SeatReservation";
-import TicketPurchase from './pages/TicketPurchase'
-
+import TicketPurchase from "./pages/TicketPurchase";
+import RequireAuth from "./security/RequireAuth";
 
 function App() {
   return (
@@ -22,15 +22,14 @@ function App() {
           <Route path="/reservation" element={<SeatReservation />} />
 
           <Route
-            path="/addShowing"
-            element={<ShowingForm />}
-            // element={
-            //   <RequireAuth roles={["ADMIN"]}>
-            //     <RecipeForm />
-            //   </RequireAuth>
-            // }
+            path="/add-showing"
+            element={
+              <RequireAuth roles={["ADMIN", "USER"]}>
+                <ShowingForm />
+              </RequireAuth>
+            }
           />
-          <Route path="/ticketPurchase" element={<TicketPurchase />} />
+          <Route path="/ticket-purchase" element={<TicketPurchase />} />
           <Route path="/login" element={<Login />} />
           <Route path="/logout" element={<Logout />} />
           <Route path="*" element={<h2>Page Not Found</h2>} />

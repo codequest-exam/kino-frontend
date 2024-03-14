@@ -18,8 +18,6 @@ const Login = () => {
     event.preventDefault();
     const formData = new FormData(event.currentTarget);
     const user = Object.fromEntries(formData) as unknown as User;
-    console.log(user);
-
     auth.signIn(user).then(() => {
       navigate(from, { replace: true });
     });
