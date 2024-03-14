@@ -4,7 +4,7 @@ import { handleHttpErrors } from "../services/fetchUtils";
 const CACHE_TIME = 1 * 60 * 1000; // 1 min cache
 // const MOVIE_URL = API_URL + "/movies";
 const LAST_FETCH = { movies: 0 };
-const LOCAL_HOST_URL = "http://localhost:8095/";
+const LOCAL_HOST_URL = "http://localhost:8080/";
 
 interface Movie {
         id: number;
