@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import HallLayout from "../components/HallLayout";
 
 export type SeatStatus = "available" | "reserved" | "selected";
