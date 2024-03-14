@@ -10,6 +10,7 @@ import ShowingForm from "./showings/ShowingForm";
 import SeatReservation from "./pages/SeatReservation";
 import TicketPurchase from "./pages/TicketPurchase";
 import RequireAuth from "./security/RequireAuth";
+import AllReservations from "./pages/AllReservations";
 
 function App() {
   return (
@@ -26,6 +27,14 @@ function App() {
             element={
               <RequireAuth roles={["ADMIN", "USER"]}>
                 <ShowingForm />
+              </RequireAuth>
+            }
+          />
+          <Route
+            path="/reservations"
+            element={
+              <RequireAuth roles={["ADMIN", "USER"]}>
+                <AllReservations />
               </RequireAuth>
             }
           />

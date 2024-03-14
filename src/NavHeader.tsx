@@ -19,9 +19,14 @@ export default function NavHeader() {
         <li>
           <NavLink to="/reservation">Seat Reservation</NavLink>
         </li>
-        {auth.isLoggedIn() && (
+        {auth.isLoggedInAs(["USER", "ADMIN"]) && (
           <li>
             <NavLink to="/add-showing">Add Showing</NavLink>
+          </li>
+        )}
+        {auth.isLoggedInAs(["USER", "ADMIN"]) && (
+          <li>
+            <NavLink to="/reservations">See all reservations</NavLink>
           </li>
         )}
         <AuthStatus />
