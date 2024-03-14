@@ -1,6 +1,5 @@
 import { NavLink } from "react-router-dom";
 import AuthStatus from "./security/AuthStatus";
-// import React from "react";
 import { useAuth } from "./security/AuthProvider";
 
 export default function NavHeader() {
@@ -20,7 +19,7 @@ export default function NavHeader() {
         <li>
           <NavLink to="/reservation">Seat Reservation</NavLink>
         </li>
-        {auth.isLoggedInAs(["USER", "ADMIN"]) && (
+        {auth.isLoggedIn() && (
           <li>
             <NavLink to="/add-showing">Add Showing</NavLink>
           </li>
