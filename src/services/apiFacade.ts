@@ -43,6 +43,10 @@ async function getMovies(): Promise<Array<Movie>> {
   return res;
 }
 
+async function addReservation(newReservation:{}){
+
+}
+
 export type { Movie };
 
-export { getMovies, getMovie };
+export { getMovies, getMovie, addReservation };
