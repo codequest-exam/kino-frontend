@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 type SeatStatus = "available" | "reserved" | "selected";
 
@@ -8,10 +8,19 @@ type Seat = {
 };
 
 function SeatReservation() {
-  const initialSeats: Seat[] = Array(50)
-    .fill({ status: "available" })
-    .map((seat, index) => ({ ...seat, id: index }));
-  const [seats, setSeats] = useState(initialSeats);
+  const [seats, setSeats] = useState<Seat[]>([]);
+
+  useEffect(() => {
+    fetch("http://localhost:3001/seats")
+      .then((response) => response.json())
+      .then((data) => setSeats(data))
+      .catch((error) => console.error("Error fetching seats: ", error));
+  }, []);
+
+  // const initialSeats: Seat[] = Array(50)
+  //   .fill({ status: "available" })
+  //   .map((seat, index) => ({ ...seat, id: index }));
+  // const [seats, setSeats] = useState(initialSeats);
 
   const handleSeatClick = (id: number) => {
     setSeats(
