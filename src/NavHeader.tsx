@@ -5,7 +5,7 @@ import { useAuth } from "./security/AuthProvider";
 export default function NavHeader() {
   const auth = useAuth();
   return (
-    <nav>
+    <nav style={{ position: "fixed", top: 0, left: 0, right: 0, paddingTop: "20px", boxShadow: "0 4px 8px" }}>
       <ul>
         <li>
           <NavLink to="/">Home</NavLink>
@@ -33,11 +33,7 @@ export default function NavHeader() {
         <li>
           <NavLink to="/ticket-purchase">
             <button style={{ display: "flex", alignItems: "center" }}>
-              <img
-                src="logo.png"
-                alt="Logo"
-                style={{ width: "20px", marginRight: "5px" }}
-              />
+              <img src="logo.png" alt="Logo" style={{ width: "20px", marginRight: "5px" }} />
               Buy Ticket
             </button>
           </NavLink>
