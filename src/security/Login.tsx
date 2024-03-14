@@ -3,7 +3,7 @@ import { useLocation } from "react-router-dom";
 import { User } from "../services/authFacade";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "./AuthProvider";
-import "./Login.css";
+import "./login.css";
 
 const Login = () => {
   const [user, setUser] = useState({ username: "", password: "" });
