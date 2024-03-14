@@ -2,7 +2,7 @@ import "./App.css";
 import { Routes, Route } from "react-router-dom";
 import Layout from "./Layout";
 import Home from "./pages/Home";
-import Movies from "./pages/Movies";
+import MovieLayout from "./movies/MovieLayout";
 import Cinemas from "./pages/Cinemas";
 import Login from "./security/Login";
 import Logout from "./security/Logout";
@@ -17,7 +17,10 @@ function App() {
       <Layout>
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/movies/" element={<Movies />} />
+          <Route path="/movies/">
+            <Route index element={<MovieLayout />}/>
+            <Route path=":movieId" element={<MovieLayout />} />
+            </Route>
           <Route path="/cinemas" element={<Cinemas />} />
           <Route path="/reservation" element={<SeatReservation />} />
 
