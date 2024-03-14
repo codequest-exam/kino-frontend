@@ -3,7 +3,7 @@ import { useLocation } from "react-router-dom";
 import { User } from "../services/authFacade";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "./AuthProvider";
-import "./login.css";
+import "./Login.css";
 
 const Login = () => {
   const [user, setUser] = useState({ username: "", password: "" });
@@ -31,27 +31,11 @@ const Login = () => {
         <h2>Login</h2>
         <div className="login-form-group">
           <label htmlFor="username">Username</label>
-          <input
-            type="text"
-            name="username"
-            value={user.username}
-            onChange={(e) =>
-              setUser((prev) => ({ ...prev, username: e.target.value }))
-            }
-            required
-          />
+          <input type="text" name="username" value={user.username} onChange={(e) => setUser((prev) => ({ ...prev, username: e.target.value }))} required />
         </div>
         <div className="login-form-group">
           <label htmlFor="password">Password</label>
-          <input
-            type="password"
-            name="password"
-            value={user.password}
-            onChange={(e) =>
-              setUser((prev) => ({ ...prev, password: e.target.value }))
-            }
-            required
-          />
+          <input type="password" name="password" value={user.password} onChange={(e) => setUser((prev) => ({ ...prev, password: e.target.value }))} required />
         </div>
         <button type="submit" className="login-btn">
           Login
