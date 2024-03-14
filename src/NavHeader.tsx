@@ -27,6 +27,14 @@ export default function NavHeader() {
         </li>
         {/* )} */}
         <AuthStatus />
+        <li> 
+            <NavLink to="/ticketPurchase">
+                <button style={{ display: "flex", alignItems: "center" }}>
+                    <img src="logo.png" alt="Logo" style={{ width: "20px", marginRight: "5px" }} />
+                    Buy Ticket
+                </button>
+            </NavLink>
+        </li>
       </ul>
     </nav>
   );
