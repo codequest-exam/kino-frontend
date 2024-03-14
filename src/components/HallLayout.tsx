@@ -1,13 +1,13 @@
-import { SeatStatus, Seat } from "../pages/SeatReservation";
+import { /*SeatStatus,*/ Seat, HallStats, SeatStatus } from "../pages/SeatReservation";
 
 type HallLayoutProps = {
-  numColumns: number;
+  HallStats: HallStats;
   seats: Seat[];
   handleSeatClick: (id: number) => void;
   handleConfirmClick: () => void;
 };
 
-export default function HallLayout({ numColumns, seats, handleSeatClick, handleConfirmClick }: HallLayoutProps) {
+export default function HallLayout({ HallStats, seats, handleSeatClick, handleConfirmClick }: HallLayoutProps) {
   return (
     <div>
       <div
@@ -16,14 +16,15 @@ export default function HallLayout({ numColumns, seats, handleSeatClick, handleC
           flexWrap: "wrap",
           justifyContent: "center",
           width: "100%", // Adjust this value based on your needs
-          gridTemplateColumns: `repeat(${numColumns}, 1fr)`,
+          gridTemplateColumns: `repeat(${HallStats.seatsPerRow}, 1fr)`,
         }}
       >
         {seats.map(seat => (
           <button
             key={seat.id}
             style={{
-              backgroundColor: seat.status === "selected" ? "red" : seat.status === "reserved" ? "grey" : "green",
+              backgroundColor: seat.status === SeatStatus.AVAILABLE ? "green" : seat.status === SeatStatus.RESERVED ? "grey" : "red",
+              // backgroundColor: seat.status ===  ? "red" : seat.status === "reserved" ? "grey" : "green",
               margin: "5px",
               padding: "10px",
               borderRadius: "5px",
