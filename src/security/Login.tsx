@@ -2,7 +2,7 @@
 // import { useLocation, useNavigate } from "react-router-dom";
 // import { useAuth } from "../security/AuthProvider";
 // import { User } from "../services/authFacade";
-// import "./login.css";
+import "./Login.css";
 // import React from "react";
 
 // const Login = () => {
@@ -75,24 +75,24 @@
 // export default Login;
 
 const Login = () => {
-    return (
-        <div className="login-wrapper">
-            <form className="login-form">
-                <h2>Login</h2>
-                <div className="login-form-group">
-                    <label htmlFor="username">Username</label>
-                    <input type="text" name="username" required />
-                </div>
-                <div className="login-form-group">
-                    <label htmlFor="password">Password</label>
-                    <input type="password" name="password" required />
-                </div>
-                <button type="submit" className="login-btn">
-                    Login
-                </button>
-            </form>
+  return (
+    <div className="login-wrapper">
+      <form className="login-form">
+        <h2>Login</h2>
+        <div className="login-form-group">
+          <label htmlFor="username">Username</label>
+          <input type="text" name="username" required />
         </div>
-    );
+        <div className="login-form-group">
+          <label htmlFor="password">Password</label>
+          <input type="password" name="password" required />
+        </div>
+        <button type="submit" className="login-btn">
+          Login
+        </button>
+      </form>
+    </div>
+  );
 };
 
 export default Login;
