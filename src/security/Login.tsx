@@ -1,12 +1,11 @@
-import { useState } from "react";
-import { useLocation } from "react-router-dom";
-import { User } from "../services/authFacade";
-import { useNavigate } from "react-router-dom";
+import React, { useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useAuth } from "./AuthProvider";
 import "./login.css";
 
-const Login = () => {
+const Login: React.FC = () => {
   const [user, setUser] = useState({ username: "", password: "" });
+  const [error, setError] = useState<string | null>(null);
 
   const navigate = useNavigate();
   const location = useLocation();
@@ -14,19 +13,21 @@ const Login = () => {
 
   const from = location.state?.from?.pathname || "/";
 
-  function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    const formData = new FormData(event.currentTarget);
-    const user = Object.fromEntries(formData) as unknown as User;
-    auth.signIn(user).then(() => {
+    try {
+      await auth.signIn(user);
       navigate(from, { replace: true });
-    });
-  }
+    } catch (error) {
+      setError("Incorrect username or password");
+    }
+  };
 
   return (
     <div className="login-wrapper">
       <form className="login-form" onSubmit={handleSubmit}>
         <h2>Login</h2>
+        {error && <div className="error">{error}</div>}
         <div className="login-form-group">
           <label htmlFor="username">Username</label>
           <input
