@@ -1,15 +1,14 @@
 import { NavLink } from "react-router-dom";
 import AuthStatus from "./security/AuthStatus";
 // import React from "react";
-// import { useAuth } from "./security/AuthProvider";
+import { useAuth } from "./security/AuthProvider";
 
 export default function NavHeader() {
-  //   const auth = useAuth();
+  const auth = useAuth();
   return (
     <nav>
       <ul>
         <li>
-          {/* <a href="/">Home</a> */}
           <NavLink to="/">Home</NavLink>
         </li>
         <li>
@@ -21,19 +20,23 @@ export default function NavHeader() {
         <li>
           <NavLink to="/reservation">Seat Reservation</NavLink>
         </li>
-        {/* {auth.isLoggedIn() && ( */}
-        <li>
-          <NavLink to="/addShowing">Add Showing</NavLink>
-        </li>
-        {/* )} */}
+        {auth.isLoggedInAs(["USER", "ADMIN"]) && (
+          <li>
+            <NavLink to="/add-showing">Add Showing</NavLink>
+          </li>
+        )}
         <AuthStatus />
-        <li> 
-            <NavLink to="/ticketPurchase">
-                <button style={{ display: "flex", alignItems: "center" }}>
-                    <img src="logo.png" alt="Logo" style={{ width: "20px", marginRight: "5px" }} />
-                    Buy Ticket
-                </button>
-            </NavLink>
+        <li>
+          <NavLink to="/ticketPurchase">
+            <button style={{ display: "flex", alignItems: "center" }}>
+              <img
+                src="logo.png"
+                alt="Logo"
+                style={{ width: "20px", marginRight: "5px" }}
+              />
+              Buy Ticket
+            </button>
+          </NavLink>
         </li>
       </ul>
     </nav>
