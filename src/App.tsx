@@ -11,6 +11,7 @@ import SeatReservation from "./pages/SeatReservation";
 import TicketPurchase from "./pages/TicketPurchase";
 import RequireAuth from "./security/RequireAuth";
 import AllReservations from "./pages/AllReservations";
+import Movie from "./movies/Movie";
 
 function App() {
   return (
@@ -19,9 +20,9 @@ function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/movies/">
-            <Route index element={<MovieLayout />}/>
-            <Route path=":movieId" element={<MovieLayout />} />
-            </Route>
+            <Route index element={<MovieLayout />} />
+            <Route path=":id" element={<Movie />} />
+          </Route>
           <Route path="/cinemas" element={<Cinemas />} />
           <Route path="/reservation" element={<SeatReservation />} />
 

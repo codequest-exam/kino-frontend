@@ -3,25 +3,24 @@ import { Link } from "react-router-dom";
 import { Movie as APIMovie, getMovies } from "../services/apiFacade";
 
 export default function MovieList() {
-// const [queryString] = useSearchParams();
-// const initialCategory = queryString.get("category");
+  // const [queryString] = useSearchParams();
+  // const initialCategory = queryString.get("category");
   const [movies, setMovies] = useState<Array<APIMovie>>([]);
-// const [category, setCategory] = useState<string | null>(initialCategory);
+  // const [category, setCategory] = useState<string | null>(initialCategory);
   const [error, setError] = useState("");
-//const auth = useAuth();
+  //const auth = useAuth();
 
   useEffect(() => {
     getMovies()
       .then((res) => setMovies(res))
-      .catch(() =>
-        setError("Error fetching movies, the server might be down.")
-      );
+      .catch(() => setError("Error fetching movies, the server might be down."));
   }, []);
 
   const movieListItems = movies.map((movie) => {
+    console.log("id:" + movie.id + " type:" + typeof movie.id);
     return (
-      <li key={movie.imdbID}>
-        <Link to={`${movie.imdbID}`}>{movie.title}</Link>
+      <li key={movie.id}>
+        <Link to={`/movies/${movie.id}`}>{movie.title}</Link>
         <p>Year: {movie.year}</p>
         <p>Runtime: {movie.runtime}</p>
         <p>Director: {movie.director}</p>
