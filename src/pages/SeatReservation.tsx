@@ -2,6 +2,7 @@ import { useEffect, useState, useRef } from "react";
 import HallLayout from "../components/HallLayout";
 import { API_URL } from "../settings";
 import { addReservation } from "../services/apiFacade";
+import { useAuth } from "../security/AuthProvider";
 
 export enum SeatStatus {
   AVAILABLE = "available",
@@ -20,8 +21,11 @@ export type HallStats = {
   totalSeats: number;
 };
 
+export type newReservation = {showing: {id: number}, reservedSeats: Array<{id:number}>|undefined};
+
 function SeatReservation() {
   const [hallLayout, setHallLayout] = useState<HallStats>();
+  const auth = useAuth();
   // const [hallLayout, setHallLayout] = useState({ rows: 10, seatsPerRow: 10, totalSeats: 100 });
   const takenSeatsRef = useRef<number[]>([]);
 
@@ -34,7 +38,7 @@ function SeatReservation() {
 
   useEffect(() => {
     const fetchSeats = async () => {
-      const res = await fetch(`${API_URL}/showings/2/seats`);
+      const res = await fetch(`${API_URL}/showings/2/takenSeats`);
       console.log("API URL", API_URL);
 
       // const res = await fetch(`${API_URL}/showings/2/seats`);
@@ -83,13 +87,25 @@ function SeatReservation() {
       );
   };
 
-  const handleConfirmClick = () => {
-    const newReservation = {
-      showing: { id: 1 },
-      seats: seats?.map(seat => (seat.status === SeatStatus.SELECTED ? seat.id : null)).filter(seat => seat !== null),
+  const handleConfirmClick = async () => {
+    // array as number
+    const reservedSeats: {id:number}[] = [];
+    seats?.forEach(seat => {
+      if (seat.status === SeatStatus.SELECTED) {
+        reservedSeats.push({id: seat.id});
+      }
+    });
+
+    const newReservation: newReservation = {
+      showing:{id: 1},
+      reservedSeats
     };
-    // apiFacade.addReservation(newReservation);
-    addReservation(newReservation);
+    console.log(newReservation);
+    
+  
+    const result = await addReservation(newReservation, auth.isLoggedIn());
+    console.log("result",result);
+    
     // seats && setSeats(seats.map(seat => (seat.status === "selected" ? { ...seat, status: SeatStatus.RESERVED } : seat)));
   };
 

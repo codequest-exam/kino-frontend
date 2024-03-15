@@ -36,7 +36,7 @@ export default function HallLayout({ HallStats, seats, handleSeatClick, handleCo
             disabled={seat.status === "reserved"}
             onClick={() => handleSeatClick(seat.id)}
           >
-            {/* {seat.status} */}
+            {/* {seat.id} */}
           </button>
         ))}
       </div>
