@@ -2,7 +2,7 @@ import { API_URL } from "../settings";
 import { handleHttpErrors } from "../services/fetchUtils";
 
 const CACHE_TIME = 1 * 60 * 1000; // 1 min cache
-const MOVIE_URL = API_URL + "/movies";
+const MOVIE_URL = API_URL + "movies";
 const LAST_FETCH = { movies: 0 };
 
 interface Movie {
