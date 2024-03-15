@@ -1,10 +1,9 @@
-// import { API_URL } from "../settings";
+import { API_URL } from "../settings";
 import { handleHttpErrors } from "../services/fetchUtils";
 
 const CACHE_TIME = 1 * 60 * 1000; // 1 min cache
-// const MOVIE_URL = API_URL + "/movies";
+const MOVIE_URL = API_URL + "/movies";
 const LAST_FETCH = { movies: 0 };
-const LOCAL_HOST_URL = "http://localhost:8080/";
 
 interface Movie {
   id: number;
@@ -29,17 +28,12 @@ interface Movie {
 let movies: Array<Movie> = [];
 
 async function getMovie(id: number): Promise<Movie> {
-  console.log(fetch(LOCAL_HOST_URL + "movies" + "/" + id).then(handleHttpErrors));
-
-  return fetch(LOCAL_HOST_URL + "movies" + "/" + id).then(handleHttpErrors);
+  return fetch(MOVIE_URL + "/" + id).then(handleHttpErrors);
 }
 
 async function getMovies(): Promise<Array<Movie>> {
   if (LAST_FETCH.movies > Date.now() - CACHE_TIME) return [...movies];
-  const res = await fetch(LOCAL_HOST_URL + "movies").then(handleHttpErrors);
-
-  console.log("res", res);
-
+  const res = await fetch(MOVIE_URL).then(handleHttpErrors);
   movies = [...res];
   LAST_FETCH.movies = Date.now();
   console.log("movies", movies);
@@ -47,6 +41,8 @@ async function getMovies(): Promise<Array<Movie>> {
   return res;
 }
 
+async function addReservation(newReservation: {}) {}
+
 export type { Movie };
 
-export { getMovies, getMovie };
+export { getMovies, getMovie, addReservation };

@@ -1,6 +1,7 @@
 import { useEffect, useState, useRef } from "react";
 import HallLayout from "../components/HallLayout";
 import { API_URL } from "../settings";
+import { addReservation } from "../services/apiFacade";
 
 export enum SeatStatus {
   AVAILABLE = "available",
@@ -44,7 +45,7 @@ function SeatReservation() {
     };
 
     const getHallLayout = async () => {
-      const res2 = await fetch(`${API_URL}/showings/1`);
+      const res2 = await fetch(`${API_URL}/showings/2`);
       const result2 = await res2.json();
 
       const totalSeats = result2.hall.seatRows * result2.hall.seatsPerRow;
@@ -87,7 +88,8 @@ function SeatReservation() {
       showing: { id: 1 },
       seats: seats?.map(seat => (seat.status === SeatStatus.SELECTED ? seat.id : null)).filter(seat => seat !== null),
     };
-    apiFacade.addReservation(newReservation);
+    // apiFacade.addReservation(newReservation);
+    addReservation(newReservation);
     // seats && setSeats(seats.map(seat => (seat.status === "selected" ? { ...seat, status: SeatStatus.RESERVED } : seat)));
   };
 
