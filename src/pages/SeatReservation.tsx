@@ -34,7 +34,7 @@ function SeatReservation() {
 
   useEffect(() => {
     const fetchSeats = async () => {
-      const res = await fetch(`${API_URL}/showings/2/seats`);
+      const res = await fetch(`${API_URL}/showings/2/takenSeats`);
       console.log("API URL", API_URL);
 
       // const res = await fetch(`${API_URL}/showings/2/seats`);
