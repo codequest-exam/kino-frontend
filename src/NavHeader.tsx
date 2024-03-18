@@ -19,12 +19,12 @@ export default function NavHeader() {
         <li>
           <NavLink to="/reservation">Seat Reservation</NavLink>
         </li>
-        {auth.isLoggedInAs(["USER", "ADMIN"]) && (
+        {auth.isLoggedInAs(["EMPLOYEE", "ADMIN"]) && (
           <li>
             <NavLink to="/add-showing">Add Showing</NavLink>
           </li>
         )}
-        {auth.isLoggedInAs(["USER", "ADMIN"]) && (
+        {auth.isLoggedInAs(["EMPLOYEE", "ADMIN"]) && (
           <li>
             <NavLink to="/reservations">See all reservations</NavLink>
           </li>
@@ -33,11 +33,7 @@ export default function NavHeader() {
         <li>
           <NavLink to="/ticket-purchase">
             <button style={{ display: "flex", alignItems: "center" }}>
-              <img
-                src="logo.png"
-                alt="Logo"
-                style={{ width: "20px", marginRight: "5px" }}
-              />
+              <img src="logo.png" alt="Logo" style={{ width: "20px", marginRight: "5px" }} />
               Buy Ticket
             </button>
           </NavLink>

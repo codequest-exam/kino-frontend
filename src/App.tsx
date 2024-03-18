@@ -29,7 +29,7 @@ function App() {
           <Route
             path="/add-showing"
             element={
-              <RequireAuth roles={["ADMIN", "USER"]}>
+              <RequireAuth roles={["ADMIN", "EMPLOYEE"]}>
                 <ShowingForm />
               </RequireAuth>
             }
@@ -37,7 +37,7 @@ function App() {
           <Route
             path="/reservations"
             element={
-              <RequireAuth roles={["ADMIN", "USER"]}>
+              <RequireAuth roles={["ADMIN", "EMPLOYEE"]}>
                 <AllReservations />
               </RequireAuth>
             }

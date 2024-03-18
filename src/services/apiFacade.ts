@@ -2,11 +2,9 @@ import { API_URL } from "../settings";
 import { handleHttpErrors, makeOptions } from "../services/fetchUtils";
 import { newReservation } from "../pages/SeatReservation";
 
-
 const CACHE_TIME = 1 * 60 * 1000; // 1 min cache
-const MOVIE_URL = API_URL + "movies";
+const MOVIE_URL = API_URL + "/movies";
 const LAST_FETCH = { movies: 0 };
-
 
 interface Movie {
   id: number;
@@ -45,7 +43,6 @@ async function getMovies(): Promise<Array<Movie>> {
 }
 
 async function addReservation(newReservation: newReservation, loggedIn: boolean) {
-  
   const options = makeOptions("POST", newReservation, loggedIn);
   console.log("options", options);
 
