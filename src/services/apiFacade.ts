@@ -4,7 +4,7 @@ import { newReservation } from "../pages/SeatReservation";
 
 
 const CACHE_TIME = 1 * 60 * 1000; // 1 min cache
-const MOVIE_URL = API_URL + "movies";
+const MOVIE_URL = API_URL + "/movies";
 const LAST_FETCH = { movies: 0 };
 
 
