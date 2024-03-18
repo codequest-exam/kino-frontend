@@ -29,13 +29,16 @@ interface Movie {
 interface Showing {
   id: number;
   movie: Movie;
-  hall: string;
+  hall: Hall;
   startTime: string;
   moviePrice: number;
   isImax: boolean;
   is3d: boolean;
 }
-
+interface Hall {
+  id: number;
+  roomNumber: number;
+}
 
 let movies: Array<Movie> = [];
 let showings: Array<Showing> = [];
@@ -68,6 +71,6 @@ async function addReservation(newReservation: newReservation, loggedIn: boolean)
   return await fetch(API_URL + "/reservations", options).then(handleHttpErrors);
 }
 
-export type { Movie, Showing };
+export type { Movie, Showing, Hall };
 
-export { getMovies, getMovie, addReservation, getShowings};
+export { getMovies, getMovie, addReservation, getShowings };

@@ -15,6 +15,7 @@ export default function Showings() {
   const showingTableRows = showings.map((showing) => (
     <tr key={showing.id}>
       <td>{showing.movie.title}</td>
+      <td>{showing.hall.roomNumber}</td>
       <td>{showing.startTime}</td>
       <td>{showing.is3d ? "Yes" : "No"}</td>
       <td>{showing.isImax ? "Yes" : "No"}</td>
@@ -33,6 +34,7 @@ export default function Showings() {
         <thead>
           <tr>
             <th>Movie</th>
+            <th>Hall number</th>
             <th>Start Time</th>
             <th>3D</th>
             <th>IMAX</th>
