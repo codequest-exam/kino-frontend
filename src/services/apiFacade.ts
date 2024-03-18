@@ -4,6 +4,7 @@ import { newReservation } from "../pages/SeatReservation";
 
 const CACHE_TIME = 1 * 60 * 1000; // 1 min cache
 const MOVIE_URL = API_URL + "/movies";
+const SHOWING_URL = API_URL + "/showings";
 const LAST_FETCH = { movies: 0 };
 
 interface Movie {
@@ -25,8 +26,19 @@ interface Movie {
   poster: string;
   imdbID: string;
 }
+interface Showing {
+  id: number;
+  movie: Movie;
+  hall: string;
+  startTime: string;
+  moviePrice: number;
+  isImax: boolean;
+  is3d: boolean;
+}
+
 
 let movies: Array<Movie> = [];
+let showings: Array<Showing> = [];
 
 async function getMovie(id: number): Promise<Movie> {
   return fetch(MOVIE_URL + "/" + id).then(handleHttpErrors);
@@ -37,7 +49,14 @@ async function getMovies(): Promise<Array<Movie>> {
   const res = await fetch(MOVIE_URL).then(handleHttpErrors);
   movies = [...res];
   LAST_FETCH.movies = Date.now();
-  console.log("movies", movies);
+
+  return res;
+}
+async function getShowings(): Promise<Array<Showing>> {
+  if (LAST_FETCH.movies > Date.now() - CACHE_TIME) return [...showings];
+  const res = await fetch(SHOWING_URL).then(handleHttpErrors);
+  showings = [...res];
+  LAST_FETCH.movies = Date.now();
 
   return res;
 }
@@ -49,6 +68,6 @@ async function addReservation(newReservation: newReservation, loggedIn: boolean)
   return await fetch(API_URL + "/reservations", options).then(handleHttpErrors);
 }
 
-export type { Movie };
+export type { Movie, Showing };
 
-export { getMovies, getMovie, addReservation };
+export { getMovies, getMovie, addReservation, getShowings};

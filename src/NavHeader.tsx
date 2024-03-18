@@ -21,7 +21,7 @@ export default function NavHeader() {
         </li>
         {auth.isLoggedInAs(["EMPLOYEE", "ADMIN"]) && (
           <li>
-            <NavLink to="/add-showing">Add Showing</NavLink>
+            <NavLink to="/showings">Showings</NavLink>  
           </li>
         )}
         {auth.isLoggedInAs(["EMPLOYEE", "ADMIN"]) && (

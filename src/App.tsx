@@ -12,6 +12,7 @@ import TicketPurchase from "./pages/TicketPurchase";
 import RequireAuth from "./security/RequireAuth";
 import AllReservations from "./pages/AllReservations";
 import Movie from "./movies/Movie";
+import Showings from "./pages/Showings";
 
 function App() {
   return (
@@ -25,7 +26,14 @@ function App() {
           </Route>
           <Route path="/cinemas" element={<Cinemas />} />
           <Route path="/reservation" element={<SeatReservation />} />
-
+          <Route
+            path="/showings"
+            element={
+              <RequireAuth roles={["ADMIN", "EMPLOYEE"]}>
+                <Showings />
+              </RequireAuth>
+            }
+          />
           <Route
             path="/add-showing"
             element={
