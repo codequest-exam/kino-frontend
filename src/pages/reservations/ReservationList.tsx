@@ -5,7 +5,7 @@ import {
 } from "../../services/apiFacade";
 import "./reservations.css";
 
-export default function AllReservations() {
+export default function ReservationList() {
   const [reservations, setReservations] = useState<Array<APIReservation>>([]);
   const [error, setError] = useState("");
 
