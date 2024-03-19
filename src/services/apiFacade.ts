@@ -51,7 +51,8 @@ let showings: Showing[] = [];
 let users: User[] = [];
 
 async function getUsers(): Promise<Array<User>> {
-  const res = await fetch(USER_URL).then(handleHttpErrors);
+  const options = makeOptions("GET", null, true);
+  const res = await fetch(USER_URL, options).then(handleHttpErrors);
   users = res;
   return users;
 }
