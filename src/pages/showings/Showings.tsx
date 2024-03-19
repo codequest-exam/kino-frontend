@@ -38,7 +38,6 @@ export default function Showings() {
       <td>{formatStartDate(showing.startTime)}</td>
       <td>{showing.is3d ? "Yes" : "No"}</td>
       <td>{showing.isImax ? "Yes" : "No"}</td>
-      <td>{showing.moviePrice}</td>
     </tr>
   ));
 
@@ -58,7 +57,6 @@ export default function Showings() {
             <th>Date</th>
             <th>3D</th>
             <th>IMAX</th>
-            <th>Price</th>
           </tr>
         </thead>
         <tbody>{showingTableRows}</tbody>
