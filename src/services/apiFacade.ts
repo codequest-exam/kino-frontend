@@ -56,6 +56,11 @@ async function getUsers(): Promise<Array<User>> {
   users = res;
   return users;
 }
+async function editUserRole(username: string, role: string) {
+  const options = makeOptions("PATCH", {}, true);
+  const res = await fetch(USER_URL + "/add-role/" + username + "/" + role, options).then(handleHttpErrors);
+  return res;
+}
 
 async function getMovie(id: number): Promise<Movie> {
   return fetch(MOVIE_URL + "/" + id).then(handleHttpErrors);
@@ -84,4 +89,4 @@ async function addReservation(newReservation: newReservation, loggedIn: boolean)
 
 export type { Movie, Showing, Hall, User };
 
-export { getMovies, getMovie, addReservation, getShowings, getUsers };
+export { getMovies, getMovie, addReservation, getShowings, getUsers, editUserRole };

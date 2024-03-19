@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { User, getUsers } from "../services/apiFacade";
+import { User, editUserRole, getUsers } from "../services/apiFacade";
 
 export default function Users() {
   const [users, setUsers] = useState<Array<User>>([]);
@@ -19,9 +19,31 @@ export default function Users() {
     <tr key={user.username}>
       <td>{user.username}</td>
       <td>{user.email}</td>
-      {/* <td>{user.roles.join(", ")}</td> */}
+      <td>{user.roles?.join(", ")}</td>
+      <td>
+        <select value={user.roles} onChange={(e) => handleRoleChange(e, user)}>
+          <option value="">None</option>
+          <option value="ADMIN">Admin</option>
+          <option value="EMPLOYEE">Employee</option>
+          <option value="CUSTOMER">Customer</option>
+        </select>{" "}
+      </td>
     </tr>
   ));
+  const handleRoleChange = (e: React.ChangeEvent<HTMLSelectElement>, user: User) => {
+    const newRole = e.target.value;
+    console.log("newRole", newRole);
+
+    if (newRole) {
+      editUserRole(user.username, newRole)
+        .then((updatedUser) => {
+          setUsers(users.map((u) => (u.username === updatedUser.username ? updatedUser : u)));
+        })
+        .catch((err) => {
+          console.error(err);
+        });
+    }
+  };
 
   if (error !== "") {
     return <h2 style={{ color: "red" }}>{error}</h2>;
