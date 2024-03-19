@@ -14,6 +14,7 @@ import ReservationLayout from "./pages/reservations/ReservationLayout";
 import Movie from "./pages/movies/Movie";
 import Showings from "./pages/showings/Showings";
 import Checkout from "./pages/Checkout";
+import Users from "./pages/Users";
 
 function App() {
   return (

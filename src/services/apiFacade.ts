@@ -74,6 +74,20 @@ interface Reservation {
 
 let movies: Array<Movie> = [];
 let showings: Array<Showing> = [];
+let reservations: Array<Reservation> = [];
+
+async function getUsers(): Promise<Array<User>> {
+  const options = makeOptions("GET", null, true);
+  return fetch(USER_URL + "/users", options).then(handleHttpErrors);
+}
+async function removeUserRole(userName: string, role: string): Promise<User> {
+  const options = makeOptions("DELETE", null, true);
+  return fetch(USER_URL + "/remove-role" + userName + "/" + role, options).then(handleHttpErrors);
+}
+async function editUserRole(userName: string, role: string): Promise<User> {
+  const options = makeOptions("POST", null, true);
+  return fetch(USER_URL + "/add-role" + userName + "/" + role, options).then(handleHttpErrors);
+}
 
 async function getMovie(id: number): Promise<Movie> {
   return fetch(MOVIE_URL + "/" + id).then(handleHttpErrors);
@@ -99,7 +113,14 @@ async function addReservation(newReservation: newReservation, loggedIn: boolean)
 
   return await fetch(API_URL + "/reservations", options).then(handleHttpErrors);
 }
+async function getReservations(): Promise<Array<Reservation>> {
+  const options = makeOptions("GET", null, true);
+  if (LAST_FETCH.movies > Date.now() - CACHE_TIME) return [...reservations];
+  const res = await fetch(API_URL + "/reservations", options).then(handleHttpErrors);
+  reservations = [...res];
+  return res;
+}
 
-export type { Movie, Showing, Hall };
+export type { Movie, Showing, Hall, User, Reservation };
 
-export { getMovies, getMovie, addReservation, getShowings };
+export { getMovies, getMovie, addReservation, getShowings, getUsers, removeUserRole, editUserRole, getReservations };
