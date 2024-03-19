@@ -99,8 +99,9 @@ async function addReservation(newReservation: newReservation, loggedIn: boolean)
 }
 
 async function getReservations(): Promise<Array<Reservation>> {
+  const options = makeOptions("GET", null, true);
   if (LAST_FETCH.movies > Date.now() - CACHE_TIME) return [...reservations];
-  const res = await fetch(API_URL + "/reservations").then(handleHttpErrors);
+  const res = await fetch(API_URL + "/reservations", options).then(handleHttpErrors);
   reservations = [...res];
   return res;
 }
