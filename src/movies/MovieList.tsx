@@ -4,13 +4,9 @@ import { Movie as APIMovie, getMovies } from "../services/apiFacade";
 import './movielist.css';
 
 export default function MovieList() {
-  // const [queryString] = useSearchParams();
-  // const initialCategory = queryString.get("category");
   const [movies, setMovies] = useState<Array<APIMovie>>([]);
-  // const [category, setCategory] = useState<string | null>(initialCategory);
   const [error, setError] = useState("");
-  //const auth = useAuth();
-
+  
   useEffect(() => {
     getMovies()
       .then((res) => setMovies(res))
