@@ -10,13 +10,10 @@ export default function MovieList() {
   useEffect(() => {
     getMovies()
       .then((res) => setMovies(res))
-      .catch(() =>
-        setError("Error fetching movies, the server might be down.")
-      );
+      .catch(() => setError("Error fetching movies, the server might be down."));
   }, []);
 
   const movieListItems = movies.map((movie) => {
-    console.log("id:" + movie.id + " type:" + typeof movie.id);
     return (
       <li key={movie.title} className="movie-card">
         <Link to={`/movies/${movie.id}`}>
@@ -36,10 +33,7 @@ export default function MovieList() {
 
   return (
     <>
-      <div
-        style={{ listStyle: "none", paddingLeft: 0 }}
-        className="movie-card-container"
-      >
+      <div style={{ listStyle: "none", paddingLeft: 0 }} className="movie-card-container">
         {movieListItems}
       </div>
     </>
