@@ -3,7 +3,7 @@ import { handleHttpErrors, makeOptions } from "../services/fetchUtils";
 import { newReservation } from "../pages/SeatReservation";
 
 const CACHE_TIME = 1 * 60 * 1000; // 1 min cache
-const MOVIE_URL = API_URL + "/movies";
+const MOVIE_URL = API_URL + "movies";
 const SHOWING_URL = API_URL + "/showings";
 const LAST_FETCH = { movies: 0 };
 

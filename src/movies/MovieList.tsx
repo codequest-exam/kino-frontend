@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { Movie as APIMovie, getMovies } from "../services/apiFacade";
+import './movielist.css';
 
 export default function MovieList() {
   // const [queryString] = useSearchParams();
@@ -19,14 +20,14 @@ export default function MovieList() {
   const movieListItems = movies.map((movie) => {
     console.log("id:" + movie.id + " type:" + typeof movie.id);
     return (
-      <li key={movie.id}>
-        <Link to={`/movies/${movie.id}`}>{movie.title}</Link>
-        <p>Year: {movie.year}</p>
-        <p>Runtime: {movie.runtime}</p>
-        <p>Director: {movie.director}</p>
-        <p>Actors: {movie.actors}</p>
-        <p>IMDb Rating: {movie.imdbRating}</p>
-        <img src={movie.poster} alt={movie.title} />
+      <li key={movie.id} className="movie-card">
+        <Link to={`/movies/${movie.id}`}>
+          <img src={movie.poster} alt={movie.title} />
+        </Link>
+        <Link to={`/movies/${movie.id}`}>
+          <h2>{movie.title}</h2>
+        </Link>
+        <p>Rating: &#9733;({movie.imdbRating})</p>
       </li>
     );
   });
@@ -38,16 +39,7 @@ export default function MovieList() {
   return (
     <>
       <h3>Movies</h3>
-      <div>
-        {/* <button
-          onClick={() => {
-            getMovies().then((res) => setMovies(res));
-          }}
-        >
-          Clear
-        </button> */}
-      </div>
-      <ul style={{ listStyle: "none", paddingLeft: 0 }}>{movieListItems}</ul>
+      <div style={{ listStyle: "none", paddingLeft: 0 }} className="movie-card-container">{movieListItems}</div>
     </>
   );
 }
