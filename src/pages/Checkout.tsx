@@ -13,17 +13,20 @@ export default function Checkout() {
       .catch(() => setError("Error fetching reservations, the server might be down."));
   }, []);
 
+  console.log("reservations", reservations);
+
   const reservationList = reservations.map((reservation, index) => (
     <div key={index} className="reservation-item">
-      <h2 className="movie-title">{reservation.movie.title}</h2>
-      <p className="reservation-info">Hall: {reservation.hall.roomNumber}</p>
-      <p className="reservation-info">Date: {reservation.date}</p>
-      <p className="reservation-info">Time: {reservation.time}</p>
+      <h2 className="movie-title">{reservation.showing.movie.title}</h2>
+      <p className="reservation-info">Cinema: {reservation.showing.hall.cinema.name}</p>
+      <p className="reservation-info">Hall: {reservation.showing.hall.roomNumber}</p>
+      <p className="reservation-info">Start time: {reservation.showing.startTime}</p>
       {reservation.reservedSeats.map((seat, index) => (
         <p key={index} className="reservation-info">
-          Seat: {seat.id}
+          Seat: {seat.seatNumber}, Row: {seat.seatRowNumber}
         </p>
       ))}
+      <p className="reservation-info">Total price: {reservation.price}</p>
     </div>
   ));
 
