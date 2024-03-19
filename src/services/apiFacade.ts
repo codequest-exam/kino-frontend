@@ -39,7 +39,20 @@ interface Showing {
 
 interface Hall {
   id: number;
+  cinema: Cinema;
   roomNumber: number;
+}
+
+interface Cinema {
+  id: number;
+  name: string;
+  address: string;
+}
+
+interface Seat {
+  id: number;
+  seatNumber: number;
+  seatRowNumber: number;
 }
 
 interface Reservation {
@@ -49,7 +62,8 @@ interface Reservation {
   movie: Movie;
   date: string;
   time: string;
-  reservedSeats: Array<{ id: number }>;
+  reservedSeats: Seat[];
+  price: number;
 }
 
 let movies: Array<Movie> = [];
