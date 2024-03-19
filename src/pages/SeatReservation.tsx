@@ -21,7 +21,7 @@ export type HallStats = {
   totalSeats: number;
 };
 
-export type newReservation = {showing: {id: number}, reservedSeats: Array<{id:number}>|undefined};
+export type newReservation = { showing: { id: number }; reservedSeats: Array<{ id: number }> | undefined };
 
 function SeatReservation() {
   const [hallLayout, setHallLayout] = useState<HallStats>();
@@ -69,16 +69,20 @@ function SeatReservation() {
     // getHallLayout();
   }, []);
 
+  // const [selectedSeatPrice, setSelectedSeatPrice] = useState<number | null>(null);
+
   const handleSeatClick = (id: number) => {
     seats &&
       setSeats(
-        seats.map(seat => {
+        seats.map((seat) => {
           if (seat.id === id) {
             // If seat is available, change status to "selected"
             if (seat.status === SeatStatus.AVAILABLE) {
+              // setSelectedSeatPrice(seat.price);
               return { ...seat, status: SeatStatus.SELECTED };
               // If seat is selected, change status to "available"
             } else if (seat.status === SeatStatus.SELECTED) {
+              // setSelectedSeatPrice(null);
               return { ...seat, status: SeatStatus.AVAILABLE };
             }
           }
@@ -89,31 +93,26 @@ function SeatReservation() {
 
   const handleConfirmClick = async () => {
     // array as number
-    const reservedSeats: {id:number}[] = [];
-    seats?.forEach(seat => {
+    const reservedSeats: { id: number }[] = [];
+    seats?.forEach((seat) => {
       if (seat.status === SeatStatus.SELECTED) {
-        reservedSeats.push({id: seat.id});
+        reservedSeats.push({ id: seat.id });
       }
     });
 
     const newReservation: newReservation = {
-      showing:{id: 1},
-      reservedSeats
+      showing: { id: 1 },
+      reservedSeats,
     };
     console.log(newReservation);
-    
-  
+
     const result = await addReservation(newReservation, auth.isLoggedIn());
-    console.log("result",result);
-    
+    console.log("result", result);
+
     // seats && setSeats(seats.map(seat => (seat.status === "selected" ? { ...seat, status: SeatStatus.RESERVED } : seat)));
   };
 
-  return hallLayout && seats ? (
-    <HallLayout HallStats={hallLayout} seats={seats} handleSeatClick={handleSeatClick} handleConfirmClick={handleConfirmClick} />
-  ) : (
-    <div>Loading...</div>
-  );
+  return hallLayout && seats ? <HallLayout HallStats={hallLayout} seats={seats} handleSeatClick={handleSeatClick} handleConfirmClick={handleConfirmClick} /> : <div>Loading...</div>;
   // return HallLayout( hallLayout.rows, hallLayout.seats, handleSeatClick, handleConfirmClick );
   // return HallLayout({ numColumns: hallLayout.seatsPerRow, seats: hallLayout.seatsPerRow, handleSeatClick, handleConfirmClick });
 }
