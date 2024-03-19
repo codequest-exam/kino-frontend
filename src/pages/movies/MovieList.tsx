@@ -1,16 +1,18 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { Movie as APIMovie, getMovies } from "../services/apiFacade";
-import './movielist.css';
+import { Movie as APIMovie, getMovies } from "../../services/apiFacade";
+import "./movielist.css";
 
 export default function MovieList() {
   const [movies, setMovies] = useState<Array<APIMovie>>([]);
   const [error, setError] = useState("");
-  
+
   useEffect(() => {
     getMovies()
       .then((res) => setMovies(res))
-      .catch(() => setError("Error fetching movies, the server might be down."));
+      .catch(() =>
+        setError("Error fetching movies, the server might be down.")
+      );
   }, []);
 
   const movieListItems = movies.map((movie) => {
@@ -35,7 +37,12 @@ export default function MovieList() {
   return (
     <>
       <h3>Movies</h3>
-      <div style={{ listStyle: "none", paddingLeft: 0 }} className="movie-card-container">{movieListItems}</div>
+      <div
+        style={{ listStyle: "none", paddingLeft: 0 }}
+        className="movie-card-container"
+      >
+        {movieListItems}
+      </div>
     </>
   );
 }

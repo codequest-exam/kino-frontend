@@ -1,0 +1,8 @@
+table {
+  margin-left: 20px;
+}
+
+table tr {
+  border-bottom: 1px solid #ddd;
+  padding: 10px 0;
+}
