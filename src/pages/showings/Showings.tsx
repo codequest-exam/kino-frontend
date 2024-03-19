@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Showing, getShowings } from "../services/apiFacade";
+import { Showing, getShowings } from "../../services/apiFacade";
 
 export default function Showings() {
   const [showings, setShowings] = useState<Array<Showing>>([]);
@@ -8,17 +8,25 @@ export default function Showings() {
   useEffect(() => {
     getShowings()
       .then((res) => setShowings(res))
-      .catch(() => setError("Error fetching showings, the server might be down."));
+      .catch(() =>
+        setError("Error fetching showings, the server might be down.")
+      );
   }, []);
 
   const formatStartTime = (startTime: string) => {
     const date = new Date(startTime);
-    const formattedStartTime = `${date.getHours().toString().padStart(2, "0")}:${date.getMinutes().toString().padStart(2, "0")}`;
+    const formattedStartTime = `${date
+      .getHours()
+      .toString()
+      .padStart(2, "0")}:${date.getMinutes().toString().padStart(2, "0")}`;
     return formattedStartTime;
   };
   const formatStartDate = (startTime: string) => {
     const date = new Date(startTime);
-    const formattedStartDate = `${date.getDate().toString().padStart(2, "0")}/${(date.getMonth() + 1).toString().padStart(2, "0")}`;
+    const formattedStartDate = `${date
+      .getDate()
+      .toString()
+      .padStart(2, "0")}/${(date.getMonth() + 1).toString().padStart(2, "0")}`;
     return formattedStartDate;
   };
 

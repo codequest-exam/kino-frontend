@@ -12,7 +12,7 @@ import TicketPurchase from "./pages/TicketPurchase";
 import RequireAuth from "./security/RequireAuth";
 import AllReservations from "./pages/reservations/AllReservations";
 import Movie from "./pages/movies/Movie";
-import Showings from "./pages/Showings";
+import Showings from "./pages/showings/Showings";
 import Checkout from "./pages/Checkout";
 
 function App() {
