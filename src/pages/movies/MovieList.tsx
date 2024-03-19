@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { Movie as APIMovie, getMovies } from "../../services/apiFacade";
-import "./MovieList.css";
+import "./Movielist.css";
 
 export default function MovieList() {
   const [movies, setMovies] = useState<Array<APIMovie>>([]);
