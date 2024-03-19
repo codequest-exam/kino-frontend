@@ -10,7 +10,7 @@ import ShowingForm from "./pages/showings/ShowingForm";
 import SeatReservation from "./pages/SeatReservation";
 import TicketPurchase from "./pages/TicketPurchase";
 import RequireAuth from "./security/RequireAuth";
-import AllReservations from "./pages/reservations/AllReservations";
+import ReservationLayout from "./pages/reservations/ReservationLayout";
 import Movie from "./pages/movies/Movie";
 import Showings from "./pages/showings/Showings";
 import Checkout from "./pages/Checkout";
@@ -48,7 +48,7 @@ function App() {
             path="/reservations"
             element={
               <RequireAuth roles={["ADMIN", "EMPLOYEE"]}>
-                <AllReservations />
+                <ReservationLayout />
               </RequireAuth>
             }
           />
