@@ -13,6 +13,7 @@ import RequireAuth from "./security/RequireAuth";
 import AllReservations from "./pages/AllReservations";
 import Movie from "./movies/Movie";
 import Showings from "./pages/Showings";
+import TicketList from "./pages/PaymentRegistration";
 
 function App() {
   return (
@@ -33,7 +34,8 @@ function App() {
                 <Showings />
               </RequireAuth>
             }
-          />
+          />{" "}
+          <Route path="/checkout" element={<TicketList tickets={[]} />} />
           <Route
             path="/add-showing"
             element={
