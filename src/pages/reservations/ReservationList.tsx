@@ -3,7 +3,7 @@ import {
   Reservation as APIReservation,
   getReservations,
 } from "../../services/apiFacade";
-import "./reservations.css";
+import "./Reservations.css";
 
 export default function AllReservations() {
   const [reservations, setReservations] = useState<Array<APIReservation>>([]);

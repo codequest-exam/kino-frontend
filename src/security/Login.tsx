@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useAuth } from "./AuthProvider";
-import "./login.css";
+import "./Login.css";
 
 const Login: React.FC = () => {
   const [user, setUser] = useState({ username: "", password: "" });
