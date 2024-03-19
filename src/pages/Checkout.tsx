@@ -1,8 +1,7 @@
-import React from "react";
 import { useState, useEffect } from "react";
 import { Reservation as reservation } from "../services/apiFacade";
 import { getReservations } from "../services/apiFacade";
-import "./paymentRegistration.css";
+import "./checkout.css";
 
 export default function Checkout() {
   const [reservations, setReservations] = useState<reservation[]>([]);
@@ -39,16 +38,3 @@ export default function Checkout() {
     </div>
   );
 }
-
-//   <div className="ticket-list-container">
-//     <h1 className="title">Your Movie Tickets</h1>
-//     {tickets.map((ticket, index) => (
-//       <div key={index} className="ticket-item">
-//         {/* <h2 className="movie-title">{reservation.movieTitle}</h2> */}
-//         {/* <p className="ticket-info">Theater: {reservation.theater}</p> */}
-//         <p className="ticket-info">Date: {ticket.date}</p>
-//         <p className="ticket-info">Time: {ticket.time}</p>
-//         <p className="ticket-info">Seat: {ticket.seat}</p>
-//       </div>
-//     ))}
-//   </div>
