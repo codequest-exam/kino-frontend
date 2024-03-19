@@ -1,0 +1,29 @@
+.ticket-list-container {
+  width: 100%;
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+.title {
+  text-align: center;
+  color: #333;
+  margin-bottom: 20px;
+}
+
+.ticket-item {
+  background-color: #f9f9f9;
+  padding: 10px;
+  margin-bottom: 10px;
+  border-radius: 5px;
+}
+
+.movie-title {
+  color: #333;
+  margin-bottom: 5px;
+}
+
+.ticket-info {
+  color: #666;
+}
