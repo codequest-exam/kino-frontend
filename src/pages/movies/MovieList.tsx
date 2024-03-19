@@ -18,7 +18,7 @@ export default function MovieList() {
   const movieListItems = movies.map((movie) => {
     console.log("id:" + movie.id + " type:" + typeof movie.id);
     return (
-      <li key={movie.id} className="movie-card">
+      <li key={movie.title} className="movie-card">
         <Link to={`/movies/${movie.id}`}>
           <img src={movie.poster} alt={movie.title} />
         </Link>
@@ -36,7 +36,6 @@ export default function MovieList() {
 
   return (
     <>
-      <h3>Movies</h3>
       <div
         style={{ listStyle: "none", paddingLeft: 0 }}
         className="movie-card-container"

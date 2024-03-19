@@ -30,7 +30,7 @@ export default function AllReservations() {
 
     return (
       <tr key={reservation.id}>
-        <td>{reservation.id} vis nu bare id</td>
+        <td>{reservation.id}</td>
         <td>{reservation.showing.movie.title}</td>
         <td>
           Kl.{formattedTime} d.{formattedDate}
@@ -45,7 +45,6 @@ export default function AllReservations() {
 
   return (
     <>
-      <h2>Reservations</h2>
       <table>
         <thead>
           <tr>
