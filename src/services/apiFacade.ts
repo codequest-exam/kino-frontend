@@ -5,6 +5,7 @@ import { newReservation } from "../pages/SeatReservation";
 const CACHE_TIME = 1 * 60 * 1000; // 1 min cache
 const MOVIE_URL = API_URL + "/movies";
 const SHOWING_URL = API_URL + "/showings";
+const USER_URL = API_URL + "/api/user-with-role";
 const LAST_FETCH = { movies: 0 };
 
 interface Movie {
@@ -42,6 +43,11 @@ interface Hall {
   cinema: Cinema;
   roomNumber: number;
 }
+interface User {
+  userName: string;
+  email: string;
+  roleNames: string[];
+}
 
 interface Cinema {
   id: number;
@@ -68,7 +74,6 @@ interface Reservation {
 
 let movies: Array<Movie> = [];
 let showings: Array<Showing> = [];
-let reservations: Array<Reservation> = [];
 
 async function getMovie(id: number): Promise<Movie> {
   return fetch(MOVIE_URL + "/" + id).then(handleHttpErrors);
@@ -83,12 +88,9 @@ async function getMovies(): Promise<Array<Movie>> {
   return res;
 }
 async function getShowings(): Promise<Array<Showing>> {
-  if (LAST_FETCH.movies > Date.now() - CACHE_TIME) return [...showings];
   const res = await fetch(SHOWING_URL).then(handleHttpErrors);
-  showings = [...res];
-  LAST_FETCH.movies = Date.now();
-
-  return res;
+  showings = res;
+  return showings;
 }
 
 async function addReservation(newReservation: newReservation, loggedIn: boolean) {
@@ -98,14 +100,6 @@ async function addReservation(newReservation: newReservation, loggedIn: boolean)
   return await fetch(API_URL + "/reservations", options).then(handleHttpErrors);
 }
 
-async function getReservations(): Promise<Array<Reservation>> {
-  const options = makeOptions("GET", null, true);
-  if (LAST_FETCH.movies > Date.now() - CACHE_TIME) return [...reservations];
-  const res = await fetch(API_URL + "/reservations", options).then(handleHttpErrors);
-  reservations = [...res];
-  return res;
-}
+export type { Movie, Showing, Hall };
 
-export type { Movie, Showing, Hall, Reservation };
-
-export { getMovies, getMovie, addReservation, getShowings, getReservations };
+export { getMovies, getMovie, addReservation, getShowings };

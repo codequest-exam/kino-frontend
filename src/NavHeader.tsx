@@ -30,7 +30,12 @@ export default function NavHeader() {
         )}
         {auth.isLoggedInAs(["EMPLOYEE", "ADMIN"]) && (
           <li>
-            <NavLink to="/reservations">See all reservations</NavLink>
+            <NavLink to="/reservations">Reservations</NavLink>
+          </li>
+        )}
+        {auth.isLoggedInAs(["ADMIN"]) && (
+          <li>
+            <NavLink to="/users">Users</NavLink>
           </li>
         )}
         <AuthStatus />

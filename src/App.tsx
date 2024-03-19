@@ -52,6 +52,14 @@ function App() {
               </RequireAuth>
             }
           />
+          <Route
+            path="/users"
+            element={
+              <RequireAuth roles={["ADMIN"]}>
+                <Users />
+              </RequireAuth>
+            }
+          />
           <Route path="/ticket-purchase" element={<TicketPurchase />} />
           <Route path="/login" element={<Login />} />
           <Route path="/logout" element={<Logout />} />
