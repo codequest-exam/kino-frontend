@@ -1,0 +1,13 @@
+table {
+  margin-left: 20px;
+  color: black;
+}
+
+h1 {
+  color: black;
+}
+
+table tr {
+  border-bottom: 1px solid #ddd;
+  padding: 10px 0;
+}

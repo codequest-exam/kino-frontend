@@ -1,35 +1,65 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import "./app.css";
+import { Routes, Route } from "react-router-dom";
+import Layout from "./Layout";
+import Home from "./pages/Home";
+import MovieLayout from "./pages/movies/MovieLayout";
+import Cinemas from "./pages/Cinemas";
+import Login from "./security/Login";
+import Logout from "./security/Logout";
+import ShowingForm from "./pages/showings/ShowingForm";
+import SeatReservation from "./pages/SeatReservation";
+import TicketPurchase from "./pages/TicketPurchase";
+import RequireAuth from "./security/RequireAuth";
+import ReservationLayout from "./pages/reservations/ReservationLayout";
+import Movie from "./pages/movies/Movie";
+import Showings from "./pages/showings/Showings";
+import Checkout from "./pages/Checkout";
 
 function App() {
-  const [count, setCount] = useState(0)
-
   return (
     <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
+      <Layout>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/movies/">
+            <Route index element={<MovieLayout />} />
+            <Route path=":id" element={<Movie />} />
+          </Route>
+          <Route path="/cinemas" element={<Cinemas />} />
+          <Route path="/reservation" element={<SeatReservation />} />
+          <Route
+            path="/showings"
+            element={
+              <RequireAuth roles={["ADMIN", "EMPLOYEE"]}>
+                <Showings />
+              </RequireAuth>
+            }
+          />{" "}
+          <Route path="/checkout" element={<Checkout />} />
+          <Route
+            path="/add-showing"
+            element={
+              <RequireAuth roles={["ADMIN", "EMPLOYEE"]}>
+                <ShowingForm />
+              </RequireAuth>
+            }
+          />
+          <Route
+            path="/reservations"
+            element={
+              <RequireAuth roles={["ADMIN", "EMPLOYEE"]}>
+                <ReservationLayout />
+              </RequireAuth>
+            }
+          />
+          <Route path="/ticket-purchase" element={<TicketPurchase />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/logout" element={<Logout />} />
+          <Route path="*" element={<h2>Page Not Found</h2>} />
+        </Routes>
+      </Layout>
     </>
-  )
+  );
 }
 
-export default App
+export default App;
