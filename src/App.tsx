@@ -13,6 +13,7 @@ import RequireAuth from "./security/RequireAuth";
 import AllReservations from "./pages/AllReservations";
 import Movie from "./movies/Movie";
 import Showings from "./pages/Showings";
+import Users from "./pages/Users";
 
 function App() {
   return (
@@ -47,6 +48,14 @@ function App() {
             element={
               <RequireAuth roles={["ADMIN", "EMPLOYEE"]}>
                 <AllReservations />
+              </RequireAuth>
+            }
+          />
+          <Route
+            path="/users"
+            element={
+              <RequireAuth roles={["ADMIN"]}>
+                <Users />
               </RequireAuth>
             }
           />
