@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { User, editUserRole, getUsers } from "../services/apiFacade";
+import { User, editUserRole, getUsers, removeUserRole } from "../services/apiFacade";
 
 export default function Users() {
   const [users, setUsers] = useState<Array<User>>([]);
@@ -14,30 +14,43 @@ export default function Users() {
       })
       .catch(() => setError("Error fetching users, the server might be down."));
   }, []);
+  console.log(users);
 
   const userTableRows = users.map((user) => (
-    <tr key={user.username}>
-      <td>{user.username}</td>
+    <tr key={user.userName}>
+      <td>{user.userName}</td>
       <td>{user.email}</td>
-      <td>{user.roles?.join(", ")}</td>
+      <td>{user.roleNames.join(" ")}</td>
       <td>
-        <select value={user.roles} onChange={(e) => handleRoleChange(e, user)}>
-          <option value="">None</option>
-          <option value="ADMIN">Admin</option>
-          <option value="EMPLOYEE">Employee</option>
-          <option value="CUSTOMER">Customer</option>
-        </select>{" "}
+        <label>
+          <input type="checkbox" checked={user.roleNames.includes("ADMIN")} onChange={() => handleRoleChange("ADMIN", user)} />
+          Admin
+        </label>
+        <label>
+          <input type="checkbox" checked={user.roleNames.includes("EMPLOYEE")} onChange={() => handleRoleChange("EMPLOYEE", user)} />
+          Employee
+        </label>
+        <label>
+          <input type="checkbox" checked={user.roleNames.includes("CUSTOMER")} onChange={() => handleRoleChange("CUSTOMER", user)} />
+          Customer
+        </label>
       </td>
     </tr>
   ));
-  const handleRoleChange = (e: React.ChangeEvent<HTMLSelectElement>, user: User) => {
-    const newRole = e.target.value;
-    console.log("newRole", newRole);
 
-    if (newRole) {
-      editUserRole(user.username, newRole)
+  const handleRoleChange = (role: string, user: User) => {
+    if (user.roleNames.includes(role)) {
+      removeUserRole(user.userName, role)
         .then((updatedUser) => {
-          setUsers(users.map((u) => (u.username === updatedUser.username ? updatedUser : u)));
+          setUsers(users.map((u) => (u.userName === updatedUser.userName ? updatedUser : u)));
+        })
+        .catch((err) => {
+          console.error(err);
+        });
+    } else {
+      editUserRole(user.userName, role)
+        .then((updatedUser) => {
+          setUsers(users.map((u) => (u.userName === updatedUser.userName ? updatedUser : u)));
         })
         .catch((err) => {
           console.error(err);

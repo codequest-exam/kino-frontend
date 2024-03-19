@@ -5,7 +5,7 @@ import { newReservation } from "../pages/SeatReservation";
 const CACHE_TIME = 1 * 60 * 1000; // 1 min cache
 const MOVIE_URL = API_URL + "/movies";
 const SHOWING_URL = API_URL + "/showings";
-const USER_URL = API_URL + "/api/user-with-role/users";
+const USER_URL = API_URL + "/api/user-with-role";
 const LAST_FETCH = { movies: 0 };
 
 interface Movie {
@@ -41,9 +41,9 @@ interface Hall {
   roomNumber: number;
 }
 interface User {
-  username: string;
+  userName: string;
   email: string;
-  roles: string[];
+  roleNames: string[];
 }
 
 let movies: Array<Movie> = [];
@@ -52,13 +52,18 @@ let users: User[] = [];
 
 async function getUsers(): Promise<Array<User>> {
   const options = makeOptions("GET", null, true);
-  const res = await fetch(USER_URL, options).then(handleHttpErrors);
+  const res = await fetch(USER_URL + "/users", options).then(handleHttpErrors);
   users = res;
   return users;
 }
-async function editUserRole(username: string, role: string) {
+async function editUserRole(userName: string, role: string) {
   const options = makeOptions("PATCH", {}, true);
-  const res = await fetch(USER_URL + "/add-role/" + username + "/" + role, options).then(handleHttpErrors);
+  const res = await fetch(USER_URL + "/add-role/" + userName + "/" + role, options).then(handleHttpErrors);
+  return res;
+}
+async function removeUserRole(userName: string, role: string) {
+  const options = makeOptions("PATCH", {}, true);
+  const res = await fetch(USER_URL + "/remove-role/" + userName + "/" + role, options).then(handleHttpErrors);
   return res;
 }
 
@@ -89,4 +94,4 @@ async function addReservation(newReservation: newReservation, loggedIn: boolean)
 
 export type { Movie, Showing, Hall, User };
 
-export { getMovies, getMovie, addReservation, getShowings, getUsers, editUserRole };
+export { getMovies, getMovie, addReservation, getShowings, getUsers, editUserRole, removeUserRole };
