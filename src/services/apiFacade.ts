@@ -47,6 +47,7 @@ interface User {
   userName: string;
   email: string;
   roleNames: string[];
+  password: string;
 }
 
 interface Cinema {
@@ -76,17 +77,22 @@ let movies: Array<Movie> = [];
 let showings: Array<Showing> = [];
 let reservations: Array<Reservation> = [];
 
+async function addUser(email: string, username: string, password: string): Promise<User> {
+  const options = makeOptions("POST", { email, username, password });
+  return fetch(USER_URL, options).then(handleHttpErrors);
+}
+
 async function getUsers(): Promise<Array<User>> {
   const options = makeOptions("GET", null, true);
   return fetch(USER_URL + "/users", options).then(handleHttpErrors);
 }
 async function removeUserRole(userName: string, role: string): Promise<User> {
-  const options = makeOptions("DELETE", null, true);
-  return fetch(USER_URL + "/remove-role" + userName + "/" + role, options).then(handleHttpErrors);
+  const options = makeOptions("PATCH", null, true);
+  return fetch(USER_URL + "/remove-role/" + userName + "/" + role, options).then(handleHttpErrors);
 }
 async function editUserRole(userName: string, role: string): Promise<User> {
-  const options = makeOptions("POST", null, true);
-  return fetch(USER_URL + "/add-role" + userName + "/" + role, options).then(handleHttpErrors);
+  const options = makeOptions("PATCH", null, true);
+  return fetch(USER_URL + "/add-role/" + userName + "/" + role, options).then(handleHttpErrors);
 }
 
 async function getMovie(id: number): Promise<Movie> {
@@ -123,4 +129,4 @@ async function getReservations(): Promise<Array<Reservation>> {
 
 export type { Movie, Showing, Hall, User, Reservation };
 
-export { getMovies, getMovie, addReservation, getShowings, getUsers, removeUserRole, editUserRole, getReservations };
+export { getMovies, getMovie, addReservation, getShowings, getUsers, removeUserRole, editUserRole, getReservations, addUser };
