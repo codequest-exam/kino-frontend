@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { Reservation as reservation } from "../services/apiFacade";
 import { getReservations } from "../services/apiFacade";
-import "./Checkout.css";
+import "./checkout.css";
 
 export default function Checkout() {
   const [reservations, setReservations] = useState<reservation[]>([]);
