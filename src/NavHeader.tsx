@@ -5,8 +5,8 @@ import { useAuth } from "./security/AuthProvider";
 export default function NavHeader() {
   const auth = useAuth();
   return (
-    <nav>
-      <ul style={{ position: "fixed", top: 0, left: 600 }}>
+    <nav style={{ position: "fixed", top: 0, left: 0 }}>
+      <ul>
         <li>
           <NavLink to="/">Home</NavLink>
         </li>
@@ -19,7 +19,11 @@ export default function NavHeader() {
         <li>
           <NavLink to="/reservation">Seat Reservation</NavLink>
         </li>
-        {auth.isLoggedInAs(["EMPLOYEE", "ADMIN"]) && (
+        {/* Skal slettes / laves til egen skærm, er tilføjet for at teste */}
+        <li>
+          <NavLink to="/checkout">Checkout</NavLink>
+        </li>
+        {auth.isLoggedInAs(["USER", "ADMIN"]) && (
           <li>
             <NavLink to="/showings">Showings</NavLink>
           </li>
@@ -33,11 +37,7 @@ export default function NavHeader() {
         <li>
           <NavLink to="/ticket-purchase">
             <button style={{ display: "flex", alignItems: "center" }}>
-              <img
-                src="logo.png"
-                alt="Logo"
-                style={{ width: "20px", marginRight: "5px" }}
-              />
+              <img src="logo.png" alt="Logo" style={{ width: "20px", marginRight: "5px" }} />
               Buy Ticket
             </button>
           </NavLink>
