@@ -16,7 +16,6 @@ export default function Users() {
       })
       .catch(() => setError("Error fetching users, the server might be down."));
   }, []);
-  console.log(users);
 
   const userTableRows = users.map((user) => (
     <tr key={user.userName}>
