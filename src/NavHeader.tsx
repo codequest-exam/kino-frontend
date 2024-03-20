@@ -28,9 +28,11 @@ export default function NavHeader() {
           <li>
             <NavLink to="/checkout">Checkout</NavLink>
           </li>
-          <li>
-            <NavLink to="/users/add">Sign up</NavLink>
-          </li>
+          {!auth.isLoggedIn() && (
+            <li>
+              <NavLink to="/users/add">Sign up</NavLink>
+            </li>
+          )}
           {auth.isLoggedInAs(["USER", "ADMIN"]) && (
             <li>
               <NavLink to="/showings">Showings</NavLink>
