@@ -6,51 +6,56 @@ import "./navbar.css";
 export default function NavHeader() {
   const auth = useAuth();
   return (
-    <nav className="navbar">
-      <ul>
-        <li>
-          <NavLink to="/">Home</NavLink>
+    <nav className="navbar navbar-style">
+      <ul className="navbar-list">
+        <li className="navbar-logo">
+          <img src="cinemalogo.png" style={{ width: "100px" }} />
         </li>
-        <li>
-          <NavLink to="/movies">Movies</NavLink>
-        </li>
-        <li>
-          <NavLink to="/cinemas">Cinemas</NavLink>
-        </li>
-        <li>
-          <NavLink to="/reservation">Seat Reservation</NavLink>
-        </li>
-        {/* Skal slettes / laves til egen skærm, er tilføjet for at teste */}
-        <li>
-          <NavLink to="/checkout">Checkout</NavLink>
-        </li>
-        <li>
-          <NavLink to="/users/add">Sign up</NavLink>
-        </li>
-        {auth.isLoggedInAs(["USER", "ADMIN"]) && (
+        <div className="navbar-items">
           <li>
-            <NavLink to="/showings">Showings</NavLink>
+            <NavLink to="/">Home</NavLink>
           </li>
-        )}
-        {auth.isLoggedInAs(["EMPLOYEE", "ADMIN"]) && (
           <li>
-            <NavLink to="/reservations">Reservations</NavLink>
+            <NavLink to="/movies">Movies</NavLink>
           </li>
-        )}
-        {auth.isLoggedInAs(["ADMIN"]) && (
           <li>
-            <NavLink to="/users">Users</NavLink>
+            <NavLink to="/cinemas">Cinemas</NavLink>
           </li>
-        )}
-        <AuthStatus />
-        <li>
-          <NavLink to="/ticket-purchase">
-            <button className="buy-ticket" style={{ display: "flex", alignItems: "center" }}>
-              <img src="logo.png" alt="Logo" style={{ width: "20px", marginRight: "5px" }} />
-              Buy Ticket
-            </button>
-          </NavLink>
-        </li>
+          <li>
+            <NavLink to="/reservation">Seat Reservation</NavLink>
+          </li>
+          {/* Skal slettes / laves til egen skærm, er tilføjet for at teste */}
+          <li>
+            <NavLink to="/checkout">Checkout</NavLink>
+          </li>
+          <li>
+            <NavLink to="/users/add">Sign up</NavLink>
+          </li>
+          {auth.isLoggedInAs(["USER", "ADMIN"]) && (
+            <li>
+              <NavLink to="/showings">Showings</NavLink>
+            </li>
+          )}
+          {auth.isLoggedInAs(["EMPLOYEE", "ADMIN"]) && (
+            <li>
+              <NavLink to="/reservations">Reservations</NavLink>
+            </li>
+          )}
+          {auth.isLoggedInAs(["ADMIN"]) && (
+            <li>
+              <NavLink to="/users">Users</NavLink>
+            </li>
+          )}
+          <AuthStatus />
+          <li>
+            <NavLink to="/ticket-purchase">
+              <button className="buy-ticket" style={{ display: "flex", alignItems: "center" }}>
+                <img src="logo.png" alt="Logo" style={{ width: "20px", marginRight: "5px" }} />
+                Buy Ticket
+              </button>
+            </NavLink>
+          </li>
+        </div>
       </ul>
     </nav>
   );
