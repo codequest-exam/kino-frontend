@@ -84,6 +84,13 @@ export default function Showings() {
         </thead>
         <tbody>{showingTableRows}</tbody>
       </table>
-    </>
+      <button
+        onClick={() => {
+          navigate("/add-showing");
+        }}
+      >
+        Add Showing
+      </button>
+    </div>
   );
 }
