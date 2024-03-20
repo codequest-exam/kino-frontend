@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
 import { addShowing, getMovies, getHalls, getCinemas, Movie, Cinema, Hall } from "../../services/apiFacade";
-
 const ShowingForm = () => {
   const [movies, setMovies] = useState<Movie[]>([]);
   const [cinemas, setCinemas] = useState<Cinema[]>([]);
@@ -59,6 +58,12 @@ const ShowingForm = () => {
     try {
       await addShowing(showing);
       setMessage("Showing added successfully");
+      setSelectedMovie("");
+      setSelectedHall("");
+      setSelectedCinema("");
+      setStartTime("");
+      setIs3d(false);
+      setIsImax(false);
     } catch (error) {
       setMessage("Error adding showing");
       console.error("Error:", error);
@@ -73,6 +78,7 @@ const ShowingForm = () => {
         <label>
           Movie:
           <select value={selectedMovie} onChange={(e) => setSelectedMovie(e.target.value)}>
+            <option value="">Select movie</option>
             {movies.map((movie) => (
               <option key={movie.id} value={movie.id}>
                 {movie.title}
@@ -83,6 +89,7 @@ const ShowingForm = () => {
         <label>
           Cinema:
           <select value={selectedCinema} onChange={(e) => setSelectedCinema(e.target.value)}>
+            <option value="">Select cinema</option>
             {cinemas.map((cinema) => (
               <option key={cinema.id} value={cinema.id}>
                 {cinema.name}
@@ -93,6 +100,7 @@ const ShowingForm = () => {
         <label>
           Hall:
           <select value={selectedHall} onChange={(e) => setSelectedHall(e.target.value)}>
+            <option value="">Select hall</option>
             {filteredHalls.map((hall) => (
               <option key={hall.roomNumber} value={hall.id}>
                 {hall.roomNumber}
@@ -109,7 +117,6 @@ const ShowingForm = () => {
         <label>
           IMAX: <input type="checkbox" checked={isImax} onChange={() => setIsImax(!isImax)} />
         </label>
-        <br />
         <button type="submit">Add Showing</button>
       </form>
     </div>

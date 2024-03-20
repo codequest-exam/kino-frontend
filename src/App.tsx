@@ -6,7 +6,7 @@ import MovieLayout from "./pages/movies/MovieLayout";
 import Cinemas from "./pages/Cinemas";
 import Login from "./security/Login";
 import Logout from "./security/Logout";
-import ShowingForm from "./pages/showings/ShowingForm";
+import AddShowing from "./pages/showings/AddShowing";
 import SeatReservation from "./pages/SeatReservation";
 import TicketPurchase from "./pages/TicketPurchase";
 import RequireAuth from "./security/RequireAuth";
@@ -42,7 +42,7 @@ function App() {
             path="/add-showing"
             element={
               <RequireAuth roles={["ADMIN", "EMPLOYEE"]}>
-                <ShowingForm />
+                <AddShowing />
               </RequireAuth>
             }
           />
