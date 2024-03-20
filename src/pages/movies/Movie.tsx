@@ -4,8 +4,6 @@ import { useEffect, useState } from "react";
 
 export default function Movie() {
   const { id } = useParams();
-  console.log("id", id);
-
   const [movie, setMovie] = useState<APIMovie | null>(null);
   useEffect(() => {
     getMovie(Number(id)).then((res) => setMovie(res));
@@ -15,19 +13,10 @@ export default function Movie() {
     <>
       {movie ? (
         <>
-          <h3>
-            {" "}
-            {movie.title} ({movie.id})
-          </h3>
+          <h3> {movie.title}</h3>
           <div style={{ display: "flex" }}>
-            <img
-              style={{ width: 200, margin: 10, flexDirection: "column" }}
-              src={movie.poster}
-              alt={movie.poster}
-            />
-            <p style={{ display: "inline", flexDirection: "column" }}>
-              {movie.director}
-            </p>
+            <img style={{ width: 200, margin: 10, flexDirection: "column" }} src={movie.poster} alt={movie.poster} />
+            <p style={{ display: "inline", flexDirection: "column" }}>{movie.director}</p>
           </div>
           <hr />
           <p style={{ whiteSpace: "pre-wrap" }}>{movie.imdbRating}</p>

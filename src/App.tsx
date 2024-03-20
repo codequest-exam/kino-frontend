@@ -14,6 +14,8 @@ import ReservationLayout from "./pages/reservations/ReservationLayout";
 import Movie from "./pages/movies/Movie";
 import Showings from "./pages/showings/Showings";
 import Checkout from "./pages/Checkout";
+import Users from "./pages/Users";
+import AddUser from "./pages/AddUser";
 
 function App() {
   return (
@@ -52,6 +54,15 @@ function App() {
               </RequireAuth>
             }
           />
+          <Route
+            path="/users"
+            element={
+              <RequireAuth roles={["ADMIN"]}>
+                <Users />
+              </RequireAuth>
+            }
+          />
+          <Route path="/users/add" element={<AddUser />} />
           <Route path="/ticket-purchase" element={<TicketPurchase />} />
           <Route path="/login" element={<Login />} />
           <Route path="/logout" element={<Logout />} />

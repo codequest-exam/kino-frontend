@@ -23,6 +23,9 @@ export default function NavHeader() {
         <li>
           <NavLink to="/checkout">Checkout</NavLink>
         </li>
+        <li>
+          <NavLink to="/users/add">Sign up</NavLink>
+        </li>
         {auth.isLoggedInAs(["USER", "ADMIN"]) && (
           <li>
             <NavLink to="/showings">Showings</NavLink>
@@ -30,7 +33,12 @@ export default function NavHeader() {
         )}
         {auth.isLoggedInAs(["EMPLOYEE", "ADMIN"]) && (
           <li>
-            <NavLink to="/reservations">See all reservations</NavLink>
+            <NavLink to="/reservations">Reservations</NavLink>
+          </li>
+        )}
+        {auth.isLoggedInAs(["ADMIN"]) && (
+          <li>
+            <NavLink to="/users">Users</NavLink>
           </li>
         )}
         <AuthStatus />
