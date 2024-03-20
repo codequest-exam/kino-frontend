@@ -8,6 +8,7 @@ const SHOWING_URL = API_URL + "/showings";
 const USER_URL = API_URL + "/api/user-with-role";
 const LAST_FETCH = { movies: 0 };
 
+
 interface Movie {
   id: number;
   title: string;
@@ -101,10 +102,17 @@ async function getMovie(id: number): Promise<Movie> {
 }
 
 async function getMovies(): Promise<Array<Movie>> {
-  if (LAST_FETCH.movies > Date.now() - CACHE_TIME) return [...movies];
-  const res = await fetch(MOVIE_URL).then(handleHttpErrors);
+  // if (LAST_FETCH.movies > Date.now() - CACHE_TIME) return [...movies];
+  
+  const res = await fetch("restfulkino-api.azurewebsites.net/movies").then(handleHttpErrors);
   movies = [...res];
+  console.log(res, "res");
+  console.log(movies, "movies");
+  
+  
   LAST_FETCH.movies = Date.now();
+  console.log(MOVIE_URL, "movieurl");
+  
 
   return res;
 }
@@ -121,10 +129,12 @@ async function addReservation(newReservation: newReservation, loggedIn: boolean)
   return await fetch(API_URL + "/reservations", options).then(handleHttpErrors);
 }
 async function getReservations(): Promise<Array<Reservation>> {
+  console.log(API_URL, "apiurl");
   const options = makeOptions("GET", null, true);
   if (LAST_FETCH.movies > Date.now() - CACHE_TIME) return [...reservations];
   const res = await fetch(API_URL + "/reservations", options).then(handleHttpErrors);
   reservations = [...res];
+  
   return res;
 }
 

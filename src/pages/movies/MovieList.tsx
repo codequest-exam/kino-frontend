@@ -10,7 +10,10 @@ export default function MovieList() {
   useEffect(() => {
     getMovies()
       .then((res) => setMovies(res))
-      .catch(() => setError("Error fetching movies, the server might be down."));
+      .catch(() => setError("Error fetching movies, the server might be down."))
+
+      
+      
   }, []);
 
   const movieListItems = movies.map((movie) => {
