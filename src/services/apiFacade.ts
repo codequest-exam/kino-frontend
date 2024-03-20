@@ -71,6 +71,7 @@ interface Reservation {
   time: string;
   reservedSeats: Seat[];
   price: number;
+  email: string;
 }
 
 let movies: Array<Movie> = [];

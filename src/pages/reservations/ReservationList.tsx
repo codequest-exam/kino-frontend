@@ -5,9 +5,16 @@ import {
 } from "../../services/apiFacade";
 import "./reservations.css";
 
-export default function ReservationList() {
+interface Props {
+  searchTerm: string;
+}
+
+const ReservationList: React.FC<Props> = ({searchTerm}) =>{
   const [reservations, setReservations] = useState<Array<APIReservation>>([]);
+  console.log("reservations", reservations);
+  
   const [error, setError] = useState("");
+
 
   useEffect(() => {
     getReservations()
@@ -15,9 +22,15 @@ export default function ReservationList() {
       .catch(() =>
         setError("Error fetching reservations, the server might be down.")
       );
-  }, []);
+  }, [searchTerm]);
 
-  const reservationListItems = reservations.map((reservation) => {
+  const filterReservationsByEmail = reservations.filter(
+    (reservation) =>
+      // reservation.email &&
+      reservation.email.toLowerCase()
+        .includes(searchTerm.toLowerCase()));
+
+  const reservationListItems = filterReservationsByEmail.map((reservation) => {
     const date = new Date(reservation.showing.startTime);
     const formattedTime = `${date.getHours()}:${date
       .getMinutes()
@@ -35,6 +48,19 @@ export default function ReservationList() {
         <td>
           Kl.{formattedTime} d.{formattedDate}
         </td>
+        <td>{reservation.email}</td>
+        <td>UserInfo TBD</td>
+        <td>{reservation.price} dkk,-</td>
+        <td>
+          {reservation.reservedSeats.map((seat) => (
+            <span key={seat.id}>{seat.seatRowNumber},</span>
+          ))}
+        </td>
+        <td>
+          {reservation.reservedSeats.map((seat) => (
+            <span key={seat.id}>{seat.seatNumber}</span>
+          ))}
+        </td>
       </tr>
     );
   });
@@ -51,6 +77,11 @@ export default function ReservationList() {
             <th>ID</th>
             <th>Movie</th>
             <th>Start Time</th>
+            <th>Email</th>
+            <th>User Info</th>
+            <th>Price</th>
+            <th>Seat &</th>
+            <th>Row</th>
           </tr>
         </thead>
         <tbody>{reservationListItems}</tbody>
@@ -58,3 +89,5 @@ export default function ReservationList() {
     </>
   );
 }
+
+export default ReservationList;
