@@ -8,11 +8,8 @@ const ShowingForm = () => {
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-        // Save the movie showing
         const newSubmit = `${movieTitle} - ${cinemaName} - ${showingTime}`;
         setShowingSubmits([...showingSubmits, newSubmit]);
-        console.log('Movie showing submitted:', movieTitle, cinemaName, showingTime);
-        // Reset form fields
         setMovieTitle('');
         setCinemaName('');
         setShowingTime('');

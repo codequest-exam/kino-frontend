@@ -1,6 +1,7 @@
 import { useParams } from "react-router-dom";
 import { getMovie, Movie as APIMovie } from "../../services/apiFacade";
 import { useEffect, useState } from "react";
+import "./movie.css";
 
 export default function Movie() {
   const { id } = useParams();
@@ -12,27 +13,27 @@ export default function Movie() {
   return (
     <>
       {movie ? (
-        <>
-          <h3> {movie.title}</h3>
-          <div style={{ display: "flex" }}>
-            <img style={{ width: 200, margin: 10, flexDirection: "column" }} src={movie.poster} alt={movie.poster} />
-            <p style={{ display: "inline", flexDirection: "column" }}>{movie.director}</p>
+        <div className="movie-container">
+          <h3 className="movie-title">{movie.title}</h3>
+          <div className="movie-details">
+            <img src={movie.poster} alt={movie.title} />
+            <p>{movie.director}</p>
           </div>
           <hr />
-          <p style={{ whiteSpace: "pre-wrap" }}>{movie.imdbRating}</p>
-          <p style={{ whiteSpace: "pre-wrap" }}>{movie.actors}</p>
-          <p style={{ whiteSpace: "pre-wrap" }}>{movie.plot}</p>
-          <p style={{ whiteSpace: "pre-wrap" }}>{movie.runtime}</p>
-          <p style={{ whiteSpace: "pre-wrap" }}>{movie.genre}</p>
-          <p style={{ whiteSpace: "pre-wrap" }}>{movie.rated}</p>
-          <p style={{ whiteSpace: "pre-wrap" }}>{movie.year}</p>
-          <p style={{ whiteSpace: "pre-wrap" }}>{movie.website}</p>
-          <p style={{ whiteSpace: "pre-wrap" }}>{movie.metascore}</p>
-          <p style={{ whiteSpace: "pre-wrap" }}>{movie.imdbVotes}</p>
-          <p style={{ whiteSpace: "pre-wrap" }}>{movie.response}</p>
-        </>
+          <p className="movie-info">{movie.imdbRating}</p>
+          <p className="movie-info">{movie.actors}</p>
+          <p className="movie-info">{movie.plot}</p>
+          <p className="movie-info">{movie.runtime}</p>
+          <p className="movie-info">{movie.genre}</p>
+          <p className="movie-info">{movie.rated}</p>
+          <p className="movie-info">{movie.year}</p>
+          <p className="movie-info">{movie.website}</p>
+          <p className="movie-info">{movie.metascore}</p>
+          <p className="movie-info">{movie.imdbVotes}</p>
+          <p className="movie-info">{movie.response}</p>
+        </div>
       ) : (
-        <h2>Sorry. Movie not found</h2>
+        <h2 className="not-found">Sorry. Movie not found</h2>
       )}
     </>
   );
