@@ -14,23 +14,30 @@ export default function Movie() {
     <>
       {movie ? (
         <div className="movie-container">
-          <h3 className="movie-title">{movie.title}</h3>
-          <div className="movie-details">
-            <img src={movie.poster} alt={movie.title} />
-            <p>{movie.director}</p>
+          <h3 className="movie-title">
+            {movie.title} ({movie.year})
+          </h3>
+          <div className="movie-content">
+            <div className="movie-poster">
+              <img src={movie.poster} alt={movie.title} />
+            </div>
+            <div className="movie-details">
+              <p className="movie-info">{movie.plot}</p>
+              <p>Movie Director: {movie.director}</p>
+              <div className="movie-info-line">
+                <p className="movie-info">Actors: {movie.actors}</p>
+                <p className="movie-info">Runtime: {movie.runtime}</p>
+              </div>
+              <div className="movie-info-line">
+                <p className="movie-info">{movie.genre}</p>
+                <p className="movie-info">Rated: {movie.rated}</p>
+              </div>
+              <div className="movie-info-line">
+                <p className="movie-info">IMDB votes: {movie.imdbVotes}</p>
+                <p className="movie-info">Metascore: {movie.metascore}</p>
+              </div>
+            </div>
           </div>
-          <hr />
-          <p className="movie-info">{movie.imdbRating}</p>
-          <p className="movie-info">{movie.actors}</p>
-          <p className="movie-info">{movie.plot}</p>
-          <p className="movie-info">{movie.runtime}</p>
-          <p className="movie-info">{movie.genre}</p>
-          <p className="movie-info">{movie.rated}</p>
-          <p className="movie-info">{movie.year}</p>
-          <p className="movie-info">{movie.website}</p>
-          <p className="movie-info">{movie.metascore}</p>
-          <p className="movie-info">{movie.imdbVotes}</p>
-          <p className="movie-info">{movie.response}</p>
         </div>
       ) : (
         <h2 className="not-found">Sorry. Movie not found</h2>

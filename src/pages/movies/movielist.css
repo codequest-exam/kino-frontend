@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css?family=Anton&display=swap');
+@import url("https://fonts.googleapis.com/css?family=Anton&display=swap");
 
 .movie-card-container {
   display: flex;
@@ -12,22 +12,22 @@
   border-radius: 10px;
   margin: 10px;
   padding: 5px;
-  box-shadow: 2px 2px 6px 0px rgba(0,0,0,0.3);
+  box-shadow: 2px 2px 6px 0px rgba(0, 0, 0, 0.3);
   text-align: center;
   transition: transform 0.2s ease-in-out;
 }
 
 .movie-card img {
   width: 100%;
-  height: auto;
+  height: 280px;
   border-radius: 5px;
 }
 
 .movie-card h2 {
   font-size: 20px;
-  font-family: 'Anton', sans-serif;
+  font-family: "Anton", sans-serif;
   margin: 10px 0;
-    color: #666;
+  color: #666;
 }
 
 .movie-card p {
@@ -36,7 +36,7 @@
 }
 .movie-card:hover {
   transform: scale(1.1);
-  box-shadow: 0 0 15px rgba(0,0,0,0.4);
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.4);
   cursor: pointer;
   background-color: #ffffff84;
 }

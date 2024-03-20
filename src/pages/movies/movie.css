@@ -15,8 +15,8 @@
 
 .movie-details {
   display: grid;
-  grid-template-columns: 1fr 2fr;
-  gap: 20px;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
   margin-bottom: 20px;
 }
 
@@ -28,7 +28,36 @@
 
 .movie-details p {
   margin: 0;
-  padding: 10px;
+  padding: 5px;
   background-color: #f9f9f9;
   border-radius: 5px;
+  font-size: 0.9em;
+}
+
+.movie-info {
+  white-space: pre-wrap;
+  margin-bottom: 10px;
+}
+
+.not-found {
+  color: red;
+  font-size: 24px;
+}
+
+.movie-content {
+  display: flex;
+}
+
+.movie-poster {
+  margin-right: 20px;
+}
+
+.movie-details {
+  display: flex;
+  flex-direction: column;
+}
+
+.movie-info-line {
+  display: flex;
+  justify-content: space-evenly;
 }

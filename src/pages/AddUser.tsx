@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { addUser } from "../services/apiFacade";
+import "./addUser.css";
 
 export default function AddUser() {
   const [email, setEmail] = useState("");
@@ -25,20 +26,20 @@ export default function AddUser() {
     <div>
       <h2>Sign up</h2>
       {message && <p>{message}</p>}
-      <form onSubmit={handleSubmit}>
-        <label>
-          Email:
-          <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} required />
-        </label>
-        <label>
-          Username:
-          <input type="text" value={username} onChange={(e) => setUsername(e.target.value)} required />
-        </label>
-        <label>
-          Password:
-          <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} required />
-        </label>
-        <button type="submit">Add User</button>
+      <form onSubmit={handleSubmit} className="add-user-form">
+        <div className="form-group">
+          <label htmlFor="email">Email:</label>
+          <input id="email" type="email" value={email} onChange={(e) => setEmail(e.target.value)} required />
+        </div>
+        <div className="form-group">
+          <label htmlFor="username">Username:</label>
+          <input id="username" type="text" value={username} onChange={(e) => setUsername(e.target.value)} required />
+        </div>
+        <div className="form-group">
+          <label htmlFor="password">Password:</label>
+          <input id="password" type="password" value={password} onChange={(e) => setPassword(e.target.value)} required />
+        </div>
+        <button type="submit">Sign up</button>
       </form>
     </div>
   );
