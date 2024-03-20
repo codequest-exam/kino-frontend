@@ -1,11 +1,12 @@
 import { NavLink } from "react-router-dom";
 import AuthStatus from "./security/AuthStatus";
 import { useAuth } from "./security/AuthProvider";
+import "./navbar.css";
 
 export default function NavHeader() {
   const auth = useAuth();
   return (
-    <nav style={{ position: "fixed", top: 0, left: 0 }}>
+    <nav className="navbar">
       <ul>
         <li>
           <NavLink to="/">Home</NavLink>
@@ -44,7 +45,7 @@ export default function NavHeader() {
         <AuthStatus />
         <li>
           <NavLink to="/ticket-purchase">
-            <button style={{ display: "flex", alignItems: "center" }}>
+            <button className="buy-ticket" style={{ display: "flex", alignItems: "center" }}>
               <img src="logo.png" alt="Logo" style={{ width: "20px", marginRight: "5px" }} />
               Buy Ticket
             </button>
