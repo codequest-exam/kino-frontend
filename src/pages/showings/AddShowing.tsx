@@ -1,5 +1,8 @@
 import { useState, useEffect } from "react";
-import { addShowing, getMovies, getHalls, getCinemas, Movie, Cinema, Hall } from "../../services/apiFacade";
+import { addShowing, getMovies, getHalls, getCinemas, Movie, Cinema, Hall, updateShowing } from "../../services/apiFacade";
+import { useLocation } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+
 const ShowingForm = () => {
   const [movies, setMovies] = useState<Movie[]>([]);
   const [cinemas, setCinemas] = useState<Cinema[]>([]);
@@ -12,6 +15,9 @@ const ShowingForm = () => {
   const [is3d, setIs3d] = useState<boolean>(false);
   const [isImax, setIsImax] = useState<boolean>(false);
   const [message, setMessage] = useState<string>("");
+  const location = useLocation();
+  const showing = location.state?.showing;
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -19,7 +25,6 @@ const ShowingForm = () => {
         const moviesData: Movie[] = await getMovies();
         const cinemasData: Cinema[] = await getCinemas();
         const hallsData: Hall[] = await getHalls();
-        setFilteredHalls(hallsData.filter((hall) => hall.cinema.id === Number(selectedCinema)));
         setMovies(moviesData);
         setCinemas(cinemasData);
         setHalls(hallsData);
@@ -28,20 +33,34 @@ const ShowingForm = () => {
       }
     };
     fetchData();
-  }, [selectedCinema, halls]);
+  }, []);
+
+  useEffect(() => {
+    if (showing) {
+      setSelectedMovie(showing.movie.id.toString());
+      setSelectedHall(showing.hall.roomNumber.toString());
+      setSelectedCinema(showing.hall.cinema.id.toString());
+      setStartTime(showing.startTime);
+      setIs3d(showing.is3d);
+      setIsImax(showing.isImax);
+    }
+    if (selectedCinema) {
+      const filtered = halls.filter((hall) => hall.cinema.id.toString() === selectedCinema);
+      setFilteredHalls(filtered);
+    }
+  }, [selectedCinema, halls, showing]);
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const movie = movies.find((movie) => movie.id === Number(selectedMovie));
     const hall = halls.find((hall) => hall.roomNumber === Number(selectedHall));
-    console.log(hall);
 
     if (!movie || !hall) {
       setMessage("Please select a movie and a hall");
       return;
     }
 
-    const showing = {
+    const showingData = {
       movie,
       hall: {
         ...hall,
@@ -54,10 +73,16 @@ const ShowingForm = () => {
       is3d,
       isImax,
     };
-    console.log(showing);
+
     try {
-      await addShowing(showing);
-      setMessage("Showing added successfully");
+      if (showing) {
+        await updateShowing(showing.id, showingData);
+        setMessage("Showing updated successfully");
+        navigate("/showings");
+      } else {
+        await addShowing(showingData);
+        setMessage("Showing added successfully");
+      }
       setSelectedMovie("");
       setSelectedHall("");
       setSelectedCinema("");
@@ -65,14 +90,14 @@ const ShowingForm = () => {
       setIs3d(false);
       setIsImax(false);
     } catch (error) {
-      setMessage("Error adding showing");
+      setMessage("Error adding/updating showing");
       console.error("Error:", error);
     }
   };
 
   return (
     <div>
-      <h2>Add showing</h2>
+      <h2>{showing ? "Edit Showing" : "Add Showing"}</h2>
       {message && <p>{message}</p>}
       <form onSubmit={handleSubmit}>
         <label>
@@ -102,7 +127,7 @@ const ShowingForm = () => {
           <select value={selectedHall} onChange={(e) => setSelectedHall(e.target.value)}>
             <option value="">Select hall</option>
             {filteredHalls.map((hall) => (
-              <option key={hall.roomNumber} value={hall.id}>
+              <option key={hall.roomNumber} value={hall.roomNumber}>
                 {hall.roomNumber}
               </option>
             ))}
@@ -117,7 +142,7 @@ const ShowingForm = () => {
         <label>
           IMAX: <input type="checkbox" checked={isImax} onChange={() => setIsImax(!isImax)} />
         </label>
-        <button type="submit">Add Showing</button>
+        <button type="submit">{showing ? "Update Showing" : "Add Showing"}</button>
       </form>
     </div>
   );

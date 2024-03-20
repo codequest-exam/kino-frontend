@@ -33,6 +33,15 @@ export default function Showings() {
       <td>{formatStartDate(showing.startTime)}</td>
       <td>{showing.is3d ? "Yes" : "No"}</td>
       <td>{showing.isImax ? "Yes" : "No"}</td>
+      <td>
+        <button
+          onClick={() => {
+            navigate("/add-showing", { state: { showing } });
+          }}
+        >
+          Edit
+        </button>
+      </td>
     </tr>
   ));
 

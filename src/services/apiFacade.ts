@@ -124,6 +124,12 @@ async function addShowing(showing: object): Promise<Array<Showing>> {
   showings = res;
   return showings;
 }
+async function updateShowing(id: number, showing: object): Promise<Array<Showing>> {
+  const options = makeOptions("PUT", showing, true);
+  const res = await fetch(SHOWING_URL + "/" + id, options).then(handleHttpErrors);
+  showings = res;
+  return showings;
+}
 
 async function addReservation(newReservation: newReservation, loggedIn: boolean) {
   const options = makeOptions("POST", newReservation, loggedIn);
@@ -141,4 +147,4 @@ async function getReservations(): Promise<Array<Reservation>> {
 
 export type { Movie, Showing, Hall, User, Reservation, Cinema };
 
-export { getMovies, getMovie, addReservation, getShowings, getUsers, removeUserRole, editUserRole, getReservations, addUser, addShowing, getHalls, getCinemas };
+export { getMovies, getMovie, addReservation, getShowings, getUsers, removeUserRole, editUserRole, getReservations, addUser, addShowing, getHalls, getCinemas, updateShowing };
