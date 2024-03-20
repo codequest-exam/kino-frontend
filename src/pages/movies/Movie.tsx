@@ -20,13 +20,11 @@ export default function Movie() {
       {movie ? (
         <div className="movie-container">
           <h3 className="movie-title">
-            
-            {movie.title}{" "}
+            {movie.title} ({movie.year})
             <Link to={`/showings/${movie.id}`}>
               {" "}
               <button style={{ color: "red" }}>Bestil billeter</button>
             </Link>
-           ({movie.year})
           </h3>
           <div className="movie-content">
             <div className="movie-poster">
