@@ -14,6 +14,7 @@ import Movie from "./pages/movies/Movie";
 import Showings from "./pages/showings/Showings";
 import Checkout from "./pages/Checkout";
 import Users from "./pages/Users";
+import AddUser from "./pages/AddUser";
 import "./app.css";
 
 function App() {
@@ -61,6 +62,7 @@ function App() {
               </RequireAuth>
             }
           />
+          <Route path="/users/add" element={<AddUser />} />
           <Route path="/ticket-purchase" element={<TicketPurchase />} />
           <Route path="/login" element={<Login />} />
           <Route path="/logout" element={<Logout />} />

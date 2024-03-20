@@ -1,10 +1,12 @@
 import { useEffect, useState } from "react";
 import { User, editUserRole, getUsers, removeUserRole } from "../services/apiFacade";
+import { useNavigate } from "react-router-dom";
 
 export default function Users() {
   const [users, setUsers] = useState<Array<User>>([]);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(true);
+  const navigate = useNavigate();
 
   useEffect(() => {
     getUsers()
@@ -79,6 +81,7 @@ export default function Users() {
         </thead>
         <tbody>{userTableRows}</tbody>
       </table>
+      <button onClick={() => navigate("/users/add")}>Add user</button>
     </div>
   );
 }
