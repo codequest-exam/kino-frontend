@@ -1,0 +1,38 @@
+.showings {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.showings h3 {
+  margin-bottom: 20px;
+}
+
+.showings table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.showings th,
+.showings td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: center;
+}
+
+.showings tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+
+.showings tr:hover {
+  background-color: #ddd;
+}
+
+.showings th {
+  padding-top: 12px;
+  padding-bottom: 12px;
+  text-align: center;
+  background-color: #4caf50;
+  color: white;
+}

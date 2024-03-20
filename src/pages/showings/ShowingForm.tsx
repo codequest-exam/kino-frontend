@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import "./ShowingForm.css";
 
 const ShowingForm = () => {
   const [movieTitle, setMovieTitle] = useState("");
@@ -20,7 +19,7 @@ const ShowingForm = () => {
   };
 
   return (
-    <div className="form-container">
+    <div>
       <form onSubmit={handleSubmit}>
         <label>
           Movie Title:
@@ -39,9 +38,9 @@ const ShowingForm = () => {
         <br />
         <button type="submit">Add Showing</button>
       </form>
-      <div className="showings-container">
+      <div>
         <h2>Showing Submits:</h2>
-        <ul className="showings-list">
+        <ul>
           {showingSubmits.map((submit, index) => (
             <li key={index}>{submit}</li>
           ))}
