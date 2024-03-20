@@ -1,0 +1,34 @@
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px;
+  color: #cdcdcd;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 100;
+}
+
+.navbar li {
+  list-style: none;
+}
+
+.navbar a {
+  color: #000000;
+  text-decoration: none;
+  padding: 10px;
+}
+
+.navbar a:hover {
+  transform: scale(1.1);
+}
+
+.buy-ticket {
+  background-color: #f65261;
+  color: #fff;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}

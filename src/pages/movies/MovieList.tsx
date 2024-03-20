@@ -22,7 +22,9 @@ export default function MovieList() {
         <Link to={`/movies/${movie.id}`}>
           <h2>{movie.title}</h2>
         </Link>
-        <p>Rating: &#9733;({movie.imdbRating})</p>
+        <p>
+          Rating: <span style={{ color: "gold" }}>&#9733;</span> ({movie.imdbRating})
+        </p>
       </li>
     );
   });

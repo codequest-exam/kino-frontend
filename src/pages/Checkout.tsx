@@ -17,7 +17,9 @@ export default function Checkout() {
 
   const reservationList = reservations.map((reservation, index) => (
     <div key={index} className="reservation-item">
-      <h2 className="movie-title">{reservation.showing.movie.title}</h2>
+      <h2 className="movie-title">
+        {reservation.showing.movie.title} {reservation.showing.movie.year}
+      </h2>
       <p className="reservation-info">Cinema: {reservation.showing.hall.cinema.name}</p>
       <p className="reservation-info">Hall: {reservation.showing.hall.roomNumber}</p>
       <p className="reservation-info">Start time: {reservation.showing.startTime}</p>
@@ -36,7 +38,7 @@ export default function Checkout() {
 
   return (
     <div className="reservation-list-container">
-      <h1 className="title">Your Movie Reservations</h1>
+      <h1 className="title">Your Movie Reservation</h1>
       {reservationList}
     </div>
   );
