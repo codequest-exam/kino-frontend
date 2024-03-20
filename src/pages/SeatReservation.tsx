@@ -1,8 +1,9 @@
 import { useEffect, useState, useRef } from "react";
 import HallLayout from "../components/HallLayout";
-import { API_URL } from "../settings";
-import { addReservation } from "../services/apiFacade";
+import { addReservation, getReservedSeats, getShowing, getSeatsInHall } from "../services/apiFacade";
 import { useAuth } from "../security/AuthProvider";
+import { useParams } from "react-router";
+import PriceDisplay from "../components/PriceDisplay";
 
 export enum SeatStatus {
   AVAILABLE = "available",
@@ -12,25 +13,31 @@ export enum SeatStatus {
 
 export type Seat = {
   id: number;
+  seatNumber: number;
+  seatRowNumber: number;
+  price: number;
   status: SeatStatus;
 };
 
 export type HallStats = {
   rows: number;
   seatsPerRow: number;
-  totalSeats: number;
 };
 
 export type newReservation = { showing: { id: number }; reservedSeats: Array<{ id: number }> | undefined };
 
 function SeatReservation() {
+  // convert id to number immediately
+
+  const { id } = useParams<{id: string}>();
+
   const [hallLayout, setHallLayout] = useState<HallStats>();
   const auth = useAuth();
-  // const [hallLayout, setHallLayout] = useState({ rows: 10, seatsPerRow: 10, totalSeats: 100 });
   const takenSeatsRef = useRef<number[]>([]);
 
-  // const initialSeats: Seat[] = Array([50]).map((_, index) => ({ id: index + 1, status: SeatStatus.AVAILABLE }));
   const [seats, setSeats] = useState<Seat[]>();
+
+  const [selectedSeats, setSelectedSeats] = useState<Seat[]>([]);
 
   // .map((seat, index) =>
   //   ({ id: index + 1, status: takenSeatsRef.current.includes(index + 1) ? "reserved" : "available" })
@@ -38,31 +45,25 @@ function SeatReservation() {
 
   useEffect(() => {
     const fetchSeats = async () => {
-      const res = await fetch(`${API_URL}/showings/2/takenSeats`);
-      console.log("API URL", API_URL);
 
-      // const res = await fetch(`${API_URL}/showings/2/seats`);
-      const result = await res.json();
-      console.log("fetch result", result);
-      takenSeatsRef.current = result;
+      if (id === undefined) return;
+      const reservedSeats = await getReservedSeats(id);
+      takenSeatsRef.current = reservedSeats;
       getHallLayout();
     };
 
     const getHallLayout = async () => {
-      const res2 = await fetch(`${API_URL}/showings/2`);
-      const result2 = await res2.json();
+      if (id === undefined) return;
+      const showingInfo = await getShowing(id);
 
-      const totalSeats = result2.hall.seatRows * result2.hall.seatsPerRow;
-      setHallLayout({ rows: result2.hall.seatRows, seatsPerRow: result2.hall.seatsPerRow, totalSeats: totalSeats });
+      setHallLayout({ rows: showingInfo.hall.seatRows, seatsPerRow: showingInfo.hall.seatsPerRow });
 
-      if (!result2) return;
-      const tempArray = [];
-
-      for (let i = 1; i < totalSeats + 1; i++) {
-        tempArray.push({ id: i, status: takenSeatsRef.current.includes(i) ? SeatStatus.RESERVED : SeatStatus.AVAILABLE });
+      if (!showingInfo) return;
+      const seatsInHall = await getSeatsInHall(showingInfo.hall.id);
+      for (const seat of seatsInHall) {
+        seat.status = takenSeatsRef.current.includes(seat.seatNumber) ? SeatStatus.RESERVED : SeatStatus.AVAILABLE;
       }
-
-      setSeats([...tempArray]);
+      setSeats([...seatsInHall]);
     };
 
     fetchSeats();
@@ -72,47 +73,50 @@ function SeatReservation() {
   // const [selectedSeatPrice, setSelectedSeatPrice] = useState<number | null>(null);
 
   const handleSeatClick = (id: number) => {
-    seats &&
-      setSeats(
-        seats.map((seat) => {
-          if (seat.id === id) {
-            // If seat is available, change status to "selected"
-            if (seat.status === SeatStatus.AVAILABLE) {
-              // setSelectedSeatPrice(seat.price);
-              return { ...seat, status: SeatStatus.SELECTED };
-              // If seat is selected, change status to "available"
-            } else if (seat.status === SeatStatus.SELECTED) {
-              // setSelectedSeatPrice(null);
-              return { ...seat, status: SeatStatus.AVAILABLE };
-            }
-          }
-          return seat;
-        })
-      );
+    if (seats === undefined) return;
+    const selectedSeats = seats.map(seat => {
+      if (seat.id === id) {
+        if (seat.status === SeatStatus.AVAILABLE) {
+          // setSelectedSeatPrice(seat.price);
+          return { ...seat, status: SeatStatus.SELECTED };
+          // If seat is selected, change status to "available"
+        } else if (seat.status === SeatStatus.SELECTED) {
+          return { ...seat, status: SeatStatus.AVAILABLE };
+        }
+      }
+      return seat;
+    });
+    const selectedSeatsIds = selectedSeats.filter(seat => seat.status === SeatStatus.SELECTED);
+    setSelectedSeats(selectedSeatsIds);
+    setSeats([...selectedSeats]);
   };
 
-  const handleConfirmClick = async () => {
+  async function handleConfirmClick() {
     // array as number
     const reservedSeats: { id: number }[] = [];
-    seats?.forEach((seat) => {
-      if (seat.status === SeatStatus.SELECTED) {
-        reservedSeats.push({ id: seat.id });
-      }
-    });
+    if (id === undefined) {console.error("MISSING ID IN HANDLE CONFIRM CLICKED"); return}
+    selectedSeats.map(seat => reservedSeats.push({ id: Number(seat.id) })
+    );
 
     const newReservation: newReservation = {
-      showing: { id: 1 },
-      reservedSeats,
+      showing: { id: Number(id) },
+      reservedSeats
     };
     console.log(newReservation);
 
     const result = await addReservation(newReservation, auth.isLoggedIn());
     console.log("result", result);
 
-    // seats && setSeats(seats.map(seat => (seat.status === "selected" ? { ...seat, status: SeatStatus.RESERVED } : seat)));
-  };
+      }
 
-  return hallLayout && seats ? <HallLayout HallStats={hallLayout} seats={seats} handleSeatClick={handleSeatClick} handleConfirmClick={handleConfirmClick} /> : <div>Loading...</div>;
+  return hallLayout && seats ? (
+    <>
+      <HallLayout HallStats={hallLayout} seats={seats} handleSeatClick={handleSeatClick} handleConfirmClick={handleConfirmClick} />
+      <PriceDisplay seats={selectedSeats} />
+    </>
+  ) : (
+    <div>Loading...</div>
+  );
   // return HallLayout( hallLayout.rows, hallLayout.seats, handleSeatClick, handleConfirmClick );
   // return HallLayout({ numColumns: hallLayout.seatsPerRow, seats: hallLayout.seatsPerRow, handleSeatClick, handleConfirmClick });
 }
