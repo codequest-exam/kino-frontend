@@ -1,14 +1,14 @@
 import { useParams } from "react-router-dom";
 import { getMovie } from "../../services/apiFacade";
-import { Movie } from "../../services/Interfaces";
+import { Movie as APIMovie } from "../../services/Interfaces";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import "./movie.css";
 
 export default function Movie() {
   const { id } = useParams();
-  const [movie, setMovie] = useState<Movie | null>(null);
-  // const [movie, setMovie] = useState<APIMovie | null>(null);
+  // const [movie, setMovie] = useState<Movie | null>(null);
+  const [movie, setMovie] = useState<APIMovie | null>(null);
   useEffect(() => {
     getMovie(Number(id)).then(res => setMovie(res));
   }, [id]);
