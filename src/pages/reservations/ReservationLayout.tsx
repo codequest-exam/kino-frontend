@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-// import AllReservations from "./ReservationList";
+import ReservationList from "./ReservationList";
 
 const ReservationLayout: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState("");
@@ -10,9 +10,9 @@ const ReservationLayout: React.FC = () => {
 
   return (
     <div>
-      <h1>Reservations</h1>
-      <input type="text" placeholder="Search by User" value={searchTerm} onChange={handleSearch} />
-      {/* <AllReservations searchTerm={searchTerm} /> */}
+      <h1>Reservations</h1> 
+      <input type="text" placeholder="Search by email" value={searchTerm} onChange={handleSearch} />
+      <ReservationList searchTerm={searchTerm}/>
     </div>
   );
 };

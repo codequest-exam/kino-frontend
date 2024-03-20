@@ -1,4 +1,3 @@
-import "./app.css";
 import { Routes, Route } from "react-router-dom";
 import Layout from "./Layout";
 import Home from "./pages/Home";
@@ -16,6 +15,7 @@ import Showings from "./pages/showings/Showings";
 import Checkout from "./pages/Checkout";
 import Users from "./pages/Users";
 import AddUser from "./pages/AddUser";
+import "./app.css";
 
 function App() {
   return (
