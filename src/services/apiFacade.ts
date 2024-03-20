@@ -1,78 +1,13 @@
 import { API_URL } from "../settings";
 import { handleHttpErrors, makeOptions } from "../services/fetchUtils";
 import { newReservation } from "../pages/SeatReservation";
+import { Movie, Showing, Hall, User, Reservation } from "./Interfaces";
 
 const CACHE_TIME = 1 * 60 * 1000; // 1 min cache
 const MOVIE_URL = API_URL + "/movies";
 const SHOWING_URL = API_URL + "/showings";
 const USER_URL = API_URL + "/api/user-with-role";
 const LAST_FETCH = { movies: 0 };
-
-interface Movie {
-  id: number;
-  title: string;
-  year: string;
-  rated: string;
-  runtime: string;
-  genre: string;
-  director: string;
-  writer: string;
-  actors: string;
-  metascore: string;
-  imdbRating: string;
-  imdbVotes: string;
-  website: string;
-  response: string;
-  plot: string;
-  poster: string;
-  imdbID: string;
-}
-
-interface Showing {
-  id: number;
-  movie: Movie;
-  hall: Hall;
-  startTime: string;
-  moviePrice: number;
-  isImax: boolean;
-  is3d: boolean;
-}
-
-interface Hall {
-  id: number;
-  cinema: Cinema;
-  roomNumber: number;
-}
-interface User {
-  userName: string;
-  email: string;
-  roleNames: string[];
-  password: string;
-}
-
-interface Cinema {
-  id: number;
-  name: string;
-  address: string;
-}
-
-interface Seat {
-  id: number;
-  seatNumber: number;
-  seatRowNumber: number;
-}
-
-interface Reservation {
-  id: number;
-  showing: Showing;
-  hall: Hall;
-  movie: Movie;
-  date: string;
-  time: string;
-  reservedSeats: Seat[];
-  price: number;
-  email: string;
-}
 
 let movies: Array<Movie> = [];
 let showings: Array<Showing> = [];
@@ -114,6 +49,10 @@ async function getShowings(): Promise<Array<Showing>> {
   return showings;
 }
 
+async function getShowingsByMovie(id:number) {
+  return fetch(SHOWING_URL + "/movie/" + id).then(handleHttpErrors);
+}
+
 async function addReservation(newReservation: newReservation, loggedIn: boolean) {
   const options = makeOptions("POST", newReservation, loggedIn);
   console.log("options", options);
@@ -130,4 +69,4 @@ async function getReservations(): Promise<Array<Reservation>> {
 
 export type { Movie, Showing, Hall, User, Reservation };
 
-export { getMovies, getMovie, addReservation, getShowings, getUsers, removeUserRole, editUserRole, getReservations, addUser };
+export { getMovies, getMovie, addReservation, getShowings, getUsers, removeUserRole, editUserRole, getReservations, addUser, getShowingsByMovie };

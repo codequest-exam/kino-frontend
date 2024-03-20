@@ -18,7 +18,8 @@ export default function Showings() {
     const formattedStartTime = `${date
       .getHours()
       .toString()
-      .padStart(2, "0")}:${date.getMinutes().toString().padStart(2, "0")}`;
+      .padStart(2, "0")}:${date.getMinutes().toString().padStart(2, "0")
+    }`;
     return formattedStartTime;
   };
   const formatStartDate = (startTime: string) => {

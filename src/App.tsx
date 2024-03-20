@@ -16,6 +16,7 @@ import Checkout from "./pages/Checkout";
 import Users from "./pages/Users";
 import AddUser from "./pages/AddUser";
 import "./app.css";
+import ShowingsForMovie from "./pages/showings/ShowingsForMovie";
 
 function App() {
   return (
@@ -37,6 +38,7 @@ function App() {
               </RequireAuth>
             }
           />{" "}
+          <Route path="/showings/:id" element={<ShowingsForMovie />} />
           <Route path="/checkout" element={<Checkout />} />
           <Route
             path="/add-showing"
