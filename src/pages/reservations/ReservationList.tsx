@@ -8,33 +8,26 @@ interface Props {
   searchTerm: string;
 }
 
-const ReservationList: React.FC<Props> = ({searchTerm}) =>{
+const ReservationList: React.FC<Props> = ({ searchTerm }) => {
   const [reservations, setReservations] = useState<Array<APIReservation>>([]);
   console.log("reservations", reservations);
-  
-  const [error, setError] = useState("");
 
+  const [error, setError] = useState("");
 
   useEffect(() => {
     getReservations()
       .then((res) => setReservations(res))
-      .catch(() =>
-        setError("Error fetching reservations, the server might be down.")
-      );
+      .catch(() => setError("Error fetching reservations, the server might be down."));
   }, [searchTerm]);
 
-  const filterReservationsByEmail = reservations.filter(
-    (reservation) =>
-      // reservation.email &&
-      reservation.email.toLowerCase()
-        .includes(searchTerm.toLowerCase()));
+  const filterReservationsByEmail = reservations.filter((reservation) =>
+    // reservation.email &&
+    reservation.email.toLowerCase().includes(searchTerm.toLowerCase())
+  );
 
   const reservationListItems = filterReservationsByEmail.map((reservation) => {
     const date = new Date(reservation.showing.startTime);
-    const formattedTime = `${date.getHours()}:${date
-      .getMinutes()
-      .toString()
-      .padStart(2, "0")}`;
+    const formattedTime = `${date.getHours()}:${date.getMinutes().toString().padStart(2, "0")}`;
     const formattedDate = date.toLocaleString("default", {
       month: "short",
       day: "2-digit",
@@ -42,7 +35,7 @@ const ReservationList: React.FC<Props> = ({searchTerm}) =>{
 
     return (
       <tr key={reservation.id}>
-        <td>{reservation.id}</td>
+        <td className="center-text">{reservation.id}</td>
         <td>{reservation.showing.movie.title}</td>
         <td>
           Kl.{formattedTime} d.{formattedDate}
@@ -50,12 +43,12 @@ const ReservationList: React.FC<Props> = ({searchTerm}) =>{
         <td>{reservation.email}</td>
         <td>UserInfo TBD</td>
         <td>{reservation.price} dkk,-</td>
-        <td>
+        <td className="center-text">
           {reservation.reservedSeats.map((seat) => (
             <span key={seat.id}>{seat.seatNumber},</span>
           ))}
         </td>
-        <td>
+        <td className="center-text">
           {reservation.reservedSeats.map((seat) => (
             <span key={seat.id}>{seat.seatRowNumber}</span>
           ))}
@@ -79,7 +72,7 @@ const ReservationList: React.FC<Props> = ({searchTerm}) =>{
             <th>Email</th>
             <th>User Info</th>
             <th>Price</th>
-            <th>Seat &</th>
+            <th>Seat</th>
             <th>Row</th>
           </tr>
         </thead>
@@ -87,6 +80,6 @@ const ReservationList: React.FC<Props> = ({searchTerm}) =>{
       </table>
     </>
   );
-}
+};
 
 export default ReservationList;

@@ -1,7 +1,7 @@
 .navbar {
   display: flex;
   justify-content: space-between;
-  padding: 10px;
+  padding: 10px 0;
   color: #cdcdcd;
   position: fixed;
   top: 0;
@@ -31,4 +31,22 @@
   border: none;
   border-radius: 5px;
   cursor: pointer;
+}
+
+.navbar-style {
+  border-bottom: 2px solid #000;
+}
+
+.navbar-list {
+  display: flex;
+  align-items: center;
+}
+
+.navbar-logo {
+  margin-right: auto;
+}
+
+.navbar-items {
+  overflow-x: auto;
+  white-space: nowrap;
 }
