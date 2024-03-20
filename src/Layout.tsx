@@ -11,7 +11,7 @@ const Layout = ({ children }: LayoutProps) => {
       <header className="nav-header">
         <NavHeader />
       </header>
-      <main className="page-content">{children}123</main>
+      <main className="page-content">{children}</main>
     </div>
   );
 };
