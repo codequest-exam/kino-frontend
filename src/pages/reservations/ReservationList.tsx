@@ -1,8 +1,7 @@
 import { useEffect, useState } from "react";
-import {
-  Reservation as APIReservation,
-  getReservations,
-} from "../../services/apiFacade";
+import {  getReservations} from "../../services/apiFacade";
+import { Reservation as APIReservation } from "../../services/Interfaces";
+// import {  Reservation as APIReservation,  getReservations} from "../../services/apiFacade";
 import "./reservations.css";
 
 interface Props {

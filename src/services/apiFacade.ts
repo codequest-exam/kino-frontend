@@ -1,7 +1,7 @@
 import { API_URL } from "../settings";
 import { handleHttpErrors, makeOptions } from "../services/fetchUtils";
 import { Seat, newReservation } from "../pages/SeatReservation";
-import { Movie, Showing, Hall, User, Reservation } from "./Interfaces";
+import { Movie, Showing, Hall, User, Reservation, Cinema } from "./Interfaces";
 
 const CACHE_TIME = 1 * 60 * 1000; // 1 min cache
 const MOVIE_URL = API_URL + "/movies";
@@ -105,6 +105,5 @@ async function getReservations(): Promise<Array<Reservation>> {
   return res;
 }
 
-export type { Movie, Showing, Hall, User, Reservation, Cinema };
 
 export { getMovies, getMovie, addReservation, getShowings, getUsers, removeUserRole, editUserRole, getReservations, addUser, getShowingsByMovie, getReservedSeats,getShowing,getSeatsInHall, addShowing, getHalls, getCinemas, updateShowing, deleteShowing };

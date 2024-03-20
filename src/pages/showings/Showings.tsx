@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
-import { Showing, getShowings, deleteShowing } from "../../services/apiFacade";
+import { getShowings, deleteShowing } from "../../services/apiFacade";
+import { Showing } from "../../services/Interfaces";
 import "./showings.css";
 import { useNavigate } from "react-router-dom";
 

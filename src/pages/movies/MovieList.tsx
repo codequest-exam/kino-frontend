@@ -1,10 +1,13 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { Movie as APIMovie, getMovies } from "../../services/apiFacade";
+import { getMovies } from "../../services/apiFacade";
+import { Movie } from "../../services/Interfaces";
+// import { Movie as APIMovie, getMovies } from "../../services/apiFacade";
 import "./movielist.css";
 
 export default function MovieList() {
-  const [movies, setMovies] = useState<Array<APIMovie>>([]);
+  const [movies, setMovies] = useState<Array<Movie>>([]);
+  // const [movies, setMovies] = useState<Array<APIMovie>>([]);
   const [error, setError] = useState("");
 
   useEffect(() => {
