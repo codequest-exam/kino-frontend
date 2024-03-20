@@ -43,10 +43,33 @@ async function getMovies(): Promise<Array<Movie>> {
 
   return res;
 }
+async function getHalls(): Promise<Array<Hall>> {
+  return fetch(API_URL + "/halls").then(handleHttpErrors);
+}
+async function getCinemas(): Promise<Array<Cinema>> {
+  return fetch(API_URL + "/cinemas").then(handleHttpErrors);
+}
 async function getShowings(): Promise<Array<Showing>> {
   const res = await fetch(SHOWING_URL).then(handleHttpErrors);
   showings = res;
   return showings;
+}
+async function addShowing(showing: object): Promise<Array<Showing>> {
+  const options = makeOptions("POST", showing, true);
+  const res = await fetch(SHOWING_URL, options).then(handleHttpErrors);
+  showings = res;
+  return showings;
+}
+async function updateShowing(id: number, showing: object): Promise<Array<Showing>> {
+  const options = makeOptions("PUT", showing, true);
+  const res = await fetch(SHOWING_URL + "/" + id, options).then(handleHttpErrors);
+  showings = res;
+  return showings;
+}
+async function deleteShowing(id: number): Promise<number> {
+  const options = makeOptions("DELETE", null, true);
+  const response = await fetch(SHOWING_URL + "/" + id, options);
+  return response.status;
 }
 async function getShowing(id:string): Promise<Showing> {
   return await fetch(SHOWING_URL + "/" + id).then(handleHttpErrors);
@@ -82,6 +105,6 @@ async function getReservations(): Promise<Array<Reservation>> {
   return res;
 }
 
-export type { Movie, Showing, Hall, User, Reservation };
+export type { Movie, Showing, Hall, User, Reservation, Cinema };
 
-export { getMovies, getMovie, addReservation, getShowings, getUsers, removeUserRole, editUserRole, getReservations, addUser, getShowingsByMovie, getReservedSeats,getShowing,getSeatsInHall };
+export { getMovies, getMovie, addReservation, getShowings, getUsers, removeUserRole, editUserRole, getReservations, addUser, getShowingsByMovie, getReservedSeats,getShowing,getSeatsInHall, addShowing, getHalls, getCinemas, updateShowing, deleteShowing };
