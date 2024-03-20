@@ -23,7 +23,7 @@ export default function Movie() {
             </div>
             <div className="movie-details">
               <p className="movie-info">{movie.plot}</p>
-              <p>Movie Director: {movie.director}</p>
+              <p className="movie-info">Movie Director: {movie.director}</p>
               <div className="movie-info-line">
                 <p className="movie-info">Actors: {movie.actors}</p>
                 <p className="movie-info">Runtime: {movie.runtime}</p>
