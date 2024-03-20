@@ -7,10 +7,10 @@ const ShowingForm = () => {
   const [movies, setMovies] = useState<Movie[]>([]);
   const [cinemas, setCinemas] = useState<Cinema[]>([]);
   const [halls, setHalls] = useState<Hall[]>([]);
-  const [selectedMovie, setSelectedMovie] = useState<string>("");
-  const [selectedHall, setSelectedHall] = useState<string>("");
+  const [selectedMovie, setSelectedMovie] = useState<string | undefined>(undefined);
+  const [selectedCinema, setSelectedCinema] = useState<string | undefined>(undefined);
+  const [selectedHall, setSelectedHall] = useState<string | undefined>(undefined);
   const [filteredHalls, setFilteredHalls] = useState<Hall[]>([]);
-  const [selectedCinema, setSelectedCinema] = useState<string>("");
   const [startTime, setStartTime] = useState<string>("");
   const [is3d, setIs3d] = useState<boolean>(false);
   const [isImax, setIsImax] = useState<boolean>(false);

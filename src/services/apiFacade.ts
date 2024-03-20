@@ -130,6 +130,11 @@ async function updateShowing(id: number, showing: object): Promise<Array<Showing
   showings = res;
   return showings;
 }
+async function deleteShowing(id: number): Promise<number> {
+  const options = makeOptions("DELETE", null, true);
+  const response = await fetch(SHOWING_URL + "/" + id, options);
+  return response.status;
+}
 
 async function addReservation(newReservation: newReservation, loggedIn: boolean) {
   const options = makeOptions("POST", newReservation, loggedIn);
@@ -147,4 +152,4 @@ async function getReservations(): Promise<Array<Reservation>> {
 
 export type { Movie, Showing, Hall, User, Reservation, Cinema };
 
-export { getMovies, getMovie, addReservation, getShowings, getUsers, removeUserRole, editUserRole, getReservations, addUser, addShowing, getHalls, getCinemas, updateShowing };
+export { getMovies, getMovie, addReservation, getShowings, getUsers, removeUserRole, editUserRole, getReservations, addUser, addShowing, getHalls, getCinemas, updateShowing, deleteShowing };

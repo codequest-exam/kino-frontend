@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Showing, getShowings } from "../../services/apiFacade";
+import { Showing, getShowings, deleteShowing } from "../../services/apiFacade";
 import { useNavigate } from "react-router-dom";
 
 export default function Showings() {
@@ -23,6 +23,14 @@ export default function Showings() {
     const formattedStartDate = `${date.getDate().toString().padStart(2, "0")}/${(date.getMonth() + 1).toString().padStart(2, "0")}`;
     return formattedStartDate;
   };
+  const handleDelete = async (id: number) => {
+    try {
+      await deleteShowing(id);
+      setShowings(await getShowings());
+    } catch (error) {
+      console.error("Error:", error);
+    }
+  };
 
   const showingTableRows = showings.map((showing) => (
     <tr key={showing.id}>
@@ -40,6 +48,15 @@ export default function Showings() {
           }}
         >
           Edit
+        </button>
+      </td>
+      <td>
+        <button
+          onClick={() => {
+            handleDelete(showing.id);
+          }}
+        >
+          Delete
         </button>
       </td>
     </tr>
