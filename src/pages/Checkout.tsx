@@ -36,7 +36,7 @@ export default function Checkout() {
 
   return (
     <div className="reservation-list-container">
-      <h1 className="title">Your Movie Reservations</h1>
+      <h1 className="title">Your Movie Reservation</h1>
       {reservationList}
     </div>
   );

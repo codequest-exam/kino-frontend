@@ -1,10 +1,6 @@
 import React, { useState } from "react";
 import ReservationList from "./ReservationList";
 
-// interface Props {
-//    searchTerm: string;
-//  }
-
 const ReservationLayout: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState("");
 

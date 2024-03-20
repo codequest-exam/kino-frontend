@@ -53,12 +53,12 @@ const ReservationList: React.FC<Props> = ({searchTerm}) =>{
         <td>{reservation.price} dkk,-</td>
         <td>
           {reservation.reservedSeats.map((seat) => (
-            <span key={seat.id}>{seat.seatRowNumber},</span>
+            <span key={seat.id}>{seat.seatNumber},</span>
           ))}
         </td>
         <td>
           {reservation.reservedSeats.map((seat) => (
-            <span key={seat.id}>{seat.seatNumber}</span>
+            <span key={seat.id}>{seat.seatRowNumber}</span>
           ))}
         </td>
       </tr>
