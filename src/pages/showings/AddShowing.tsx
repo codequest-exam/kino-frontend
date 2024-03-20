@@ -1,5 +1,7 @@
 import { useState, useEffect } from "react";
-import { addShowing, getMovies, getHalls, getCinemas, Movie, Cinema, Hall, updateShowing } from "../../services/apiFacade";
+import { addShowing, getMovies, getHalls, getCinemas, updateShowing } from "../../services/apiFacade";
+import { Movie, Cinema, Hall } from "../../services/Interfaces";
+// import { addShowing, getMovies, getHalls, getCinemas, Movie, Cinema, Hall, updateShowing } from "../../services/apiFacade";
 import { useLocation } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 
