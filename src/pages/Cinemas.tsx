@@ -11,7 +11,7 @@ class Cinemas extends React.Component {
                 </div>
                 <div>
                     <h2>Cinema 2</h2>
-                    <p>Imperial</p>
+                    <p>Imperialal</p>
                 </div>
             </div>
         );
