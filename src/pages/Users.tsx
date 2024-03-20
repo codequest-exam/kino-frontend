@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
-import { User, editUserRole, getUsers, removeUserRole } from "../services/apiFacade";
+import { editUserRole, getUsers, removeUserRole } from "../services/apiFacade";
+import { User } from "../services/Interfaces";
 import { useNavigate } from "react-router-dom";
 
 export default function Users() {
