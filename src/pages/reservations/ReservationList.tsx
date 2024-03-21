@@ -32,7 +32,7 @@ const ReservationList: React.FC<Props> = ({ searchTerm }) => {
       month: "short",
       day: "2-digit",
     });
-   
+
     return (
       <tr key={reservation.id}>
         <td className="center-text">{reservation.id}</td>
@@ -64,7 +64,7 @@ const ReservationList: React.FC<Props> = ({ searchTerm }) => {
   if (error !== "") {
     return <h2 style={{ color: "red" }}>{error}</h2>;
   }
-   if (loading) return <h2>Loading...</h2>;
+  if (loading) return <h2>Loading...</h2>;
 
   return (
     <>
