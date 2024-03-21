@@ -22,7 +22,10 @@ const ReservationList: React.FC<Props> = ({ searchTerm }) => {
       .catch(() => setError("Error fetching reservations, the server might be down."));
   }, [searchTerm]);
 
-  const filterReservationsByEmail = reservations.filter((reservation) => reservation.email.toLowerCase().includes(searchTerm.toLowerCase()));
+  const filterReservationsByEmail = reservations.filter((reservation) => 
+  (reservation.user && reservation.user.email 
+              ? reservation.user.email 
+              : reservation.email).toLowerCase().includes(searchTerm.toLowerCase()));
 
   const formatTime = filterReservationsByEmail.map((reservation) => {
     const date = new Date(reservation.showing.startTime);
@@ -40,7 +43,9 @@ const ReservationList: React.FC<Props> = ({ searchTerm }) => {
         <td>
           {formattedTime} {formattedDate}
         </td>
-        <td>{reservation.user && reservation.user.email ? reservation.user.email : reservation.email}</td>
+        <td>{reservation.user && reservation.user.email 
+              ? reservation.user.email 
+              : reservation.email}</td>
         <td>{reservation.user && reservation.user.userName ? reservation.user.userName : "Anonymous"}</td>
         <td>{reservation.price} dkk,-</td>
         <td>{reservation.showing.hall.cinema.name}</td>
