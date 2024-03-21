@@ -10,8 +10,6 @@ interface Props {
 
 const ReservationList: React.FC<Props> = ({ searchTerm }) => {
   const [reservations, setReservations] = useState<Array<APIReservation>>([]);
-  console.log("reservations", reservations);
-
   const [error, setError] = useState("");
 
   useEffect(() => {
@@ -25,7 +23,7 @@ const ReservationList: React.FC<Props> = ({ searchTerm }) => {
     reservation.email.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-  const reservationListItems = filterReservationsByEmail.map((reservation) => {
+  const formatTime = filterReservationsByEmail.map((reservation) => {
     const date = new Date(reservation.showing.startTime);
     console.log(reservation);
     const formattedTime = `${date.getHours()}:${date.getMinutes().toString().padStart(2, "0")}`;
@@ -88,7 +86,7 @@ const ReservationList: React.FC<Props> = ({ searchTerm }) => {
             <th>IMAX</th>
           </tr>
         </thead>
-        <tbody>{reservationListItems}</tbody>
+        <tbody>{formatTime}</tbody>
       </table>
     </>
   );
