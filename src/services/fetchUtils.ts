@@ -4,7 +4,6 @@
  * @param body  The request body (only relevant for POST and PUT)
  * @returns
  */
-import { useAuth } from "../security/AuthProvider";
 export function makeOptions(method: string, body: object | null, addToken?: boolean): RequestInit {
   const opts: RequestInit = {
     method: method,
