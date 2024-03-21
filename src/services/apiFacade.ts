@@ -36,9 +36,14 @@ async function getMovie(id: number): Promise<Movie> {
 }
 
 async function getMovies(): Promise<Array<Movie>> {
-  return fetch(MOVIE_URL).then(handleHttpErrors);
-}
+  console.log(MOVIE_URL);
+  if (LAST_FETCH.movies > Date.now() - CACHE_TIME) return [...movies];
+  const res = await fetch(MOVIE_URL).then(handleHttpErrors);
+  movies = [...res];
+  LAST_FETCH.movies = Date.now();
 
+  return res;
+}
 async function getHalls(): Promise<Array<Hall>> {
   return fetch(API_URL + "/halls").then(handleHttpErrors);
 }
