@@ -52,7 +52,7 @@ const ShowingForm = () => {
       const filtered = halls.filter((hall) => hall.cinema.id.toString() === selectedCinema);
       setFilteredHalls(filtered);
       if (showing && showing.hall.cinema.id.toString() === selectedCinema) {
-        setSelectedHall(showing.hall.roomNumber.toString());
+        setSelectedHall(showing.hall.hallNumber.toString());
       } else {
         setSelectedHall(undefined);
       }
