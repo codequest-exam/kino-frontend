@@ -39,10 +39,15 @@ const ReservationList: React.FC<Props> = ({ searchTerm }) => {
         <td>
           {formattedTime} {formattedDate}
         </td>
-        <td>{reservation.email}</td>
         <td>
-          {/* {reservation.user.username}  */}
-        {/* {reservation.user.email} */}
+          {reservation.user && reservation.user.email
+            ? reservation.user.email
+            : reservation.email}
+        </td>
+        <td>
+          {reservation.user && reservation.user.userName
+            ? reservation.user.userName
+            : "Anonymous"}
         </td>
         <td>{reservation.price} dkk,-</td>
         <td>{reservation.showing.hall.cinema.name}</td>
@@ -57,8 +62,12 @@ const ReservationList: React.FC<Props> = ({ searchTerm }) => {
             <span key={seat.id}>{seat.seatRowNumber}</span>
           ))}
         </td>
-        <td className="center-text">{reservation.showing.is3d ? "Yes" : "No"}</td>
-        <td className="center-text">{reservation.showing.isImax ? "Yes" : "No"}</td>
+        <td className="center-text">
+          {reservation.showing.is3d ? "Yes" : "No"}
+        </td>
+        <td className="center-text">
+          {reservation.showing.isImax ? "Yes" : "No"}
+        </td>
       </tr>
     );
   });
