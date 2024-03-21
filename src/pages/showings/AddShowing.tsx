@@ -40,18 +40,24 @@ const ShowingForm = () => {
   useEffect(() => {
     if (showing) {
       setSelectedMovie(showing.movie.id.toString());
-      setSelectedHall(showing.hall.roomNumber.toString());
       setSelectedCinema(showing.hall.cinema.id.toString());
       setStartTime(showing.startTime);
       setIs3d(showing.is3d);
       setIsImax(showing.isImax);
     }
+  }, [showing]);
+
+  useEffect(() => {
     if (selectedCinema) {
       const filtered = halls.filter((hall) => hall.cinema.id.toString() === selectedCinema);
       setFilteredHalls(filtered);
+      if (showing && showing.hall.cinema.id.toString() === selectedCinema) {
+        setSelectedHall(showing.hall.roomNumber.toString());
+      } else {
+        setSelectedHall(undefined);
+      }
     }
   }, [selectedCinema, halls, showing]);
-
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const movie = movies.find((movie) => movie.id === Number(selectedMovie));
@@ -116,7 +122,6 @@ const ShowingForm = () => {
         <label>
           Cinema:
           <select value={selectedCinema} onChange={(e) => setSelectedCinema(e.target.value)}>
-            <option value="">Select cinema</option>
             {cinemas.map((cinema) => (
               <option key={cinema.id} value={cinema.id}>
                 {cinema.name}
