@@ -80,6 +80,7 @@ export default function Users() {
             <th>Username</th>
             <th>Email</th>
             <th>Roles</th>
+            <th>Change roles</th>
           </tr>
         </thead>
         <tbody>{userTableRows}</tbody>
