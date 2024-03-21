@@ -104,6 +104,10 @@ async function getReservations(): Promise<Array<Reservation>> {
 async function getReservationsByUsername(username: string): Promise<Array<Reservation>> {
   const options = makeOptions("GET", null, true);
   const res = await fetch(API_URL + `/reservations/user/${username}`, options).then(handleHttpErrors);
+  console.log(res, "res");
+  console.log(username, "username");
+  
+  
   return res;
 }
 

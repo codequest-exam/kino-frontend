@@ -45,24 +45,33 @@ const MyReservations = () => {
             src={reservation.showing.movie.poster}
             alt={reservation.showing.movie.title}
           />
-          <p>{reservation.showing.movie.title}</p>
-          <td>
-            {formattedTime} {formattedDate}
-          </td>
-          <p>Hall: {reservation.showing.hall.hallNumber}</p>
-          <td className="center-text">
-            Seat:
+          <p>
+            <b>{reservation.showing.movie.title}</b>
+          </p>
+          <div>
+            {" "}
+            <b>
+              {formattedTime} {formattedDate}
+            </b>
+          </div>
+          <p>
+            <b>Hall:</b> {reservation.showing.hall.hallNumber}
+          </p>
+          <div className="center-text">
+            <b>Seat:</b>
             {reservation.reservedSeats.map((seat) => (
               <span key={seat.id}>{seat.seatNumber}, </span>
             ))}
-          </td>
-          <td className="center-text">
-            Row:
+          </div>
+          <div className="center-text">
+            <b>Row:</b>
             {reservation.reservedSeats.map((seat) => (
               <span key={seat.id}>{seat.seatRowNumber}, </span>
             ))}
-          </td>
-          <p>Total payment: {reservation.price} dkk,-</p>
+          </div>
+          <p>
+            <b>Total payment:</b> {reservation.price} dkk,-
+          </p>
         </div>
       );
     })}
