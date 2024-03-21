@@ -36,7 +36,6 @@ async function getMovie(id: number): Promise<Movie> {
 }
 
 async function getMovies(): Promise<Array<Movie>> {
-  console.log(MOVIE_URL);
   if (LAST_FETCH.movies > Date.now() - CACHE_TIME) return [...movies];
   const res = await fetch(MOVIE_URL).then(handleHttpErrors);
   movies = [...res];
