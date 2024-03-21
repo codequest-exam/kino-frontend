@@ -3,7 +3,7 @@ import { Reservation as reservation } from "../services/Interfaces";
 import { getReservations } from "../services/apiFacade";
 import "./checkout.css";
 
-export default function Checkout() {
+export default function Checkout({ tempOrder}) {
   const [reservations, setReservations] = useState<reservation[]>([]);
   const [error, setError] = useState("");
 

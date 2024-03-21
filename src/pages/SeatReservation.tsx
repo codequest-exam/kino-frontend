@@ -26,10 +26,10 @@ export type HallStats = {
 
 export type newReservation = { showing: { id: number }; reservedSeats: Array<{ id: number }> | undefined };
 
-function SeatReservation() {
+function SeatReservation({ setTempOrder }: { setTempOrder: (order: any) => void }) {
   // convert id to number immediately
 
-  const { id } = useParams<{id: string}>();
+  const { id } = useParams<{ id: string }>();
 
   const [hallLayout, setHallLayout] = useState<HallStats>();
   const auth = useAuth();
@@ -45,7 +45,6 @@ function SeatReservation() {
 
   useEffect(() => {
     const fetchSeats = async () => {
-
       if (id === undefined) return;
       const reservedSeats = await getReservedSeats(id);
       takenSeatsRef.current = reservedSeats;
@@ -94,20 +93,24 @@ function SeatReservation() {
   async function handleConfirmClick() {
     // array as number
     const reservedSeats: { id: number }[] = [];
-    if (id === undefined) {console.error("MISSING ID IN HANDLE CONFIRM CLICKED"); return}
-    selectedSeats.map(seat => reservedSeats.push({ id: Number(seat.id) })
-    );
+    if (id === undefined) {
+      console.error("MISSING ID IN HANDLE CONFIRM CLICKED");
+      return;
+    }
+    selectedSeats.map(seat => reservedSeats.push({ id: Number(seat.id) }));
 
     const newReservation: newReservation = {
       showing: { id: Number(id) },
-      reservedSeats
+      reservedSeats,
     };
     console.log(newReservation);
 
-    const result = await addReservation(newReservation, auth.isLoggedIn());
-    console.log("result", result);
-
-      }
+    console.log("temporder + ",setTempOrder);
+    
+    setTempOrder(newReservation);
+    // const result = await addReservation(newReservation, auth.isLoggedIn());
+    // console.log("result", result);
+  }
 
   return hallLayout && seats ? (
     <>
@@ -117,8 +120,6 @@ function SeatReservation() {
   ) : (
     <div>Loading...</div>
   );
-  // return HallLayout( hallLayout.rows, hallLayout.seats, handleSeatClick, handleConfirmClick );
-  // return HallLayout({ numColumns: hallLayout.seatsPerRow, seats: hallLayout.seatsPerRow, handleSeatClick, handleConfirmClick });
 }
 
 export default SeatReservation;

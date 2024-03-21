@@ -17,6 +17,7 @@ import Users from "./pages/Users";
 import AddUser from "./pages/AddUser";
 import "./app.css";
 import ShowingsForMovie from "./pages/showings/ShowingsForMovie";
+import SeatBookingController from "./pages/SeatBookingController";
 
 function App() {
   return (
@@ -29,7 +30,7 @@ function App() {
             <Route path=":id" element={<Movie />} />
           </Route>
           <Route path="/cinemas" element={<Cinemas />} />
-          <Route path="/reservation/:id" element={<SeatReservation />} />
+          <Route path="/reservation/:id" element={<SeatBookingController />} />
           <Route
             path="/showings"
             element={
@@ -39,7 +40,7 @@ function App() {
             }
           />{" "}
           <Route path="/showings/:id" element={<ShowingsForMovie />} />
-          <Route path="/checkout" element={<Checkout />} />
+          {/* <Route path="/checkout" element={<Checkout />} /> */}
           <Route
             path="/add-showing"
             element={
