@@ -52,7 +52,7 @@ const ReservationList: React.FC<Props> = ({ searchTerm }) => {
         <td>{reservation.showing.hall.hallNumber}</td>
         <td className="center-text">
           {reservation.reservedSeats.map((seat) => (
-            <span key={seat.id}>{seat.seatNumber},</span>
+            <span key={seat.id}>{seat.seatNumber}</span>
           ))}
         </td>
         <td className="center-text">

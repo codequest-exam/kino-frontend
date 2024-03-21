@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useAuth } from "../../security/AuthProvider";
 import { getReservationsByUsername } from "../../services/apiFacade";
 import { Reservation as APIReservation } from "../../services/Interfaces";
+import "./myReservations.css";
 
 const MyReservations = () => {
   const { currentUser } = useAuth();
@@ -35,41 +36,45 @@ const MyReservations = () => {
       {reservations.map((reservation) => {
         const date = new Date(reservation.showing.startTime);
         const formattedTime = `${date.getHours()}:${date.getMinutes().toString().padStart(2, "0")}`;
-        const formattedDate = date.toLocaleString("en-US", {
+        const formattedDate = date.toLocaleString("en-UK", {
           month: "short",
           day: "2-digit",
         });
 
         return (
-          <div key={reservation.id}>
-            <img src={reservation.showing.movie.poster} alt={reservation.showing.movie.title} />
-            <p>
-              <b>{reservation.showing.movie.title}</b>
-            </p>
-            <div>
-              {" "}
-              <b>
-                {formattedTime} {formattedDate}
-              </b>
+          <div key={reservation.id} className="reservation-card">
+            <img src={reservation.showing.movie.poster} className="reservation-image" alt={reservation.showing.movie.title} />
+            <div className="reservation-details">
+              <h2 className="reservation-title">{reservation.showing.movie.title}</h2>
+              <p className="reesrvation-text">
+                <b>Time:</b> {formattedTime} {formattedDate}
+              </p>
+              <p className="reservation-text">
+                <b>Price:</b> {reservation.price} dkk
+              </p>
+              <p className="reservation-text">
+                <b>Hall:</b> {reservation.showing.hall.hallNumber}
+              </p>
+              <p className="reservation-text">
+                <b>Seats:</b>
+                <table className="reservation-seats">
+                  <thead>
+                    <tr>
+                      <th className="center-text">Seat</th>
+                      <th className="center-text">Row</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {reservation.reservedSeats.map((seat) => (
+                      <tr key={seat.id}>
+                        <td>{seat.seatNumber}</td>
+                        <td>{seat.seatRowNumber}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </p>
             </div>
-            <p>
-              <b>Hall:</b> {reservation.showing.hall.hallNumber}
-            </p>
-            <div className="center-text">
-              <b>Seat:</b>
-              {reservation.reservedSeats.map((seat) => (
-                <span key={seat.id}>{seat.seatNumber}, </span>
-              ))}
-            </div>
-            <div className="center-text">
-              <b>Row:</b>
-              {reservation.reservedSeats.map((seat) => (
-                <span key={seat.id}>{seat.seatRowNumber}, </span>
-              ))}
-            </div>
-            <p>
-              <b>Total payment:</b> {reservation.price} dkk,-
-            </p>
           </div>
         );
       })}
