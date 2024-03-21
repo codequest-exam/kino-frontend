@@ -61,7 +61,7 @@ const ShowingForm = () => {
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const movie = movies.find((movie) => movie.id === Number(selectedMovie));
-    const hall = halls.find((hall) => hall.hallNumber === Number(selectedHall));
+    const hall = halls.find((hall) => hall.id === Number(selectedHall));
 
     if (!movie || !hall) {
       setMessage("Please select a movie and a hall");
@@ -135,7 +135,7 @@ const ShowingForm = () => {
           <select value={selectedHall} onChange={(e) => setSelectedHall(e.target.value)}>
             <option value="">Select hall</option>
             {filteredHalls.map((hall) => (
-              <option key={hall.hallNumber} value={hall.hallNumber}>
+              <option key={hall.id} value={hall.id}>
                 {hall.hallNumber}
               </option>
             ))}
