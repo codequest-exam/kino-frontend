@@ -52,6 +52,7 @@ const MyReservations = () => {
               <p className="reservation-text">
                 <b>Price:</b> {reservation.price} dkk
               </p>
+              <p><b>Showing ID</b> {reservation.showing.id}</p>
               <p className="reservation-text">
                 <b>Hall:</b> {reservation.showing.hall.hallNumber}
               </p>
