@@ -9,12 +9,14 @@ const MyReservations = () => {
     const [error, setError] = useState("");
 
     useEffect(() => {
+        
         if (currentUser) {
          getReservationsByUsername(currentUser.username)
            .then((res) => setReservations(res))
            .catch(() =>
              setError("Error fetching reservations, the server might be down.")
            );
+
         }
     }, [currentUser]);
 
@@ -39,20 +41,25 @@ const MyReservations = () => {
 
       return (
         <div key={reservation.id}>
-          <img src={reservation.movie.poster} alt={reservation.movie.title} />
-          <p>{reservation.movie.title}</p>
+          <img
+            src={reservation.showing.movie.poster}
+            alt={reservation.showing.movie.title}
+          />
+          <p>{reservation.showing.movie.title}</p>
           <td>
             {formattedTime} {formattedDate}
           </td>
-          <p>Hall: {reservation.hall.hallNumber}</p>
+          <p>Hall: {reservation.showing.hall.hallNumber}</p>
           <td className="center-text">
+            Seat:
             {reservation.reservedSeats.map((seat) => (
-              <span key={seat.id}>{seat.seatNumber},</span>
+              <span key={seat.id}>{seat.seatNumber}, </span>
             ))}
           </td>
           <td className="center-text">
+            Row:
             {reservation.reservedSeats.map((seat) => (
-              <span key={seat.id}>{seat.seatRowNumber}</span>
+              <span key={seat.id}>{seat.seatRowNumber}, </span>
             ))}
           </td>
           <p>Total payment: {reservation.price} dkk,-</p>
