@@ -157,8 +157,8 @@ const ShowingForm = () => {
             IMAX: <input type="checkbox" checked={isImax} onChange={() => setIsImax(!isImax)} />
           </label>
         </div>
-        <button type="submit">{showing ? "Update Showing" : "Add Showing"}</button>
       </form>
+      <button type="submit">{showing ? "Update Showing" : "Add Showing"}</button>
     </div>
   );
 };

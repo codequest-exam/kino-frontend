@@ -91,6 +91,7 @@ export default function Showings() {
         onClick={() => {
           navigate("/add-showing");
         }}
+        style={{ marginTop: "20px" }}
       >
         Add Showing
       </button>
