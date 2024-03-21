@@ -31,7 +31,7 @@ interface Showing {
 interface Hall {
   id: number;
   cinema: Cinema;
-  roomNumber: number;
+  hallNumber: number;
   seatRows: number;
   seatsPerRow: number;
   totalSeats: number;
@@ -67,6 +67,7 @@ interface Reservation {
   reservedSeats: Seat[];
   price: number;
   email: string;
+  user: User;
 }
 
 export type { Movie, Showing, Hall, User, Reservation, Cinema, Seat};

@@ -40,7 +40,7 @@ const ShowingForm = () => {
   useEffect(() => {
     if (showing) {
       setSelectedMovie(showing.movie.id.toString());
-      setSelectedHall(showing.hall.roomNumber.toString());
+      setSelectedHall(showing.hall.hallNumber.toString());
       setSelectedCinema(showing.hall.cinema.id.toString());
       setStartTime(showing.startTime);
       setIs3d(showing.is3d);
@@ -55,7 +55,7 @@ const ShowingForm = () => {
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const movie = movies.find((movie) => movie.id === Number(selectedMovie));
-    const hall = halls.find((hall) => hall.roomNumber === Number(selectedHall));
+    const hall = halls.find((hall) => hall.hallNumber === Number(selectedHall));
 
     if (!movie || !hall) {
       setMessage("Please select a movie and a hall");
@@ -129,8 +129,8 @@ const ShowingForm = () => {
           <select value={selectedHall} onChange={(e) => setSelectedHall(e.target.value)}>
             <option value="">Select hall</option>
             {filteredHalls.map((hall) => (
-              <option key={hall.roomNumber} value={hall.roomNumber}>
-                {hall.roomNumber}
+              <option key={hall.hallNumber} value={hall.hallNumber}>
+                {hall.hallNumber}
               </option>
             ))}
           </select>
