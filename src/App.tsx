@@ -52,7 +52,7 @@ function App() {
           <Route
             path="/reservations"
             element={
-              <RequireAuth roles={["ADMIN", "EMPLOYEE"]}>
+              <RequireAuth roles={["ADMIN"]}>
                 <ReservationLayout />
               </RequireAuth>
             }
