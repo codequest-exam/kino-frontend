@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Reservation as reservation } from "../services/apiFacade";
+import { Reservation as reservation } from "../services/Interfaces";
 import { getReservations } from "../services/apiFacade";
 import "./checkout.css";
 

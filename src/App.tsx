@@ -5,7 +5,7 @@ import MovieLayout from "./pages/movies/MovieLayout";
 import Cinemas from "./pages/Cinemas";
 import Login from "./security/Login";
 import Logout from "./security/Logout";
-import ShowingForm from "./pages/showings/ShowingForm";
+import AddShowing from "./pages/showings/AddShowing";
 import SeatReservation from "./pages/SeatReservation";
 import TicketPurchase from "./pages/TicketPurchase";
 import RequireAuth from "./security/RequireAuth";
@@ -16,6 +16,7 @@ import Checkout from "./pages/Checkout";
 import Users from "./pages/Users";
 import AddUser from "./pages/AddUser";
 import "./app.css";
+import ShowingsForMovie from "./pages/showings/ShowingsForMovie";
 
 function App() {
   return (
@@ -28,7 +29,7 @@ function App() {
             <Route path=":id" element={<Movie />} />
           </Route>
           <Route path="/cinemas" element={<Cinemas />} />
-          <Route path="/reservation" element={<SeatReservation />} />
+          <Route path="/reservation/:id" element={<SeatReservation />} />
           <Route
             path="/showings"
             element={
@@ -37,12 +38,13 @@ function App() {
               </RequireAuth>
             }
           />{" "}
+          <Route path="/showings/:id" element={<ShowingsForMovie />} />
           <Route path="/checkout" element={<Checkout />} />
           <Route
             path="/add-showing"
             element={
               <RequireAuth roles={["ADMIN", "EMPLOYEE"]}>
-                <ShowingForm />
+                <AddShowing />
               </RequireAuth>
             }
           />

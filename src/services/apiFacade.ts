@@ -1,79 +1,13 @@
 import { API_URL } from "../settings";
 import { handleHttpErrors, makeOptions } from "../services/fetchUtils";
-import { newReservation } from "../pages/SeatReservation";
+import { Seat, newReservation } from "../pages/SeatReservation";
+import { Movie, Showing, Hall, User, Reservation, Cinema } from "./Interfaces";
 
 const CACHE_TIME = 1 * 60 * 1000; // 1 min cache
 const MOVIE_URL = API_URL + "/movies";
 const SHOWING_URL = API_URL + "/showings";
 const USER_URL = API_URL + "/api/user-with-role";
 const LAST_FETCH = { movies: 0 };
-
-
-interface Movie {
-  id: number;
-  title: string;
-  year: string;
-  rated: string;
-  runtime: string;
-  genre: string;
-  director: string;
-  writer: string;
-  actors: string;
-  metascore: string;
-  imdbRating: string;
-  imdbVotes: string;
-  website: string;
-  response: string;
-  plot: string;
-  poster: string;
-  imdbID: string;
-}
-
-interface Showing {
-  id: number;
-  movie: Movie;
-  hall: Hall;
-  startTime: string;
-  moviePrice: number;
-  isImax: boolean;
-  is3d: boolean;
-}
-
-interface Hall {
-  id: number;
-  cinema: Cinema;
-  roomNumber: number;
-}
-interface User {
-  userName: string;
-  email: string;
-  roleNames: string[];
-  password: string;
-}
-
-interface Cinema {
-  id: number;
-  name: string;
-  address: string;
-}
-
-interface Seat {
-  id: number;
-  seatNumber: number;
-  seatRowNumber: number;
-}
-
-interface Reservation {
-  id: number;
-  showing: Showing;
-  hall: Hall;
-  movie: Movie;
-  date: string;
-  time: string;
-  reservedSeats: Seat[];
-  price: number;
-  email: string;
-}
 
 let movies: Array<Movie> = [];
 let showings: Array<Showing> = [];
@@ -116,10 +50,52 @@ async function getMovies(): Promise<Array<Movie>> {
 
   return res;
 }
+async function getHalls(): Promise<Array<Hall>> {
+  return fetch(API_URL + "/halls").then(handleHttpErrors);
+}
+async function getCinemas(): Promise<Array<Cinema>> {
+  return fetch(API_URL + "/cinemas").then(handleHttpErrors);
+}
 async function getShowings(): Promise<Array<Showing>> {
   const res = await fetch(SHOWING_URL).then(handleHttpErrors);
   showings = res;
   return showings;
+}
+async function addShowing(showing: object): Promise<Array<Showing>> {
+  const options = makeOptions("POST", showing, true);
+  const res = await fetch(SHOWING_URL, options).then(handleHttpErrors);
+  showings = res;
+  return showings;
+}
+async function updateShowing(id: number, showing: object): Promise<Array<Showing>> {
+  const options = makeOptions("PUT", showing, true);
+  const res = await fetch(SHOWING_URL + "/" + id, options).then(handleHttpErrors);
+  showings = res;
+  return showings;
+}
+async function deleteShowing(id: number): Promise<number> {
+  const options = makeOptions("DELETE", null, true);
+  const response = await fetch(SHOWING_URL + "/" + id, options);
+  return response.status;
+}
+async function getShowing(id:string): Promise<Showing> {
+  return await fetch(SHOWING_URL + "/" + id).then(handleHttpErrors);
+
+}
+async function getSeatsInHall(id: number): Promise<Array<Seat>> {
+  return await fetch(`${API_URL}/halls/${id}/seats`).then(handleHttpErrors);
+  
+}
+
+async function getShowingsByMovie(id:string) {
+  const res = await fetch(SHOWING_URL + "/movie/" + id).then(handleHttpErrors);
+  console.log(res);
+  return res;
+  
+}
+
+async function getReservedSeats(id:string) {
+  return await fetch(`${API_URL}/showings/${id}/takenSeats`).then(handleHttpErrors);
 }
 
 async function addReservation(newReservation: newReservation, loggedIn: boolean) {
@@ -138,6 +114,5 @@ async function getReservations(): Promise<Array<Reservation>> {
   return res;
 }
 
-export type { Movie, Showing, Hall, User, Reservation };
 
-export { getMovies, getMovie, addReservation, getShowings, getUsers, removeUserRole, editUserRole, getReservations, addUser };
+export { getMovies, getMovie, addReservation, getShowings, getUsers, removeUserRole, editUserRole, getReservations, addUser, getShowingsByMovie, getReservedSeats,getShowing,getSeatsInHall, addShowing, getHalls, getCinemas, updateShowing, deleteShowing };
