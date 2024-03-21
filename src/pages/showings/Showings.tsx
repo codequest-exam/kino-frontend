@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import { getShowings, deleteShowing } from "../../services/apiFacade";
 import { Showing } from "../../services/Interfaces";
-import "./showings.css";
 import { useNavigate } from "react-router-dom";
+import "./showings.css";
 
 export default function Showings() {
   const navigate = useNavigate();
@@ -97,6 +97,7 @@ export default function Showings() {
         onClick={() => {
           navigate("/add-showing");
         }}
+        style={{ marginTop: "20px" }}
       >
         Add Showing
       </button>

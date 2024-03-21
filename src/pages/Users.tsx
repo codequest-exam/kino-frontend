@@ -85,7 +85,9 @@ export default function Users() {
         </thead>
         <tbody>{userTableRows}</tbody>
       </table>
-      <button onClick={() => navigate("/users/add")}>Add user</button>
+      <button style={{ marginTop: "20px" }} onClick={() => navigate("/users/add")}>
+        Add user
+      </button>
     </div>
   );
 }
