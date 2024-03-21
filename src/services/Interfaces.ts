@@ -70,4 +70,4 @@ interface Reservation {
   user: User;
 }
 
-export type { Movie, Showing, Hall, User, Reservation, Cinema, Seat};
+export type { Movie, Showing, Hall, User, Reservation, Cinema, Seat };
