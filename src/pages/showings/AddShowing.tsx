@@ -98,8 +98,7 @@ const ShowingForm = () => {
       setIs3d(false);
       setIsImax(false);
     } catch (error) {
-      setMessage("Error adding/updating showing");
-      console.error("Error:", error);
+      setMessage("Error: " + (error as Error).message);
     }
   };
 
