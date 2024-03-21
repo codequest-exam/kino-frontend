@@ -28,23 +28,34 @@ const MyReservations = () => {
 
     return (
   <div>
-    <h1>My Reservations</h1>
+    <h1>Reservations</h1>
     {reservations.map((reservation) => {
       const date = new Date(reservation.showing.startTime);
       const formattedTime = `${date.getHours()}:${date.getMinutes().toString().padStart(2, "0")}`;
-      const formattedDate = date.toLocaleString("default", {
+      const formattedDate = date.toLocaleString('en-US', {
         month: "short",
         day: "2-digit",
       });
 
       return (
         <div key={reservation.id}>
+          <img src={reservation.movie.poster} alt={reservation.movie.title} />
           <p>{reservation.movie.title}</p>
-            <p>{reservation.user.userName}</p>
-            <p>{reservation.date}</p>
-            <td>
-              Kl.{formattedTime} d.{formattedDate}
-            </td>
+          <td>
+            {formattedTime} {formattedDate}
+          </td>
+          <p>Hall: {reservation.hall.hallNumber}</p>
+          <td className="center-text">
+            {reservation.reservedSeats.map((seat) => (
+              <span key={seat.id}>{seat.seatNumber},</span>
+            ))}
+          </td>
+          <td className="center-text">
+            {reservation.reservedSeats.map((seat) => (
+              <span key={seat.id}>{seat.seatRowNumber}</span>
+            ))}
+          </td>
+          <p>Total payment: {reservation.price} dkk,-</p>
         </div>
       );
     })}

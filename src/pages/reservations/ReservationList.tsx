@@ -27,7 +27,7 @@ const ReservationList: React.FC<Props> = ({ searchTerm }) => {
     const date = new Date(reservation.showing.startTime);
     console.log(reservation);
     const formattedTime = `${date.getHours()}:${date.getMinutes().toString().padStart(2, "0")}`;
-    const formattedDate = date.toLocaleString("default", {
+    const formattedDate = date.toLocaleString("en-US", {
       month: "short",
       day: "2-digit",
     });
@@ -37,7 +37,7 @@ const ReservationList: React.FC<Props> = ({ searchTerm }) => {
         <td className="center-text">{reservation.id}</td>
         <td>{reservation.showing.movie.title}</td>
         <td>
-          Kl.{formattedTime} d.{formattedDate}
+          {formattedTime} {formattedDate}
         </td>
         <td>{reservation.email}</td>
         <td>

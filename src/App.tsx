@@ -15,9 +15,9 @@ import Showings from "./pages/showings/Showings";
 import Checkout from "./pages/Checkout";
 import Users from "./pages/Users";
 import AddUser from "./pages/AddUser";
-
-import "./app.css";
 import ShowingsForMovie from "./pages/showings/ShowingsForMovie";
+import MyReservations from "./pages/reservations/MyReservations";
+import "./app.css";
 
 function App() {
   return (
@@ -61,7 +61,7 @@ function App() {
             path="/myreservations"
             element={
               <RequireAuth roles={["CUSTOMER"]}>
-                <ReservationLayout />
+                <MyReservations />
               </RequireAuth>
             }
           />
