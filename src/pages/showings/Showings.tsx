@@ -38,7 +38,7 @@ export default function Showings() {
     <tr key={showing.id}>
       <td>{showing.movie.title}</td>
       <td>{showing.hall.cinema.name}</td>
-      <td>{showing.hall.roomNumber}</td>
+      <td>{showing.hall.hallNumber}</td>
       <td>{formatStartTime(showing.startTime)}</td>
       <td>{formatStartDate(showing.startTime)}</td>
       <td>{showing.is3d ? "Yes" : "No"}</td>

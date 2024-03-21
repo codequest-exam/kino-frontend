@@ -2,17 +2,20 @@ import { useEffect, useState } from "react";
 import { editUserRole, getUsers, removeUserRole } from "../services/apiFacade";
 import { User } from "../services/Interfaces";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../security/AuthProvider";
 
 export default function Users() {
   const [users, setUsers] = useState<Array<User>>([]);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
+  const { currentUser } = useAuth();
 
   useEffect(() => {
     getUsers()
       .then((res) => {
-        setUsers(res);
+        const filteredUsers = res.filter((user) => user.userName !== currentUser?.username);
+        setUsers(filteredUsers);
         setLoading(false);
       })
       .catch(() => setError("Error fetching users, the server might be down."));

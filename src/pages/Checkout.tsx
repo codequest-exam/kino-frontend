@@ -21,7 +21,7 @@ export default function Checkout({ tempOrder}) {
         {reservation.showing.movie.title} {reservation.showing.movie.year}
       </h2>
       <p className="reservation-info">Cinema: {reservation.showing.hall.cinema.name}</p>
-      <p className="reservation-info">Hall: {reservation.showing.hall.roomNumber}</p>
+      <p className="reservation-info">Hall: {reservation.showing.hall.hallNumber}</p>
       <p className="reservation-info">Start time: {reservation.showing.startTime}</p>
       {reservation.reservedSeats.map((seat, index) => (
         <p key={index} className="reservation-info">
