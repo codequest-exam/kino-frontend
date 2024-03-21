@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import { addShowing, getMovies, getHalls, getCinemas, updateShowing } from "../../services/apiFacade";
 import { Movie, Cinema, Hall } from "../../services/Interfaces";
-// import { addShowing, getMovies, getHalls, getCinemas, Movie, Cinema, Hall, updateShowing } from "../../services/apiFacade";
 import { useLocation } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 
@@ -98,8 +97,7 @@ const ShowingForm = () => {
       setIs3d(false);
       setIsImax(false);
     } catch (error) {
-      setMessage("Error adding/updating showing");
-      console.error("Error:", error);
+      setMessage("Error: " + (error as Error).message);
     }
   };
 
