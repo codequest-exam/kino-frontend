@@ -9,10 +9,12 @@ export default function AddUser() {
   const [password, setPassword] = useState("");
   const [passwordRepeat, setPasswordRepeat] = useState("");
   const [message, setMessage] = useState("");
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    setLoading(true);
     if (password !== passwordRepeat) {
       setMessage("Passwords do not match");
       return;
@@ -24,9 +26,11 @@ export default function AddUser() {
         setUsername("");
         setPassword("");
         setPasswordRepeat("");
+        setLoading(false);
         navigate("/login");
       })
       .catch((error) => {
+        setLoading(false);
         setMessage(`Error adding user: ${error.message}`);
       });
   };
@@ -34,6 +38,7 @@ export default function AddUser() {
   return (
     <div>
       <h2>Sign up</h2>
+      {loading && <p>Loading...</p>}
       {message && <p>{message}</p>}
       <form onSubmit={handleSubmit} className="add-user-form">
         <div className="form-group">
@@ -52,7 +57,9 @@ export default function AddUser() {
           <label htmlFor="passwordRepeat">Repeat Password:</label>
           <input id="passwordRepeat" type="password" value={passwordRepeat} onChange={(e) => setPasswordRepeat(e.target.value)} required />
         </div>
-        <button type="submit">Sign up</button>
+        <button type="submit" disabled={loading}>
+          {loading ? "Signing up..." : "Sign up"}
+        </button>
       </form>
     </div>
   );

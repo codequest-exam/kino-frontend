@@ -16,6 +16,7 @@ const ShowingForm = () => {
   const [is3d, setIs3d] = useState<boolean>(false);
   const [isImax, setIsImax] = useState<boolean>(false);
   const [message, setMessage] = useState<string>("");
+  const [loading, setLoading] = useState<boolean>(true);
   const location = useLocation();
   const showing = location.state?.showing;
   const navigate = useNavigate();
@@ -29,6 +30,7 @@ const ShowingForm = () => {
         setMovies(moviesData);
         setCinemas(cinemasData);
         setHalls(hallsData);
+        setLoading(false);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
@@ -43,6 +45,7 @@ const ShowingForm = () => {
       setStartTime(showing.startTime);
       setIs3d(showing.is3d);
       setIsImax(showing.isImax);
+      setLoading(false);
     }
   }, [showing]);
 
@@ -59,6 +62,7 @@ const ShowingForm = () => {
   }, [selectedCinema, halls, showing]);
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    setLoading(true);
     const movie = movies.find((movie) => movie.id === Number(selectedMovie));
     const hall = halls.find((hall) => hall.id === Number(selectedHall));
 
@@ -85,9 +89,13 @@ const ShowingForm = () => {
       if (showing) {
         await updateShowing(showing.id, showingData);
         setMessage("Showing updated successfully");
+        setLoading(false);
+
         navigate("/showings");
       } else {
         await addShowing(showingData);
+        setLoading(false);
+
         setMessage("Showing added successfully");
       }
       setSelectedMovie("");
@@ -97,6 +105,7 @@ const ShowingForm = () => {
       setIs3d(false);
       setIsImax(false);
     } catch (error) {
+      setLoading(false);
       setMessage("Error: " + (error as Error).message);
     }
   };
@@ -104,6 +113,7 @@ const ShowingForm = () => {
   return (
     <div>
       <h2>{showing ? "Edit Showing" : "Add Showing"}</h2>
+      {loading && <p>Loading...</p>}
       {message && <p>{message}</p>}
       <form onSubmit={handleSubmit}>
         <label>
@@ -148,7 +158,11 @@ const ShowingForm = () => {
         <label>
           IMAX: <input type="checkbox" checked={isImax} onChange={() => setIsImax(!isImax)} />
         </label>
-        <button type="submit">{showing ? "Update Showing" : "Add Showing"}</button>
+        <button type="submit" disabled={loading}>
+          {" "}
+          {loading ? "Loading..." : ""}
+          {showing ? "Update Showing" : "Add Showing"}
+        </button>
       </form>
     </div>
   );
