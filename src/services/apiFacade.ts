@@ -36,20 +36,9 @@ async function getMovie(id: number): Promise<Movie> {
 }
 
 async function getMovies(): Promise<Array<Movie>> {
-  // if (LAST_FETCH.movies > Date.now() - CACHE_TIME) return [...movies];
-  
-  const res = await fetch("restfulkino-api.azurewebsites.net/movies").then(handleHttpErrors);
-  movies = [...res];
-  console.log(res, "res");
-  console.log(movies, "movies");
-  
-  
-  LAST_FETCH.movies = Date.now();
-  console.log(MOVIE_URL, "movieurl");
-  
-
-  return res;
+  return fetch(MOVIE_URL).then(handleHttpErrors);
 }
+
 async function getHalls(): Promise<Array<Hall>> {
   return fetch(API_URL + "/halls").then(handleHttpErrors);
 }
@@ -107,7 +96,7 @@ async function getReservations(): Promise<Array<Reservation>> {
   if (LAST_FETCH.movies > Date.now() - CACHE_TIME) return [...reservations];
   const res = await fetch(API_URL + "/reservations", options).then(handleHttpErrors);
   reservations = [...res];
-  
+
   return res;
 }
 async function getReservationsByUsername(username: string): Promise<Array<Reservation>> {
@@ -115,11 +104,9 @@ async function getReservationsByUsername(username: string): Promise<Array<Reserv
   const res = await fetch(API_URL + `/reservations/user/${username}`, options).then(handleHttpErrors);
   console.log(res, "res");
   console.log(username, "username");
-  
-  
+
   return res;
 }
-
 
 export {
   getMovies,
