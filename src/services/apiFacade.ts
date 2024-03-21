@@ -88,25 +88,27 @@ async function getReservedSeats(id: string) {
   return await fetch(`${API_URL}/showings/${id}/takenSeats`).then(handleHttpErrors);
 }
 
-async function addReservation(newReservation: newReservation, loggedIn: boolean, email?: string) {
+async function addReservation(newReservation: newReservation, loggedIn: boolean) {
   if (newReservation.reservedSeats === undefined) throw new Error("No seats selected");
   const cleanedReservation = {
     showing: { id: newReservation.showing.id },
     reservedSeats: newReservation.reservedSeats.map(seat => {
       return { id: seat.id };
-    }    ),
-    email: email,
+    }),
+    email: newReservation.email,
   };
   const options = makeOptions("POST", cleanedReservation, loggedIn);
   console.log("cleansed reservation", options);
 
-  return await fetch(API_URL + "/reservations", options)
+  return await fetch(API_URL + "/reservations", options).then(handleHttpErrors);
 }
 async function getReservations(): Promise<Array<Reservation>> {
   const options = makeOptions("GET", null, true);
   if (LAST_FETCH.movies > Date.now() - CACHE_TIME) return [...reservations];
   const res = await fetch(API_URL + "/reservations", options).then(handleHttpErrors);
   reservations = [...res];
+  console.log(reservations, "reservations");
+
   return res;
 }
 async function getReservationsByUsername(username: string): Promise<Array<Reservation>> {
@@ -114,11 +116,9 @@ async function getReservationsByUsername(username: string): Promise<Array<Reserv
   const res = await fetch(API_URL + `/reservations/user/${username}`, options).then(handleHttpErrors);
   console.log(res, "res");
   console.log(username, "username");
-  
-  
+
   return res;
 }
-
 
 export {
   getMovies,

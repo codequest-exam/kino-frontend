@@ -11,18 +11,31 @@ export default function Checkout({ tempOrder }: { tempOrder: newReservation }) {
   const [error, setError] = useState<string>();
   const [success, setSuccess] = useState(false);
   const auth = useAuth();
+  const [loading, setLoading] = useState(false);
 
-  async function handleReservation(reservation: newReservation) {
-    const succesCheck = await addReservation(reservation, auth.isLoggedIn());
-    console.log("succesCheck", succesCheck);
+  async function handleReservation() {
+    try {
+      setLoading(true);
+      // artificially slow down the reservation process
+      // setTimeout(() => {
+      //   console.log("waiting...");
 
-    if (succesCheck.ok) {
+      // }, 2000);
+      console.log("temp order", tempOrder);
+
+      const res = await addReservation(tempOrder, auth.isLoggedIn());
+      console.log(res, "res");
+
+      // setInterval(() => {console.log("waiting...")}, 1000);
+      // await addReservation(reservation, auth.isLoggedIn());
+
       console.log("Reservation successful");
-
+      setLoading(false);
       setSuccess(true);
-    } else {
+    } catch (error) {
       console.log("Reservation failed");
-      setError("Something went wrong");
+      // setError(error.message);
+      setError((error as Error).message);
     }
   }
 
@@ -55,7 +68,9 @@ export default function Checkout({ tempOrder }: { tempOrder: newReservation }) {
   return success ? (
     <h1>Reservation successful</h1>
   ) : error ? (
-    <h1>Something went wrong</h1>
+    <h1>{error}</h1>
+  ) : loading ? (
+    <h1>Making reservation...</h1>
   ) : (
     tempOrder && (
       <div className="reservation-list-container">

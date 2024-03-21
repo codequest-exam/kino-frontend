@@ -20,7 +20,8 @@ const ReservationList: React.FC<Props> = ({ searchTerm }) => {
   }, [searchTerm]);
 
   const filterReservationsByEmail = reservations.filter((reservation) =>
-    reservation.email.toLowerCase().includes(searchTerm.toLowerCase())
+    reservation.email?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    reservation.user?.email?.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   const formatTime = filterReservationsByEmail.map((reservation) => {
@@ -33,6 +34,7 @@ const ReservationList: React.FC<Props> = ({ searchTerm }) => {
     });
 
     return (
+
       <tr key={reservation.id}>
         <td className="center-text">{reservation.id}</td>
         <td>{reservation.showing.movie.title}</td>

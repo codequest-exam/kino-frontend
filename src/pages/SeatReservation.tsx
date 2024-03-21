@@ -36,32 +36,32 @@ export type PriceInfo = {
   priceWithReservationFee: number;
 };
 
-export type newReservation = { showing: Showing; reservedSeats: Array<Seat> | undefined; priceInfo: PriceInfo };
+export type newReservation = { showing: Showing; reservedSeats: Array<Seat> | undefined; priceInfo: PriceInfo; email: string };
 
-function SeatReservation({ setTempOrder }: { setTempOrder: (order: any) => void }) {
-  // convert id to number immediately
+function SeatReservation({ setTempOrder }: { setTempOrder: (newReservation: newReservation) => void }) {
+  const auth = useAuth();
 
   const { id } = useParams<{ id: string }>();
 
   const [hallLayout, setHallLayout] = useState<HallStats>();
-  const auth = useAuth();
+
   const takenSeatsRef = useRef<number[]>([]);
   const showingRef = useRef<Showing>();
   const [priceInfo, setPriceInfo] = useState<PriceInfo>();
+  const [email, setEmail] = useState<string>("");
+  const [activeSubmit, setActiveSubmit] = useState<boolean>(auth.isLoggedIn());
 
   const [seats, setSeats] = useState<Seat[]>();
   const [errorMsg, setErrorMsg] = useState<string>();
 
   const [selectedSeats, setSelectedSeats] = useState<Seat[]>([]);
 
-  // .map((seat, index) =>
-  //   ({ id: index + 1, status: takenSeatsRef.current.includes(index + 1) ? "reserved" : "available" })
-  // )
-
   useEffect(() => {
     const fetchSeats = async () => {
       if (id === undefined) return;
       const reservedSeats = await getReservedSeats(id);
+      console.log("reservedSeats", reservedSeats);
+
       takenSeatsRef.current = reservedSeats;
       getHallLayout();
     };
@@ -78,6 +78,8 @@ function SeatReservation({ setTempOrder }: { setTempOrder: (order: any) => void 
       for (const seat of seatsInHall) {
         seat.status = takenSeatsRef.current.includes(seat.seatNumber) ? SeatStatus.RESERVED : SeatStatus.AVAILABLE;
       }
+      // console.log("seatsInHall", seatsInHall);
+
       setSeats([...seatsInHall]);
     };
 
@@ -111,6 +113,15 @@ function SeatReservation({ setTempOrder }: { setTempOrder: (order: any) => void 
     console.log("priceObject", priceObject);
 
     return priceObject;
+  }
+
+  function emailChanged(event: string) {
+    console.log("event", event);
+
+    setEmail(event);
+    // check for elligble mmail
+    if (event.length > 5) setActiveSubmit(true);
+    else setActiveSubmit(false);
   }
 
   const handleSeatClick = (id: number) => {
@@ -152,13 +163,32 @@ function SeatReservation({ setTempOrder }: { setTempOrder: (order: any) => void 
       showing: showingRef.current,
       reservedSeats: selectedSeats,
       priceInfo: priceInfo,
+      email: email,
     };
     setTempOrder(newReservation);
   }
 
   return hallLayout && seats ? (
     <>
-      <HallLayout HallStats={hallLayout} seats={seats} handleSeatClick={handleSeatClick} handleConfirmClick={handleConfirmClick} />
+      {!auth.isLoggedIn() && (
+        <>
+          <h3>When not logged in you must supply an email</h3>
+          <label>
+            Email:
+            <input type="email" value={email} onChange={e => emailChanged(e.target.value)} />
+          </label>
+        </>
+      )}
+      <>
+        <HallLayout
+          HallStats={hallLayout}
+          seats={seats}
+          handleSeatClick={handleSeatClick}
+          handleConfirmClick={handleConfirmClick}
+          activeSubmit={activeSubmit}
+        />
+        {/* <HallLayout HallStats={hallLayout} seats={seats} handleSeatClick={handleSeatClick} handleConfirmClick={handleConfirmClick} setEmail={setEmail} /> */}
+      </>
       {priceInfo && <PriceDisplay priceInfo={priceInfo} />}
       {errorMsg && <p style={{ color: "red" }}>{errorMsg}</p>}
     </>
