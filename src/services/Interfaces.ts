@@ -69,4 +69,4 @@ interface Reservation {
   email: string;
 }
 
-export type { Movie, Showing, Hall, User, Reservation, Cinema, Seat};
+export type { Movie, Showing, Hall, User, Reservation, Cinema, Seat };
