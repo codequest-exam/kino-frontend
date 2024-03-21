@@ -18,22 +18,12 @@ export default function NavHeader() {
           <li>
             <NavLink to="/movies">Movies</NavLink>
           </li>
-          <li>
-            <NavLink to="/cinemas">Cinemas</NavLink>
-          </li>
-          <li>
-            <NavLink to="/reservation">Seat Reservation</NavLink>
-          </li>
-          {/* Skal slettes / laves til egen skærm, er tilføjet for at teste */}
-          <li>
-            <NavLink to="/checkout">Checkout</NavLink>
-          </li>
           {!auth.isLoggedIn() && (
             <li>
               <NavLink to="/users/add">Sign up</NavLink>
             </li>
           )}
-          {auth.isLoggedInAs(["USER", "ADMIN"]) && (
+          {auth.isLoggedInAs(["ADMIN"]) && (
             <li>
               <NavLink to="/showings">Showings</NavLink>
             </li>
@@ -55,16 +45,9 @@ export default function NavHeader() {
           )}
           <AuthStatus />
           <li>
-            <NavLink to="/ticket-purchase">
-              <button
-                className="buy-ticket"
-                style={{ display: "flex", alignItems: "center" }}
-              >
-                <img
-                  src="logo.png"
-                  alt="Logo"
-                  style={{ width: "20px", marginRight: "5px" }}
-                />
+            <NavLink to="/movies">
+              <button className="buy-ticket" style={{ display: "flex", alignItems: "center" }}>
+                <img src="logo.png" alt="Logo" style={{ width: "20px", marginRight: "5px" }} />
                 Buy Ticket
               </button>
             </NavLink>
