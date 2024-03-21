@@ -122,6 +122,7 @@ const ShowingForm = () => {
         <label>
           Cinema:
           <select value={selectedCinema} onChange={(e) => setSelectedCinema(e.target.value)}>
+            <option value="">Select cinema</option>
             {cinemas.map((cinema) => (
               <option key={cinema.id} value={cinema.id}>
                 {cinema.name}
