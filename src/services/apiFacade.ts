@@ -101,6 +101,12 @@ async function getReservations(): Promise<Array<Reservation>> {
   reservations = [...res];
   return res;
 }
+async function getReservationsByUsersUsername(username: string): Promise<Array<Reservation>> {
+  const options = makeOptions("GET", null, true);
+  const res = await fetch(API_URL + `/reservations/user/${username}`, options).then(handleHttpErrors);
+  return res;
+}
+
 
 export {
   getMovies,

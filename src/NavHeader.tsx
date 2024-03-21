@@ -48,11 +48,23 @@ export default function NavHeader() {
               <NavLink to="/users">Users</NavLink>
             </li>
           )}
+          {auth.isLoggedInAs(["CUSTOMER"]) && (
+            <li>
+              <NavLink to="/myreservations">My Reservations</NavLink>
+            </li>
+          )}
           <AuthStatus />
           <li>
             <NavLink to="/ticket-purchase">
-              <button className="buy-ticket" style={{ display: "flex", alignItems: "center" }}>
-                <img src="logo.png" alt="Logo" style={{ width: "20px", marginRight: "5px" }} />
+              <button
+                className="buy-ticket"
+                style={{ display: "flex", alignItems: "center" }}
+              >
+                <img
+                  src="logo.png"
+                  alt="Logo"
+                  style={{ width: "20px", marginRight: "5px" }}
+                />
                 Buy Ticket
               </button>
             </NavLink>
