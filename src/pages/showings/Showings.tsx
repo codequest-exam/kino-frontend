@@ -81,6 +81,8 @@ export default function Showings() {
             <th>Date</th>
             <th>3D</th>
             <th>IMAX</th>
+            <th>Edit</th>
+            <th>Delete</th>
           </tr>
         </thead>
         <tbody>{showingTableRows}</tbody>
