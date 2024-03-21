@@ -10,8 +10,6 @@ interface Props {
 
 const ReservationList: React.FC<Props> = ({ searchTerm }) => {
   const [reservations, setReservations] = useState<Array<APIReservation>>([]);
-  console.log("reservations", reservations);
-
   const [error, setError] = useState("");
 
   useEffect(() => {
@@ -25,11 +23,11 @@ const ReservationList: React.FC<Props> = ({ searchTerm }) => {
     reservation.email.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-  const reservationListItems = filterReservationsByEmail.map((reservation) => {
+  const formatTime = filterReservationsByEmail.map((reservation) => {
     const date = new Date(reservation.showing.startTime);
     console.log(reservation);
     const formattedTime = `${date.getHours()}:${date.getMinutes().toString().padStart(2, "0")}`;
-    const formattedDate = date.toLocaleString("default", {
+    const formattedDate = date.toLocaleString("en-US", {
       month: "short",
       day: "2-digit",
     });
@@ -39,12 +37,17 @@ const ReservationList: React.FC<Props> = ({ searchTerm }) => {
         <td className="center-text">{reservation.id}</td>
         <td>{reservation.showing.movie.title}</td>
         <td>
-          Kl.{formattedTime} d.{formattedDate}
+          {formattedTime} {formattedDate}
         </td>
-        <td>{reservation.email}</td>
         <td>
-          {/* {reservation.user.username}  */}
-        {/* {reservation.user.email} */}
+          {reservation.user && reservation.user.email
+            ? reservation.user.email
+            : reservation.email}
+        </td>
+        <td>
+          {reservation.user && reservation.user.userName
+            ? reservation.user.userName
+            : "Anonymous"}
         </td>
         <td>{reservation.price} dkk,-</td>
         <td>{reservation.showing.hall.cinema.name}</td>
@@ -59,8 +62,12 @@ const ReservationList: React.FC<Props> = ({ searchTerm }) => {
             <span key={seat.id}>{seat.seatRowNumber}</span>
           ))}
         </td>
-        <td className="center-text">{reservation.showing.is3d ? "Yes" : "No"}</td>
-        <td className="center-text">{reservation.showing.isImax ? "Yes" : "No"}</td>
+        <td className="center-text">
+          {reservation.showing.is3d ? "Yes" : "No"}
+        </td>
+        <td className="center-text">
+          {reservation.showing.isImax ? "Yes" : "No"}
+        </td>
       </tr>
     );
   });
@@ -88,7 +95,7 @@ const ReservationList: React.FC<Props> = ({ searchTerm }) => {
             <th>IMAX</th>
           </tr>
         </thead>
-        <tbody>{reservationListItems}</tbody>
+        <tbody>{formatTime}</tbody>
       </table>
     </>
   );

@@ -15,9 +15,10 @@ import Showings from "./pages/showings/Showings";
 import Checkout from "./pages/Checkout";
 import Users from "./pages/Users";
 import AddUser from "./pages/AddUser";
-import "./app.css";
 import ShowingsForMovie from "./pages/showings/ShowingsForMovie";
 import SeatBookingController from "./pages/SeatBookingController";
+import MyReservations from "./pages/reservations/MyReservations";
+import "./app.css";
 
 function App() {
   return (
@@ -54,6 +55,14 @@ function App() {
             element={
               <RequireAuth roles={["ADMIN", "EMPLOYEE"]}>
                 <ReservationLayout />
+              </RequireAuth>
+            }
+          />
+          <Route
+            path="/myreservations"
+            element={
+              <RequireAuth roles={["CUSTOMER"]}>
+                <MyReservations />
               </RequireAuth>
             }
           />
