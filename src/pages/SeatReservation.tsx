@@ -1,9 +1,10 @@
 import { useEffect, useState, useRef } from "react";
 import HallLayout from "../components/HallLayout";
-import { addReservation, getReservedSeats, getShowing, getSeatsInHall } from "../services/apiFacade";
+import { getReservedSeats, getShowing, getSeatsInHall } from "../services/apiFacade";
 import { useAuth } from "../security/AuthProvider";
 import { useParams } from "react-router";
 import PriceDisplay from "../components/PriceDisplay";
+import { Showing } from "../services/Interfaces";
 
 export enum SeatStatus {
   AVAILABLE = "available",
@@ -17,6 +18,7 @@ export type Seat = {
   seatRowNumber: number;
   price: number;
   status: SeatStatus;
+  priceClass: string;
 };
 
 export type HallStats = {
@@ -24,7 +26,17 @@ export type HallStats = {
   seatsPerRow: number;
 };
 
-export type newReservation = { showing: { id: number }; reservedSeats: Array<{ id: number }> | undefined };
+export type PriceInfo = {
+  price: number;
+  standard: number;
+  cowboy: number;
+  sofa: number;
+  totalSeats: number;
+  priceWithGroupDiscount: number;
+  priceWithReservationFee: number;
+};
+
+export type newReservation = { showing: Showing; reservedSeats: Array<Seat> | undefined; priceInfo: PriceInfo };
 
 function SeatReservation({ setTempOrder }: { setTempOrder: (order: any) => void }) {
   // convert id to number immediately
@@ -34,8 +46,11 @@ function SeatReservation({ setTempOrder }: { setTempOrder: (order: any) => void 
   const [hallLayout, setHallLayout] = useState<HallStats>();
   const auth = useAuth();
   const takenSeatsRef = useRef<number[]>([]);
+  const showingRef = useRef<Showing>();
+  const [priceInfo, setPriceInfo] = useState<PriceInfo>();
 
   const [seats, setSeats] = useState<Seat[]>();
+  const [errorMsg, setErrorMsg] = useState<string>();
 
   const [selectedSeats, setSelectedSeats] = useState<Seat[]>([]);
 
@@ -54,6 +69,7 @@ function SeatReservation({ setTempOrder }: { setTempOrder: (order: any) => void 
     const getHallLayout = async () => {
       if (id === undefined) return;
       const showingInfo = await getShowing(id);
+      showingRef.current = showingInfo;
 
       setHallLayout({ rows: showingInfo.hall.seatRows, seatsPerRow: showingInfo.hall.seatsPerRow });
 
@@ -69,53 +85,82 @@ function SeatReservation({ setTempOrder }: { setTempOrder: (order: any) => void 
     // getHallLayout();
   }, []);
 
-  // const [selectedSeatPrice, setSelectedSeatPrice] = useState<number | null>(null);
+  function calcPrice(seats: Seat[]) {
+    if (seats === undefined) return;
+    console.log("seats", seats);
+
+    const priceObject: PriceInfo = {
+      price: 0,
+      standard: 0,
+      cowboy: 0,
+      sofa: 0,
+      totalSeats: 0,
+      priceWithGroupDiscount: 0,
+      priceWithReservationFee: 0,
+    };
+
+    seats.forEach(seat => {
+      priceObject.price += seat.price;
+      priceObject.totalSeats += 1;
+      priceObject[seat.priceClass as keyof PriceInfo] += 1;
+    });
+    // limit decimals to 2
+    priceObject.priceWithGroupDiscount = priceObject.totalSeats >= 10 ? (priceObject.price * 0.93 * 100) / 100 : priceObject.price;
+
+    priceObject.priceWithReservationFee = priceObject.totalSeats <= 5 && priceObject.totalSeats >= 1 ? priceObject.price * 1.03 : priceObject.price;
+    console.log("priceObject", priceObject);
+
+    return priceObject;
+  }
 
   const handleSeatClick = (id: number) => {
     if (seats === undefined) return;
-    const selectedSeats = seats.map(seat => {
+    const allSeats = seats.map(seat => {
       if (seat.id === id) {
         if (seat.status === SeatStatus.AVAILABLE) {
-          // setSelectedSeatPrice(seat.price);
           return { ...seat, status: SeatStatus.SELECTED };
-          // If seat is selected, change status to "available"
         } else if (seat.status === SeatStatus.SELECTED) {
           return { ...seat, status: SeatStatus.AVAILABLE };
         }
       }
       return seat;
     });
-    const selectedSeatsIds = selectedSeats.filter(seat => seat.status === SeatStatus.SELECTED);
-    setSelectedSeats(selectedSeatsIds);
-    setSeats([...selectedSeats]);
+    const selectedSeats = allSeats.filter(seat => seat.status === SeatStatus.SELECTED);
+    console.log("selectedSeatsIds", selectedSeats);
+    setSelectedSeats(selectedSeats);
+    setSeats([...allSeats]);
+    setPriceInfo(calcPrice(selectedSeats));
   };
 
   async function handleConfirmClick() {
     // array as number
-    const reservedSeats: { id: number }[] = [];
+    // const reservedSeats: { id: number }[] = [];
     if (id === undefined) {
-      console.error("MISSING ID IN HANDLE CONFIRM CLICKED");
+      setErrorMsg("MISSING SHOW ID IN HANDLE CONFIRM CLICKED");
       return;
     }
-    selectedSeats.map(seat => reservedSeats.push({ id: Number(seat.id) }));
 
+    if (priceInfo === undefined) {
+      setErrorMsg("MISSING PRICE INFO IN HANDLE CONFIRM CLICKED");
+      return;
+    }
+    if (showingRef.current === undefined) {
+      setErrorMsg("MISSING SHOWING INFO IN HANDLE CONFIRM CLICKED");
+      return;
+    }
     const newReservation: newReservation = {
-      showing: { id: Number(id) },
-      reservedSeats,
+      showing: showingRef.current,
+      reservedSeats: selectedSeats,
+      priceInfo: priceInfo,
     };
-    console.log(newReservation);
-
-    console.log("temporder + ",setTempOrder);
-    
     setTempOrder(newReservation);
-    // const result = await addReservation(newReservation, auth.isLoggedIn());
-    // console.log("result", result);
   }
 
   return hallLayout && seats ? (
     <>
       <HallLayout HallStats={hallLayout} seats={seats} handleSeatClick={handleSeatClick} handleConfirmClick={handleConfirmClick} />
-      <PriceDisplay seats={selectedSeats} />
+      {priceInfo && <PriceDisplay priceInfo={priceInfo} />}
+      {errorMsg && <p style={{ color: "red" }}>{errorMsg}</p>}
     </>
   ) : (
     <div>Loading...</div>

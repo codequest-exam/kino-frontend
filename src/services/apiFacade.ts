@@ -88,11 +88,19 @@ async function getReservedSeats(id: string) {
   return await fetch(`${API_URL}/showings/${id}/takenSeats`).then(handleHttpErrors);
 }
 
-async function addReservation(newReservation: newReservation, loggedIn: boolean) {
-  const options = makeOptions("POST", newReservation, loggedIn);
-  console.log("options", options);
+async function addReservation(newReservation: newReservation, loggedIn: boolean, email?: string) {
+  if (newReservation.reservedSeats === undefined) throw new Error("No seats selected");
+  const cleanedReservation = {
+    showing: { id: newReservation.showing.id },
+    reservedSeats: newReservation.reservedSeats.map(seat => {
+      return { id: seat.id };
+    }    ),
+    email: email,
+  };
+  const options = makeOptions("POST", cleanedReservation, loggedIn);
+  console.log("cleansed reservation", options);
 
-  return await fetch(API_URL + "/reservations", options).then(handleHttpErrors);
+  return await fetch(API_URL + "/reservations", options)
 }
 async function getReservations(): Promise<Array<Reservation>> {
   const options = makeOptions("GET", null, true);

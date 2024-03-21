@@ -24,7 +24,9 @@ export default function HallLayout({ HallStats, seats, handleSeatClick, handleCo
             key={seat.id}
             style={{
               backgroundColor: seat.status === SeatStatus.AVAILABLE ? "green" : seat.status === SeatStatus.RESERVED ? "grey" : "red",
-              // backgroundColor: seat.status ===  ? "red" : seat.status === "reserved" ? "grey" : "green",
+              // change opacity based on priceclass
+              opacity: seat.priceClass === "cowboy" ? "0.7" : seat.priceClass === "standard" ? "0.8" : "1",
+
               margin: "5px",
               padding: "10px",
               borderRadius: "5px",

@@ -1,16 +1,15 @@
 import React, { useState } from "react";
 import Checkout from "./Checkout";
-import SeatReservation from "./SeatReservation";
+import SeatReservation, { newReservation } from "./SeatReservation";
 
 export default function SeatBookingController() {
   // const [orderReady, setOrderReady] = useState(false);
-  const [tempOrder, setTempOrder] = useState({});
+  const [tempOrder, setTempOrder] = useState<newReservation>();
+  
 
-  return tempOrder.reservedSeats ? (
-    <>
+  return tempOrder ? (
       <Checkout tempOrder={tempOrder} />
-    </>
   ) : (
-    <SeatReservation setTempOrder={setTempOrder} />
+    <SeatReservation setTempOrder={setTempOrder}  />
   );
 }
