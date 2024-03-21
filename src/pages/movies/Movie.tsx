@@ -7,18 +7,30 @@ import "./movie.css";
 
 export default function Movie() {
   const { id } = useParams();
-  // const [movie, setMovie] = useState<Movie | null>(null);
   const [movie, setMovie] = useState<APIMovie | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
   useEffect(() => {
-    getMovie(Number(id)).then((res) => setMovie(res));
+    getMovie(Number(id))
+      .then((res) => {
+        setMovie(res);
+        setLoading(false);
+      })
+      .catch(() => {
+        setError("Error fetching movie, the server might be down.");
+        setLoading(false);
+      });
   }, [id]);
 
   // function redirectToShowings(id: number) {
   //   console.log("redirecting to showings for movie with id: " + id);
   // }
-
+  if (loading) {
+    return <h2>Loading...</h2>;
+  }
   return (
     <>
+      {error && <div>{error}</div>}
       {movie ? (
         <div className="movie-container">
           <h3 className="movie-title">{movie.title}</h3>

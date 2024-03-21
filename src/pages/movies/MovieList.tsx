@@ -7,13 +7,19 @@ import "./movielist.css";
 
 export default function MovieList() {
   const [movies, setMovies] = useState<Array<Movie>>([]);
-  // const [movies, setMovies] = useState<Array<APIMovie>>([]);
+  const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
   useEffect(() => {
     getMovies()
-      .then((res) => setMovies(res))
-      .catch(() => setError("Error fetching movies, the server might be down."));
+      .then((res) => {
+        setMovies(res);
+        setLoading(false);
+      })
+      .catch(() => {
+        setError("Error fetching movies, the server might be down.");
+        setLoading(false);
+      });
   }, []);
 
   const movieListItems = movies.map((movie) => {
@@ -31,6 +37,7 @@ export default function MovieList() {
       </li>
     );
   });
+  if (loading) return <h2>Loading...</h2>;
 
   if (error !== "") {
     return <h2 style={{ color: "red" }}>{error}</h2>;

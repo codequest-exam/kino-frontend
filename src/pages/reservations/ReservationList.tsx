@@ -11,14 +11,21 @@ interface Props {
 const ReservationList: React.FC<Props> = ({ searchTerm }) => {
   const [reservations, setReservations] = useState<Array<APIReservation>>([]);
   const [error, setError] = useState("");
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     getReservations()
-      .then((res) => setReservations(res))
+      .then((res) => {
+        setReservations(res);
+        setLoading(false);
+      })
       .catch(() => setError("Error fetching reservations, the server might be down."));
   }, [searchTerm]);
 
-  const filterReservationsByEmail = reservations.filter((reservation) => reservation.email.toLowerCase().includes(searchTerm.toLowerCase()));
+  const filterReservationsByEmail = reservations.filter((reservation) => 
+  (reservation.user && reservation.user.email 
+              ? reservation.user.email 
+              : reservation.email).toLowerCase().includes(searchTerm.toLowerCase()));
 
   const formatTime = filterReservationsByEmail.map((reservation) => {
     const date = new Date(reservation.showing.startTime);
@@ -36,11 +43,10 @@ const ReservationList: React.FC<Props> = ({ searchTerm }) => {
         <td>
           {formattedTime} {formattedDate}
         </td>
-        <td>{reservation.email}</td>
-        <td>
-          {/* {reservation.user.username}  */}
-          {/* {reservation.user.email} */}
-        </td>
+        <td>{reservation.user && reservation.user.email 
+              ? reservation.user.email 
+              : reservation.email}</td>
+        <td>{reservation.user && reservation.user.userName ? reservation.user.userName : "Anonymous"}</td>
         <td>{reservation.price} dkk,-</td>
         <td>{reservation.showing.hall.cinema.name}</td>
         <td>{reservation.showing.hall.hallNumber}</td>
@@ -63,6 +69,7 @@ const ReservationList: React.FC<Props> = ({ searchTerm }) => {
   if (error !== "") {
     return <h2 style={{ color: "red" }}>{error}</h2>;
   }
+  if (loading) return <h2>Loading...</h2>;
 
   return (
     <>

@@ -8,11 +8,15 @@ const MyReservations = () => {
   const { currentUser } = useAuth();
   const [reservations, setReservations] = useState<Array<APIReservation>>([]);
   const [error, setError] = useState("");
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     if (currentUser) {
       getReservationsByUsername(currentUser.username)
-        .then((res) => setReservations(res))
+        .then((res) => {
+          setReservations(res);
+          setLoading(false);
+        })
         .catch(() => setError("Error fetching reservations, the server might be down."));
     }
   }, [currentUser]);
@@ -24,6 +28,7 @@ const MyReservations = () => {
   if (error !== "") {
     return <h2 style={{ color: "red" }}>{error}</h2>;
   }
+  if (loading) return <h2>Loading...</h2>;
 
   return (
     <div>
@@ -31,7 +36,7 @@ const MyReservations = () => {
       {reservations.map((reservation) => {
         const date = new Date(reservation.showing.startTime);
         const formattedTime = `${date.getHours()}:${date.getMinutes().toString().padStart(2, "0")}`;
-        const formattedDate = date.toLocaleString("en-US", {
+        const formattedDate = date.toLocaleString("en-UK", {
           month: "short",
           day: "2-digit",
         });
