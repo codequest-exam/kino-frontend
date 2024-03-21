@@ -1,0 +1,47 @@
+.reservation-card {
+  display: flex;
+  border: 1px solid #ddd;
+  margin-bottom: 10px;
+  padding: 10px;
+  border-radius: 5px;
+}
+
+.reservation-image {
+  width: 130px;
+  height: 200px;
+  margin-right: 10px;
+}
+
+.reservation-details {
+  display: flex;
+  flex-direction: column;
+}
+
+.reservation-title {
+  margin: 0;
+  font-size: 1.2em;
+}
+
+.reservation-text {
+  margin: 5px 0;
+}
+
+.reservation-seats {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.reservation-seats th,
+.reservation-seats td {
+  border: 1px solid #000000;
+  padding: 8px;
+}
+
+.reservation-seats th {
+  background-color: #5bff3a;
+  text-align: left;
+}
+
+.center-text {
+  text-align: center;
+}

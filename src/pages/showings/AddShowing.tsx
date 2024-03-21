@@ -3,6 +3,7 @@ import { addShowing, getMovies, getHalls, getCinemas, updateShowing } from "../.
 import { Movie, Cinema, Hall } from "../../services/Interfaces";
 import { useLocation } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
+import "../addUser.css";
 
 const ShowingForm = () => {
   const [movies, setMovies] = useState<Movie[]>([]);
@@ -105,49 +106,57 @@ const ShowingForm = () => {
     <div>
       <h2>{showing ? "Edit Showing" : "Add Showing"}</h2>
       {message && <p>{message}</p>}
-      <form onSubmit={handleSubmit}>
-        <label>
-          Movie:
-          <select value={selectedMovie} onChange={(e) => setSelectedMovie(e.target.value)}>
-            <option value="">Select movie</option>
-            {movies.map((movie) => (
-              <option key={movie.id} value={movie.id}>
-                {movie.title}
-              </option>
-            ))}
-          </select>
-        </label>
-        <label>
-          Cinema:
-          <select value={selectedCinema} onChange={(e) => setSelectedCinema(e.target.value)}>
-            <option value="">Select cinema</option>
-            {cinemas.map((cinema) => (
-              <option key={cinema.id} value={cinema.id}>
-                {cinema.name}
-              </option>
-            ))}
-          </select>
-        </label>
-        <label>
-          Hall:
-          <select value={selectedHall} onChange={(e) => setSelectedHall(e.target.value)}>
-            <option value="">Select hall</option>
-            {filteredHalls.map((hall) => (
-              <option key={hall.id} value={hall.id}>
-                {hall.hallNumber}
-              </option>
-            ))}
-          </select>
-        </label>
-        <label>
-          Showing time: <input type="datetime-local" value={startTime} onChange={(e) => setStartTime(e.target.value)} required />
-        </label>
-        <label>
-          3D: <input type="checkbox" checked={is3d} onChange={() => setIs3d(!is3d)} />
-        </label>
-        <label>
-          IMAX: <input type="checkbox" checked={isImax} onChange={() => setIsImax(!isImax)} />
-        </label>
+      <form className="add-user-form" onSubmit={handleSubmit}>
+        <div className="form-group">
+          <label>
+            Movie:
+            <select value={selectedMovie} onChange={(e) => setSelectedMovie(e.target.value)}>
+              <option value="">Select movie</option>
+              {movies.map((movie) => (
+                <option key={movie.id} value={movie.id}>
+                  {movie.title}
+                </option>
+              ))}
+            </select>
+          </label>
+        </div>
+        <div className="form-group">
+          <label>
+            Cinema:
+            <select value={selectedCinema} onChange={(e) => setSelectedCinema(e.target.value)}>
+              <option value="">Select cinema</option>
+              {cinemas.map((cinema) => (
+                <option key={cinema.id} value={cinema.id}>
+                  {cinema.name}
+                </option>
+              ))}
+            </select>
+          </label>
+        </div>
+        <div className="form-group">
+          <label>
+            Hall:
+            <select value={selectedHall} onChange={(e) => setSelectedHall(e.target.value)}>
+              <option value="">Select hall</option>
+              {filteredHalls.map((hall) => (
+                <option key={hall.id} value={hall.id}>
+                  {hall.hallNumber}
+                </option>
+              ))}
+            </select>
+          </label>
+        </div>
+        <div className="form-group">
+          <label>
+            Showing time: <input type="datetime-local" value={startTime} onChange={(e) => setStartTime(e.target.value)} required />
+          </label>
+          <label>
+            3D: <input type="checkbox" checked={is3d} onChange={() => setIs3d(!is3d)} />
+          </label>
+          <label>
+            IMAX: <input type="checkbox" checked={isImax} onChange={() => setIsImax(!isImax)} />
+          </label>
+        </div>
         <button type="submit">{showing ? "Update Showing" : "Add Showing"}</button>
       </form>
     </div>
