@@ -48,6 +48,7 @@ const ReservationList: React.FC<Props> = ({ searchTerm }) => {
               : reservation.email}</td>
         <td>{reservation.user && reservation.user.userName ? reservation.user.userName : "Anonymous"}</td>
         <td>{reservation.price} dkk,-</td>
+        <td>{reservation.showing.id}</td>
         <td>{reservation.showing.hall.cinema.name}</td>
         <td>{reservation.showing.hall.hallNumber}</td>
         <td className="center-text">
@@ -82,6 +83,7 @@ const ReservationList: React.FC<Props> = ({ searchTerm }) => {
             <th>Email</th>
             <th>User Name</th>
             <th>Price</th>
+            <th>Showing ID</th>
             <th>Cinema</th>
             <th>Hall</th>
             <th>Seat</th>
