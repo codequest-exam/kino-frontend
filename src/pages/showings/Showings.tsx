@@ -8,10 +8,14 @@ export default function Showings() {
   const navigate = useNavigate();
   const [showings, setShowings] = useState<Array<Showing>>([]);
   const [error, setError] = useState("");
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     getShowings()
-      .then((res) => setShowings(res))
+      .then((res) => {
+        setShowings(res);
+        setLoading(false);
+      })
       .catch(() => setError("Error fetching showings, the server might be down."));
   }, []);
 
@@ -63,6 +67,8 @@ export default function Showings() {
       </td>
     </tr>
   ));
+
+  if (loading) return <h2>Loading...</h2>;
 
   if (error !== "") {
     return <h2 style={{ color: "red" }}>{error}</h2>;
