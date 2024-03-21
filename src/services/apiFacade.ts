@@ -78,23 +78,20 @@ async function deleteShowing(id: number): Promise<number> {
   const response = await fetch(SHOWING_URL + "/" + id, options);
   return response.status;
 }
-async function getShowing(id:string): Promise<Showing> {
+async function getShowing(id: string): Promise<Showing> {
   return await fetch(SHOWING_URL + "/" + id).then(handleHttpErrors);
-
 }
 async function getSeatsInHall(id: number): Promise<Array<Seat>> {
   return await fetch(`${API_URL}/halls/${id}/seats`).then(handleHttpErrors);
-  
 }
 
-async function getShowingsByMovie(id:string) {
+async function getShowingsByMovie(id: string) {
   const res = await fetch(SHOWING_URL + "/movie/" + id).then(handleHttpErrors);
   console.log(res);
   return res;
-  
 }
 
-async function getReservedSeats(id:string) {
+async function getReservedSeats(id: string) {
   return await fetch(`${API_URL}/showings/${id}/takenSeats`).then(handleHttpErrors);
 }
 
@@ -113,6 +110,35 @@ async function getReservations(): Promise<Array<Reservation>> {
   
   return res;
 }
+async function getReservationsByUsername(username: string): Promise<Array<Reservation>> {
+  const options = makeOptions("GET", null, true);
+  const res = await fetch(API_URL + `/reservations/user/${username}`, options).then(handleHttpErrors);
+  console.log(res, "res");
+  console.log(username, "username");
+  
+  
+  return res;
+}
 
 
-export { getMovies, getMovie, addReservation, getShowings, getUsers, removeUserRole, editUserRole, getReservations, addUser, getShowingsByMovie, getReservedSeats,getShowing,getSeatsInHall, addShowing, getHalls, getCinemas, updateShowing, deleteShowing };
+export {
+  getMovies,
+  getMovie,
+  addReservation,
+  getShowings,
+  getUsers,
+  removeUserRole,
+  editUserRole,
+  getReservations,
+  addUser,
+  getShowingsByMovie,
+  getReservedSeats,
+  getShowing,
+  getSeatsInHall,
+  addShowing,
+  getHalls,
+  getCinemas,
+  updateShowing,
+  deleteShowing,
+  getReservationsByUsername,
+};

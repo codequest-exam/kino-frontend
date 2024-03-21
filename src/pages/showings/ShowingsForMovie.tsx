@@ -27,7 +27,7 @@ export default function ShowingsForMovie() {
       {showings && showings.length > 0 && (
         <div key={showings[0].id}>
           <img src={showings[0].movie.poster}></img>
-          {/* <p>{showings[0].hall.roomNumber}</p> */}
+          {/* <p>{showings[0].hall.hallNumber}</p> */}
         </div>
       )}
 
@@ -36,7 +36,7 @@ export default function ShowingsForMovie() {
           <div key={showing.id} className="showing" style={{display:"flex"}}>
             <Link to={`/reservation/${Number(showing.id)}`}>
               <h3>{showing.startTime}</h3>
-              <p>Hall: {showing.hall.roomNumber}</p>
+              <p>Hall: {showing.hall.hallNumber}</p>
               <p>Start time{showings[0].startTime}</p>
               <p>3D: {showing.is3d ? "Yes" : "No"}</p>
               <p>IMAX: {showing.isImax ? "Yes" : "No"}</p>
@@ -64,7 +64,7 @@ export default function ShowingsForMovie() {
     //           <tr key={showing.id}>
     //             <Link to={`/reservation/${showing.id}`}>
     //               <td>{showing.startTime}</td>
-    //               <td>{showing.hall.roomNumber}</td>
+    //               <td>{showing.hall.hallNumber}</td>
     //               <td>{showing.is3d ? "Yes" : "No"}</td>
     //               <td>{showing.isImax ? "Yes" : "No"}</td>
     //             </Link>

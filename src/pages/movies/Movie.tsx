@@ -10,7 +10,7 @@ export default function Movie() {
   // const [movie, setMovie] = useState<Movie | null>(null);
   const [movie, setMovie] = useState<APIMovie | null>(null);
   useEffect(() => {
-    getMovie(Number(id)).then(res => setMovie(res));
+    getMovie(Number(id)).then((res) => setMovie(res));
   }, [id]);
 
   // function redirectToShowings(id: number) {
@@ -21,13 +21,11 @@ export default function Movie() {
     <>
       {movie ? (
         <div className="movie-container">
-          <h3 className="movie-title">
-            {movie.title} ({movie.year})
-            <Link to={`/showings/${movie.id}`}>
-              {" "}
-              <button style={{ color: "red" }}>Bestil billeter</button>
-            </Link>
-          </h3>
+          <h3 className="movie-title">{movie.title}</h3>
+          <Link to={`/showings/${movie.id}`}>
+            {" "}
+            <button>Purchase tickets</button>
+          </Link>
           <div className="movie-content">
             <div className="movie-poster">
               <img src={movie.poster} alt={movie.title} />

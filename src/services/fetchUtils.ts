@@ -23,6 +23,12 @@ export function makeOptions(method: string, body: object | null, addToken?: bool
 }
 export async function handleHttpErrors(res: Response) {
   if (!res.ok) {
+    if (res.status === 401) {
+      localStorage.removeItem("token");
+      localStorage.removeItem("username");
+      localStorage.removeItem("roles");
+      throw new Error("Session expired, please log in again");
+    }
     const errorResponse = await res.json();
     const msg = errorResponse.message ? errorResponse.message : "No details provided";
     throw new Error(msg);

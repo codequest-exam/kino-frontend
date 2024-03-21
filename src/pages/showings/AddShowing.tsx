@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import { addShowing, getMovies, getHalls, getCinemas, updateShowing } from "../../services/apiFacade";
 import { Movie, Cinema, Hall } from "../../services/Interfaces";
-// import { addShowing, getMovies, getHalls, getCinemas, Movie, Cinema, Hall, updateShowing } from "../../services/apiFacade";
 import { useLocation } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 
@@ -40,22 +39,28 @@ const ShowingForm = () => {
   useEffect(() => {
     if (showing) {
       setSelectedMovie(showing.movie.id.toString());
-      setSelectedHall(showing.hall.roomNumber.toString());
       setSelectedCinema(showing.hall.cinema.id.toString());
       setStartTime(showing.startTime);
       setIs3d(showing.is3d);
       setIsImax(showing.isImax);
     }
+  }, [showing]);
+
+  useEffect(() => {
     if (selectedCinema) {
       const filtered = halls.filter((hall) => hall.cinema.id.toString() === selectedCinema);
       setFilteredHalls(filtered);
+      if (showing && showing.hall.cinema.id.toString() === selectedCinema) {
+        setSelectedHall(showing.hall.hallNumber.toString());
+      } else {
+        setSelectedHall(undefined);
+      }
     }
   }, [selectedCinema, halls, showing]);
-
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const movie = movies.find((movie) => movie.id === Number(selectedMovie));
-    const hall = halls.find((hall) => hall.roomNumber === Number(selectedHall));
+    const hall = halls.find((hall) => hall.id === Number(selectedHall));
 
     if (!movie || !hall) {
       setMessage("Please select a movie and a hall");
@@ -92,8 +97,7 @@ const ShowingForm = () => {
       setIs3d(false);
       setIsImax(false);
     } catch (error) {
-      setMessage("Error adding/updating showing");
-      console.error("Error:", error);
+      setMessage("Error: " + (error as Error).message);
     }
   };
 
@@ -129,8 +133,8 @@ const ShowingForm = () => {
           <select value={selectedHall} onChange={(e) => setSelectedHall(e.target.value)}>
             <option value="">Select hall</option>
             {filteredHalls.map((hall) => (
-              <option key={hall.roomNumber} value={hall.roomNumber}>
-                {hall.roomNumber}
+              <option key={hall.id} value={hall.id}>
+                {hall.hallNumber}
               </option>
             ))}
           </select>
