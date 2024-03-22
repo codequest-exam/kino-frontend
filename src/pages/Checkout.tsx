@@ -3,7 +3,12 @@ import "./checkout.css";
 import { newReservation } from "./SeatReservation";
 import { addReservation } from "../services/apiFacade";
 import { useAuth } from "../security/AuthProvider";
-import { formatStartTime, formatStartDate } from "../Helpers";
+// import { formatStartTime, formatStartDate } from "../Helpers";
+
+export type Reservation = {
+  tempOrder: newReservation;
+  setOrderReady: (orderReady: boolean) => void;
+};
 
 export default function Checkout({ tempOrder }: { tempOrder: newReservation }) {
   const [error, setError] = useState<string>();
@@ -18,6 +23,7 @@ export default function Checkout({ tempOrder }: { tempOrder: newReservation }) {
       setLoading(false);
       setSuccess(true);
     } catch (error) {
+      console.log("Reservation failed");
       setError((error as Error).message);
     }
   }
@@ -31,24 +37,45 @@ export default function Checkout({ tempOrder }: { tempOrder: newReservation }) {
   ) : (
     tempOrder && (
       <div className="reservation-list-container">
-        <h2 className="movie-title">{tempOrder.showing.movie.title} </h2>
+        <h2 className="movie-title">
+          {tempOrder.showing.movie.title} <img height={"200px"} alt="movie poster" src={tempOrder.showing.movie.poster}></img>{" "}
+        </h2>
         <p className="reservation-info">Cinema: {tempOrder.showing.hall.cinema.name}</p>
         <p className="reservation-info">Hall: {tempOrder.showing.hall.hallNumber}</p>
-        <p className="reservation-info">Start Date: {formatStartDate(tempOrder.showing.startTime)}</p>
-        <p className="reservation-info">Start time: {formatStartTime(tempOrder.showing.startTime)}</p>
-        <p className="reservation-info">Total price: {tempOrder.priceInfo.price}</p>
+        <p className="reservation-info">Start time: {tempOrder.showing.startTime}</p>
         <p className="reservation-info">Reserved seats:</p>
-        {tempOrder.reservedSeats?.map((seat, index) => (
-          <p key={index} className="reservation-info">
-            Seat: {seat.seatNumber}, Row: {seat.seatRowNumber}
-          </p>
-        ))}
+        <div style={{ display: "flex" }}>
+          {tempOrder.reservedSeats?.map((seat, index) => (
+            <p key={index} className="reservation-info" style={{ border: "1px black solid", margin: "1px", padding: "1px" }}>
+              Seat: {seat.seatNumber}, Row: {seat.seatRowNumber} - {seat.price} dkk
+            </p>
+          ))}
+        </div>
+        <p className="reservation-info">
+          {/* check the highest price and show that one*/}
+          <b>
+            Total price:{" "}
+            {tempOrder.priceInfo.price < tempOrder.priceInfo.priceWithReservationFee
+              ? tempOrder.priceInfo.priceWithReservationFee
+              : tempOrder.priceInfo.priceWithGroupDiscount}{" "}
+            dkk,-
+          </b>
+        </p>
+
         <button
           onClick={() => {
             handleReservation();
           }}
         >
           Confirm
+        </button>
+        <button
+          style={{ backgroundColor: "red" }}
+          onClick={() => {
+            setOrderReady(false);
+          }}
+        >
+          Go back to seat selection
         </button>
       </div>
     )

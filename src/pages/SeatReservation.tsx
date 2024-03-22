@@ -36,9 +36,17 @@ export type PriceInfo = {
   priceWithReservationFee: number;
 };
 
-export type newReservation = { showing: Showing; reservedSeats: Array<Seat> | undefined; priceInfo: PriceInfo; email: string };
+export type newReservation = { showing: Showing; reservedSeats: Seat[]; priceInfo: PriceInfo; email: string };
 
-function SeatReservation({ setTempOrder }: { setTempOrder: (newReservation: newReservation) => void }) {
+function SeatReservation({
+  tempOrder,
+  setTempOrder,
+  setOrderReady,
+}: {
+  setTempOrder: (newReservation: newReservation) => void;
+  setOrderReady: (orderReady: boolean) => void;
+  tempOrder: newReservation | undefined;
+}) {
   const auth = useAuth();
 
   const { id } = useParams<{ id: string }>();
@@ -47,14 +55,14 @@ function SeatReservation({ setTempOrder }: { setTempOrder: (newReservation: newR
 
   const takenSeatsRef = useRef<number[]>([]);
   const showingRef = useRef<Showing>();
-  const [priceInfo, setPriceInfo] = useState<PriceInfo>();
+  const [priceInfo, setPriceInfo] = useState<PriceInfo | undefined>(calcPrice([]));
   const [email, setEmail] = useState<string>("");
   const [activeSubmit, setActiveSubmit] = useState<boolean>(auth.isLoggedIn());
 
   const [seats, setSeats] = useState<Seat[]>();
   const [errorMsg, setErrorMsg] = useState<string>();
 
-  const [selectedSeats, setSelectedSeats] = useState<Seat[]>([]);
+  const [selectedSeats, setSelectedSeats] = useState<Array<Seat>>([]);
 
   useEffect(() => {
     const fetchSeats = async () => {
@@ -78,12 +86,24 @@ function SeatReservation({ setTempOrder }: { setTempOrder: (newReservation: newR
       }
 
       setSeats([...seatsInHall]);
+      console.log("tempOrder", tempOrder);
+      console.log(selectedSeats);
+
+      if (tempOrder && tempOrder.reservedSeats) {
+        for (const seat of seatsInHall) {
+          if (tempOrder.reservedSeats.find(reservedSeat => reservedSeat.id === seat.id)) {
+            seat.status = SeatStatus.SELECTED;
+          }
+        }
+        setSelectedSeats(tempOrder.reservedSeats);
+        setPriceInfo(calcPrice(tempOrder.reservedSeats));
+      }
     };
 
     fetchSeats();
   }, []);
 
-  function calcPrice(seats: Seat[]) {
+  function calcPrice(seats: Seat[] | undefined) {
     if (seats === undefined) return;
 
     const priceObject: PriceInfo = {
@@ -102,9 +122,9 @@ function SeatReservation({ setTempOrder }: { setTempOrder: (newReservation: newR
       priceObject[seat.priceClass as keyof PriceInfo] += 1;
     });
     priceObject.priceWithGroupDiscount = priceObject.totalSeats >= 10 ? (priceObject.price * 0.93 * 100) / 100 : priceObject.price;
-
-    priceObject.priceWithReservationFee = priceObject.totalSeats <= 5 && priceObject.totalSeats >= 1 ? priceObject.price * 1.03 : priceObject.price;
-    console.log("priceObject", priceObject);
+    priceObject.priceWithReservationFee =
+      priceObject.totalSeats <= 5 && priceObject.totalSeats >= 1 ? (priceObject.price * 1.03 * 100) / 100 : priceObject.price;
+    // console.log("priceObject", priceObject);
 
     return priceObject;
   }
@@ -112,14 +132,27 @@ function SeatReservation({ setTempOrder }: { setTempOrder: (newReservation: newR
   function emailChanged(event: string) {
     console.log("event", event);
 
+    // const tempEmail = event;
     setEmail(event);
-    if (event.length > 5) setActiveSubmit(true);
-    else setActiveSubmit(false);
+    // check for elligble mmail
+    // dont allow whitespace
+    const re = /\S+@\S+\.\S/;
+    // const re = /\S+@\S+\.\S/;
+    // setEmail()
+    if (re.test(event)) {
+      console.log(re.test(event));
+      console.log(email);
+      
+      setActiveSubmit(true);
+    } else {
+      setActiveSubmit(false);
+      console.log("invalid email");
+    }
   }
 
-  const handleSeatClick = (id: number) => {
+  function changeSeatsStatus(id: number) {
     if (seats === undefined) return;
-    const allSeats = seats.map(seat => {
+    return seats.map(seat => {
       if (seat.id === id) {
         if (seat.status === SeatStatus.AVAILABLE) {
           return { ...seat, status: SeatStatus.SELECTED };
@@ -129,11 +162,20 @@ function SeatReservation({ setTempOrder }: { setTempOrder: (newReservation: newR
       }
       return seat;
     });
-    const selectedSeats = allSeats.filter(seat => seat.status === SeatStatus.SELECTED);
-    console.log("selectedSeatsIds", selectedSeats);
-    setSelectedSeats(selectedSeats);
+  }
+
+  const handleSeatClick = (id: number) => {
+    if (seats === undefined) return;
+    // const tempSelected = [...selectedSeats];
+    // tempSelected.add(seats.find(seat => seat.id === id)!);
+
+    const allSeats = changeSeatsStatus(id);
+    if (allSeats === undefined) return;
+    const filteredSeats = allSeats.filter(seat => seat.status === SeatStatus.SELECTED);
+    console.log("selectedSeats", filteredSeats);
+    setSelectedSeats(filteredSeats);
     setSeats([...allSeats]);
-    setPriceInfo(calcPrice(selectedSeats));
+    setPriceInfo(calcPrice(filteredSeats));
   };
 
   async function handleConfirmClick() {
@@ -144,6 +186,10 @@ function SeatReservation({ setTempOrder }: { setTempOrder: (newReservation: newR
 
     if (priceInfo === undefined) {
       setErrorMsg("MISSING PRICE INFO IN HANDLE CONFIRM CLICKED");
+      return;
+    }
+    if (selectedSeats === undefined || selectedSeats.length === 0) {
+      setErrorMsg("MISSING SELECTED SEATS IN HANDLE CONFIRM CLICKED");
       return;
     }
     if (showingRef.current === undefined) {
@@ -157,6 +203,7 @@ function SeatReservation({ setTempOrder }: { setTempOrder: (newReservation: newR
       email: email,
     };
     setTempOrder(newReservation);
+    setOrderReady(true);
   }
 
   return hallLayout && seats ? (
@@ -170,7 +217,7 @@ function SeatReservation({ setTempOrder }: { setTempOrder: (newReservation: newR
           </label>
         </>
       )}
-      <>
+      <div style={{ display: "flex" }}>
         <HallLayout
           HallStats={hallLayout}
           seats={seats}
@@ -178,9 +225,11 @@ function SeatReservation({ setTempOrder }: { setTempOrder: (newReservation: newR
           handleConfirmClick={handleConfirmClick}
           activeSubmit={activeSubmit}
         />
-      </>
-      {priceInfo && <PriceDisplay priceInfo={priceInfo} />}
-      {errorMsg && <p style={{ color: "red" }}>{errorMsg}</p>}
+        {/* <HallLayout HallStats={hallLayout} seats={seats} handleSeatClick={handleSeatClick} handleConfirmClick={handleConfirmClick} setEmail={setEmail} /> */}
+
+        <PriceDisplay priceInfo={priceInfo} />
+        {errorMsg && <p style={{ color: "red" }}>{errorMsg}</p>}
+      </div>
     </>
   ) : (
     <div>Loading...</div>
