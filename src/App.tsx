@@ -5,7 +5,7 @@ import MovieLayout from "./pages/movies/MovieLayout";
 import Login from "./security/Login";
 import Logout from "./security/Logout";
 import AddShowing from "./pages/showings/AddShowing";
-import TicketPurchase from "./pages/TicketPurchase";
+// import TicketPurchase from "./pages/TicketPurchase";
 import RequireAuth from "./security/RequireAuth";
 import ReservationLayout from "./pages/reservations/ReservationLayout";
 import Movie from "./pages/movies/Movie";
@@ -15,7 +15,7 @@ import AddUser from "./pages/AddUser";
 import ShowingsForMovie from "./pages/showings/ShowingsForMovie";
 import SeatBookingController from "./pages/SeatBookingController";
 import MyReservations from "./pages/reservations/MyReservations";
-import Checkout from "./pages/Checkout";
+// import Checkout from "./pages/Checkout";
 import "./app.css";
 
 function App() {
@@ -28,7 +28,7 @@ function App() {
             <Route index element={<MovieLayout />} />
             <Route path=":id" element={<Movie />} />
           </Route>
-          <Route path="/cinemas" element={<Cinemas />} />
+          {/* <Route path="/cinemas" element={<Cinemas />} /> */}
           <Route path="/reservation/:id" element={<SeatBookingController />} />
           <Route
             path="/showings"
@@ -71,14 +71,14 @@ function App() {
               </RequireAuth>
             }
           />
-          <Route
+          {/* <Route
             path="/checkout"
             element={
               <RequireAuth roles={["ADMIN", "EMPLOYEE", "CUSTOMER"]}>
                 <Checkout />
               </RequireAuth>
             }
-          />
+          /> */}
           <Route path="/users/add" element={<AddUser />} />
           <Route path="/login" element={<Login />} />
           <Route path="/logout" element={<Logout />} />
