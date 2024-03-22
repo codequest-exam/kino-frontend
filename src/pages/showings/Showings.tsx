@@ -3,6 +3,7 @@ import { getShowings, deleteShowing } from "../../services/apiFacade";
 import { Showing } from "../../services/Interfaces";
 import { useNavigate } from "react-router-dom";
 import "./showings.css";
+import { formatStartDate, formatStartTime } from "../../Helpers";
 
 export default function Showings() {
   const navigate = useNavigate();
@@ -19,16 +20,6 @@ export default function Showings() {
       .catch(() => setError("Error fetching showings, the server might be down."));
   }, []);
 
-  const formatStartTime = (startTime: string) => {
-    const date = new Date(startTime);
-    const formattedStartTime = `${date.getHours().toString().padStart(2, "0")}:${date.getMinutes().toString().padStart(2, "0")}`;
-    return formattedStartTime;
-  };
-  const formatStartDate = (startTime: string) => {
-    const date = new Date(startTime);
-    const formattedStartDate = `${date.getDate().toString().padStart(2, "0")}/${(date.getMonth() + 1).toString().padStart(2, "0")}`;
-    return formattedStartDate;
-  };
   const handleDelete = async (id: number) => {
     try {
       await deleteShowing(id);
