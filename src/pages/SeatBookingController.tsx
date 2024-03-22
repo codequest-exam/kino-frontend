@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import Checkout from "./Checkout";
 import SeatReservation, { newReservation } from "./SeatReservation";
 
