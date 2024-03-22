@@ -4,6 +4,7 @@ import "./checkout.css";
 import { newReservation } from "./SeatReservation";
 import { addReservation } from "../services/apiFacade";
 import { useAuth } from "../security/AuthProvider";
+import { formatStartTime, formatStartDate } from "../Helpers";
 
 // export default function Checkout() {
 export default function Checkout({ tempOrder }: { tempOrder: newReservation }) {
@@ -78,7 +79,8 @@ export default function Checkout({ tempOrder }: { tempOrder: newReservation }) {
         <h2 className="movie-title">{tempOrder.showing.movie.title} </h2>
         <p className="reservation-info">Cinema: {tempOrder.showing.hall.cinema.name}</p>
         <p className="reservation-info">Hall: {tempOrder.showing.hall.hallNumber}</p>
-        <p className="reservation-info">Start time: {tempOrder.showing.startTime}</p>
+        <p className="reservation-info">Start Date: {formatStartDate(tempOrder.showing.startTime)}</p>
+        <p className="reservation-info">Start time: {formatStartTime(tempOrder.showing.startTime)}</p>
         <p className="reservation-info">Total price: {tempOrder.priceInfo.price}</p>
         <p className="reservation-info">Reserved seats:</p>
         {tempOrder.reservedSeats?.map((seat, index) => (
