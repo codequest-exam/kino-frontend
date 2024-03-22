@@ -124,7 +124,7 @@ function SeatReservation({
     priceObject.priceWithGroupDiscount = priceObject.totalSeats >= 10 ? (priceObject.price * 0.93 * 100) / 100 : priceObject.price;
     priceObject.priceWithReservationFee =
       priceObject.totalSeats <= 5 && priceObject.totalSeats >= 1 ? (priceObject.price * 1.03 * 100) / 100 : priceObject.price;
-    // console.log("priceObject", priceObject);
+
 
     return priceObject;
   }
@@ -132,13 +132,10 @@ function SeatReservation({
   function emailChanged(event: string) {
     console.log("event", event);
 
-    // const tempEmail = event;
     setEmail(event);
-    // check for elligble mmail
-    // dont allow whitespace
+
     const re = /\S+@\S+\.\S/;
-    // const re = /\S+@\S+\.\S/;
-    // setEmail()
+
     if (re.test(event)) {
       console.log(re.test(event));
       console.log(email);
@@ -166,8 +163,7 @@ function SeatReservation({
 
   const handleSeatClick = (id: number) => {
     if (seats === undefined) return;
-    // const tempSelected = [...selectedSeats];
-    // tempSelected.add(seats.find(seat => seat.id === id)!);
+
 
     const allSeats = changeSeatsStatus(id);
     if (allSeats === undefined) return;
@@ -225,7 +221,6 @@ function SeatReservation({
           handleConfirmClick={handleConfirmClick}
           activeSubmit={activeSubmit}
         />
-        {/* <HallLayout HallStats={hallLayout} seats={seats} handleSeatClick={handleSeatClick} handleConfirmClick={handleConfirmClick} setEmail={setEmail} /> */}
 
         <PriceDisplay priceInfo={priceInfo} />
         {errorMsg && <p style={{ color: "red" }}>{errorMsg}</p>}

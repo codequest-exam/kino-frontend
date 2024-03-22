@@ -3,14 +3,13 @@ import "./checkout.css";
 import { newReservation } from "./SeatReservation";
 import { addReservation } from "../services/apiFacade";
 import { useAuth } from "../security/AuthProvider";
-// import { formatStartTime, formatStartDate } from "../Helpers";
 
 export type Reservation = {
   tempOrder: newReservation;
   setOrderReady: (orderReady: boolean) => void;
 };
 
-export default function Checkout({ tempOrder }: { tempOrder: newReservation }) {
+export default function Checkout({ tempOrder, setOrderReady }: Reservation) {
   const [error, setError] = useState<string>();
   const [success, setSuccess] = useState(false);
   const auth = useAuth();
