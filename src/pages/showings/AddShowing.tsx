@@ -3,6 +3,7 @@ import { addShowing, getMovies, getHalls, getCinemas, updateShowing } from "../.
 import { Movie, Cinema, Hall } from "../../services/Interfaces";
 import { useLocation } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
+import "../addUser.css";
 
 const ShowingForm = () => {
   const [movies, setMovies] = useState<Movie[]>([]);
@@ -16,6 +17,7 @@ const ShowingForm = () => {
   const [is3d, setIs3d] = useState<boolean>(false);
   const [isImax, setIsImax] = useState<boolean>(false);
   const [message, setMessage] = useState<string>("");
+  const [loading, setLoading] = useState<boolean>(true);
   const location = useLocation();
   const showing = location.state?.showing;
   const navigate = useNavigate();
@@ -29,6 +31,7 @@ const ShowingForm = () => {
         setMovies(moviesData);
         setCinemas(cinemasData);
         setHalls(hallsData);
+        setLoading(false);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
@@ -43,6 +46,7 @@ const ShowingForm = () => {
       setStartTime(showing.startTime);
       setIs3d(showing.is3d);
       setIsImax(showing.isImax);
+      setLoading(false);
     }
   }, [showing]);
 
@@ -59,6 +63,7 @@ const ShowingForm = () => {
   }, [selectedCinema, halls, showing]);
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    setLoading(true);
     const movie = movies.find((movie) => movie.id === Number(selectedMovie));
     const hall = halls.find((hall) => hall.id === Number(selectedHall));
 
@@ -85,9 +90,13 @@ const ShowingForm = () => {
       if (showing) {
         await updateShowing(showing.id, showingData);
         setMessage("Showing updated successfully");
+        setLoading(false);
+
         navigate("/showings");
       } else {
         await addShowing(showingData);
+        setLoading(false);
+
         setMessage("Showing added successfully");
       }
       setSelectedMovie("");
@@ -97,6 +106,7 @@ const ShowingForm = () => {
       setIs3d(false);
       setIsImax(false);
     } catch (error) {
+      setLoading(false);
       setMessage("Error: " + (error as Error).message);
     }
   };
@@ -104,51 +114,89 @@ const ShowingForm = () => {
   return (
     <div>
       <h2>{showing ? "Edit Showing" : "Add Showing"}</h2>
+      {loading && <p>Loading...</p>}
       {message && <p>{message}</p>}
-      <form onSubmit={handleSubmit}>
-        <label>
-          Movie:
-          <select value={selectedMovie} onChange={(e) => setSelectedMovie(e.target.value)}>
-            <option value="">Select movie</option>
-            {movies.map((movie) => (
-              <option key={movie.id} value={movie.id}>
-                {movie.title}
-              </option>
-            ))}
-          </select>
-        </label>
-        <label>
-          Cinema:
-          <select value={selectedCinema} onChange={(e) => setSelectedCinema(e.target.value)}>
-            <option value="">Select cinema</option>
-            {cinemas.map((cinema) => (
-              <option key={cinema.id} value={cinema.id}>
-                {cinema.name}
-              </option>
-            ))}
-          </select>
-        </label>
-        <label>
-          Hall:
-          <select value={selectedHall} onChange={(e) => setSelectedHall(e.target.value)}>
-            <option value="">Select hall</option>
-            {filteredHalls.map((hall) => (
-              <option key={hall.id} value={hall.id}>
-                {hall.hallNumber}
-              </option>
-            ))}
-          </select>
-        </label>
-        <label>
-          Showing time: <input type="datetime-local" value={startTime} onChange={(e) => setStartTime(e.target.value)} required />
-        </label>
-        <label>
-          3D: <input type="checkbox" checked={is3d} onChange={() => setIs3d(!is3d)} />
-        </label>
-        <label>
-          IMAX: <input type="checkbox" checked={isImax} onChange={() => setIsImax(!isImax)} />
-        </label>
-        <button type="submit">{showing ? "Update Showing" : "Add Showing"}</button>
+      <form className="add-user-form" onSubmit={handleSubmit}>
+        <div className="form-group">
+          <label>
+            Movie:
+            <select
+              value={selectedMovie}
+              onChange={(e) => setSelectedMovie(e.target.value)}
+            >
+              <option value="">Select movie</option>
+              {movies.map((movie) => (
+                <option key={movie.id} value={movie.id}>
+                  {movie.title}
+                </option>
+              ))}
+            </select>
+          </label>
+        </div>
+        <div className="form-group">
+          <label>
+            Cinema:
+            <select
+              value={selectedCinema}
+              onChange={(e) => setSelectedCinema(e.target.value)}
+            >
+              <option value="">Select cinema</option>
+              {cinemas.map((cinema) => (
+                <option key={cinema.id} value={cinema.id}>
+                  {cinema.name}
+                </option>
+              ))}
+            </select>
+          </label>
+        </div>
+        <div className="form-group">
+          <label>
+            Hall:
+            <select
+              value={selectedHall}
+              onChange={(e) => setSelectedHall(e.target.value)}
+            >
+              <option value="">Select hall</option>
+              {filteredHalls.map((hall) => (
+                <option key={hall.id} value={hall.id}>
+                  {hall.hallNumber}
+                </option>
+              ))}
+            </select>
+          </label>
+        </div>
+        <div className="form-group">
+          <label>
+            Showing time:{" "}
+            <input
+              type="datetime-local"
+              value={startTime}
+              onChange={(e) => setStartTime(e.target.value)}
+              required
+            />
+          </label>
+          <label>
+            3D:{" "}
+            <input
+              type="checkbox"
+              checked={is3d}
+              onChange={() => setIs3d(!is3d)}
+            />
+          </label>
+          <label>
+            IMAX:{" "}
+            <input
+              type="checkbox"
+              checked={isImax}
+              onChange={() => setIsImax(!isImax)}
+            />
+          </label>
+        </div>
+        <button type="submit" disabled={loading}>
+          {" "}
+          {loading ? "Loading..." : ""}
+          {showing ? "Update Showing" : "Add Showing"}
+        </button>
       </form>
     </div>
   );
