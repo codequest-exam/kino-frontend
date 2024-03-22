@@ -22,6 +22,12 @@ body {
 
 .reservation-info {
   font-size: 18px;
-  color: #666;
+  color: #000000;
   margin-bottom: 5px;
+}
+
+.seat-reservation-info {
+  border: 1px solid #000000;
+  padding: 10px;
+  margin: 5px;
 }
