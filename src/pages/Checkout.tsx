@@ -21,7 +21,6 @@ export default function Checkout({ tempOrder }: { tempOrder: newReservation }) {
     }
   }
 
-
   return success ? (
     <h1>Reservation successful</h1>
   ) : error ? (
@@ -47,9 +46,8 @@ export default function Checkout({ tempOrder }: { tempOrder: newReservation }) {
             handleReservation();
           }}
         >
-          Bekræft
+          Confirm
         </button>
-
       </div>
     )
   );

@@ -85,7 +85,6 @@ function SeatReservation({ setTempOrder }: { setTempOrder: (newReservation: newR
 
   function calcPrice(seats: Seat[]) {
     if (seats === undefined) return;
-    console.log("seats", seats);
 
     const priceObject: PriceInfo = {
       price: 0,
