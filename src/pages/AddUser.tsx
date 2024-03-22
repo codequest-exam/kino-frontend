@@ -14,11 +14,11 @@ export default function AddUser() {
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    setLoading(true);
     if (password !== passwordRepeat) {
       setMessage("Passwords do not match");
       return;
     }
+    setLoading(true);
     addUser(email, username, password)
       .then(() => {
         setMessage("User added");

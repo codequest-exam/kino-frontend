@@ -3,7 +3,7 @@ import "./checkout.css";
 import { newReservation } from "./SeatReservation";
 import { addReservation } from "../services/apiFacade";
 import { useAuth } from "../security/AuthProvider";
-import { formatStartTime, formatStartDate } from "../Helpers";
+import { formatStartDate, formatStartTime } from "../Helpers";
 
 export type Reservation = {
   tempOrder: newReservation;
@@ -37,33 +37,23 @@ export default function Checkout({ tempOrder, setOrderReady }: Reservation) {
   ) : (
     tempOrder && (
       <div className="reservation-list-container">
-        <h2 className="movie-title">
-          {tempOrder.showing.movie.title} <img height={"200px"} alt="movie poster" src={tempOrder.showing.movie.poster}></img>{" "}
-        </h2>
-        <p className="reservation-info">Cinema: {tempOrder.showing.hall.cinema.name}</p>
+        <h2 className="movie-title">{tempOrder.showing.movie.title}</h2>
+        <img height={"200px"} alt="movie poster" src={tempOrder.showing.movie.poster}></img> <p className="reservation-info">Cinema: {tempOrder.showing.hall.cinema.name}</p>
         <p className="reservation-info">Hall: {tempOrder.showing.hall.hallNumber}</p>
-        <p className="reservation-info">
-          Start time: {formatStartDate(tempOrder.showing.startTime)} - {formatStartTime(tempOrder.showing.startTime)}
-        </p>
+        <p className="reservation-info">Start date: {formatStartDate(tempOrder.showing.startTime)}</p>
+        <p className="reservation-info">Start time: {formatStartTime(tempOrder.showing.startTime)}</p>
         <p className="reservation-info">Reserved seats:</p>
         <div style={{ display: "flex" }}>
           {tempOrder.reservedSeats?.map((seat, index) => (
-            <p key={index} className="reservation-info" style={{ border: "1px black solid", margin: "1px", padding: "1px" }}>
+            <p key={index} className="seat-reservation-info">
               Seat: {seat.seatNumber}, Row: {seat.seatRowNumber} - {seat.price} dkk
             </p>
           ))}
         </div>
         <p className="reservation-info">
           {/* check the highest price and show that one*/}
-          <b>
-            Total price:{" "}
-            {tempOrder.priceInfo.price < tempOrder.priceInfo.priceWithReservationFee
-              ? tempOrder.priceInfo.priceWithReservationFee
-              : tempOrder.priceInfo.priceWithGroupDiscount}{" "}
-            dkk,-
-          </b>
+          <b>Total price: {tempOrder.priceInfo.price < tempOrder.priceInfo.priceWithReservationFee ? tempOrder.priceInfo.priceWithReservationFee : tempOrder.priceInfo.priceWithGroupDiscount} dkk,-</b>
         </p>
-
         <button
           onClick={() => {
             handleReservation();
