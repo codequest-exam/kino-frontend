@@ -48,6 +48,10 @@ Backend API:
 
 https://restfulkino-api.azurewebsites.net/
 
+Live Swagger UI:
+
+https://restfulkino-api.azurewebsites.net/swagger-ui/index.html#/
+
 ## Contributing - CodeQuest
 
 Buster, Marcus, Laurits & Joakim
