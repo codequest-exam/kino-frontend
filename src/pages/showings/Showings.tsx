@@ -7,8 +7,10 @@ import "./showings.css";
 export default function Showings() {
   const navigate = useNavigate();
   const [showings, setShowings] = useState<Array<Showing>>([]);
+  const [filteredShowings, setFilteredShowings] = useState<Array<Showing>>([]);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(true);
+  const [selectedMovie, setSelectedMovie] = useState("");
 
   useEffect(() => {
     getShowings()
@@ -19,16 +21,27 @@ export default function Showings() {
       .catch(() => setError("Error fetching showings, the server might be down."));
   }, []);
 
+  useEffect(() => {
+    if (selectedMovie === "") {
+      setFilteredShowings(showings);
+    } else {
+      const filteredShowings = showings.filter((showing) => showing.movie.title === selectedMovie);
+      setFilteredShowings(filteredShowings);
+    }
+  }, [showings, selectedMovie]);
+
   const formatStartTime = (startTime: string) => {
     const date = new Date(startTime);
     const formattedStartTime = `${date.getHours().toString().padStart(2, "0")}:${date.getMinutes().toString().padStart(2, "0")}`;
     return formattedStartTime;
   };
+
   const formatStartDate = (startTime: string) => {
     const date = new Date(startTime);
     const formattedStartDate = `${date.getDate().toString().padStart(2, "0")}/${(date.getMonth() + 1).toString().padStart(2, "0")}`;
     return formattedStartDate;
   };
+
   const handleDelete = async (id: number) => {
     try {
       await deleteShowing(id);
@@ -38,7 +51,11 @@ export default function Showings() {
     }
   };
 
-  const showingTableRows = showings.map((showing) => (
+  const handleFilterChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    setSelectedMovie(event.target.value);
+  };
+
+  const showingTableRows = filteredShowings.map((showing) => (
     <tr key={showing.id}>
       <td>{showing.movie.title}</td>
       <td>{showing.hall.cinema.name}</td>
@@ -77,6 +94,18 @@ export default function Showings() {
   return (
     <div className="showings">
       <h3>Showings</h3>
+      <div>
+        <label htmlFor="movieFilter">Filter by Movie:</label>
+        <select id="movieFilter" value={selectedMovie} onChange={handleFilterChange}>
+          <option value="">All Movies</option>
+          {/* Add options for each unique movie title */}
+          {Array.from(new Set(showings.map((showing) => showing.movie.title))).map((title) => (
+            <option key={title} value={title}>
+              {title}
+            </option>
+          ))}
+        </select>
+      </div>
       <table>
         <thead>
           <tr>
@@ -97,7 +126,6 @@ export default function Showings() {
         onClick={() => {
           navigate("/add-showing");
         }}
-        style={{ marginTop: "20px" }}
       >
         Add Showing
       </button>
