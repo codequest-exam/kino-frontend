@@ -3,6 +3,7 @@ import { getShowings, deleteShowing } from "../../services/apiFacade";
 import { Showing } from "../../services/Interfaces";
 import { useNavigate } from "react-router-dom";
 import "./showings.css";
+// import { formatStartDate, formatStartTime } from "../../Helpers";
 
 export default function Showings() {
   const navigate = useNavigate();
