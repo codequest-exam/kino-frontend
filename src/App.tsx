@@ -5,7 +5,7 @@ import MovieLayout from "./pages/movies/MovieLayout";
 import Login from "./security/Login";
 import Logout from "./security/Logout";
 import AddShowing from "./pages/showings/AddShowing";
-import TicketPurchase from "./pages/TicketPurchase";
+// import TicketPurchase from "./pages/TicketPurchase";
 import RequireAuth from "./security/RequireAuth";
 import ReservationLayout from "./pages/reservations/ReservationLayout";
 import Movie from "./pages/movies/Movie";
@@ -28,7 +28,6 @@ function App() {
             <Route index element={<MovieLayout />} />
             <Route path=":id" element={<Movie />} />
           </Route>
-          <Route path="/cinemas" element={<Cinemas />} />
           <Route path="/reservation/:id" element={<SeatBookingController />} />
           <Route
             path="/showings"
