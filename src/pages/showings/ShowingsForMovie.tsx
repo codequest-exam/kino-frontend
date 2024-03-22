@@ -18,15 +18,12 @@ export default function ShowingsForMovie() {
       }
       console.log("Fetching showings for movie with id: " + id);
       const showings = await getShowingsByMovie(id);
-      console.log("Showings", showings);
-
       setShowings(showings);
     }
 
     setupShowings();
   }, []);
 
-  // not a table, but a list of showings
   return (
     <div className="container">
       {showings && showings.length > 0 && (

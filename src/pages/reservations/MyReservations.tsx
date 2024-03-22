@@ -5,8 +5,6 @@ import { Reservation as APIReservation } from "../../services/Interfaces";
 import "./myReservations.css";
 
 const MyReservations = () => {
-  const { currentUser } = useAuth();
-  const auth = useAuth();
   const {username} = useAuth();
   const [reservations, setReservations] = useState<Array<APIReservation>>([]);
   const [error, setError] = useState("");
@@ -14,8 +12,7 @@ const MyReservations = () => {
 
   useEffect(() => {
     function test() {
-      console.log(currentUser, "current user");
-      console.log(auth);
+    
       
 
       if (username !== null) {

@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { getMovies } from "../../services/apiFacade";
 import { Movie } from "../../services/Interfaces";
-// import { Movie as APIMovie, getMovies } from "../../services/apiFacade";
 import "./movielist.css";
 
 export default function MovieList() {
