@@ -49,9 +49,12 @@ export default function ShowingsForMovie() {
             <div>{showing.is3d ? "Yes" : "No"}</div>
             <div>{showing.isImax ? "Yes" : "No"}</div>
             <div>
+              
+              <Link to={`/reservation/${Number(showing.id)}`}>
               <button className="reserve-button">
-                <Link to={`/reservation/${Number(showing.id)}`}>Reserve</Link>
+                Reserve
               </button>
+              </Link>
             </div>
           </div>
         ))}
