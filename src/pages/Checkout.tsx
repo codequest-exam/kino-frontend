@@ -3,6 +3,7 @@ import "./checkout.css";
 import { newReservation } from "./SeatReservation";
 import { addReservation } from "../services/apiFacade";
 import { useAuth } from "../security/AuthProvider";
+import { formatStartTime, formatStartDate } from "../Helpers";
 
 export type Reservation = {
   tempOrder: newReservation;
@@ -41,7 +42,9 @@ export default function Checkout({ tempOrder, setOrderReady }: Reservation) {
         </h2>
         <p className="reservation-info">Cinema: {tempOrder.showing.hall.cinema.name}</p>
         <p className="reservation-info">Hall: {tempOrder.showing.hall.hallNumber}</p>
-        <p className="reservation-info">Start time: {tempOrder.showing.startTime}</p>
+        <p className="reservation-info">
+          Start time: {formatStartDate(tempOrder.showing.startTime)} - {formatStartTime(tempOrder.showing.startTime)}
+        </p>
         <p className="reservation-info">Reserved seats:</p>
         <div style={{ display: "flex" }}>
           {tempOrder.reservedSeats?.map((seat, index) => (

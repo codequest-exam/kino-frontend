@@ -120,16 +120,31 @@ function SeatReservation({
       priceObject.price += seat.price;
       priceObject.totalSeats += 1;
       priceObject[seat.priceClass as keyof PriceInfo] += 1;
+      if (showingRef.current?.is3d) {
+        priceObject.price += 25;
+      }
+      if (showingRef.current?.isImax) {
+        priceObject.price += 30;
+      }
     });
-    priceObject.priceWithGroupDiscount = priceObject.totalSeats >= 10 ? (priceObject.price * 0.93 * 100) / 100 : priceObject.price;
+    const movieLength = Number(showingRef.current?.movie.runtime.split(" ")[0]);
+    if ( movieLength > 170) {
+      console.log("looong movie");
+      priceObject.price *= 1.08;
+    }
+    else if (movieLength < 60) {
+      console.log("short movie");
+      priceObject.price *= 0.8;
+    }
+    priceObject.price = +priceObject.price.toFixed(2)
+    priceObject.priceWithGroupDiscount = priceObject.totalSeats >= 10 ? +(priceObject.price * 0.93).toFixed(2) : priceObject.price;
     priceObject.priceWithReservationFee =
-      priceObject.totalSeats <= 5 && priceObject.totalSeats >= 1 ? (priceObject.price * 1.03 * 100) / 100 : priceObject.price;
-
+      priceObject.totalSeats <= 5 && priceObject.totalSeats >= 1 ? +(priceObject.price * 1.03).toFixed(2) : priceObject.price;
 
     return priceObject;
   }
 
-  function emailChanged(event: string) {
+  function emailCheck(event: string) {
     console.log("event", event);
 
     setEmail(event);
@@ -139,7 +154,7 @@ function SeatReservation({
     if (re.test(event)) {
       console.log(re.test(event));
       console.log(email);
-      
+
       setActiveSubmit(true);
     } else {
       setActiveSubmit(false);
@@ -163,7 +178,6 @@ function SeatReservation({
 
   const handleSeatClick = (id: number) => {
     if (seats === undefined) return;
-
 
     const allSeats = changeSeatsStatus(id);
     if (allSeats === undefined) return;
@@ -209,7 +223,7 @@ function SeatReservation({
           <h3>When not logged in you must supply an email</h3>
           <label>
             Email:
-            <input type="email" value={email} onChange={e => emailChanged(e.target.value)} />
+            <input type="email" value={email} onChange={e => emailCheck(e.target.value)} />
           </label>
         </>
       )}
