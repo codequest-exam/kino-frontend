@@ -12,8 +12,8 @@ import Showings from "./pages/showings/Showings";
 import Users from "./pages/Users";
 import AddUser from "./pages/AddUser";
 import ShowingsForMovie from "./pages/showings/ShowingsForMovie";
+import SeatBookingController from "./pages/SeatBookingController";
 import MyReservations from "./pages/reservations/MyReservations";
-import Checkout from "./pages/Checkout";
 import "./app.css";
 
 function App() {
@@ -26,6 +26,7 @@ function App() {
             <Route index element={<MovieLayout />} />
             <Route path=":id" element={<Movie />} />
           </Route>
+          <Route path="/reservation/:id" element={<SeatBookingController />} />
           <Route
             path="/showings"
             element={
@@ -64,14 +65,6 @@ function App() {
             element={
               <RequireAuth roles={["ADMIN"]}>
                 <Users />
-              </RequireAuth>
-            }
-          />
-          <Route
-            path="/checkout"
-            element={
-              <RequireAuth roles={["ADMIN", "EMPLOYEE", "CUSTOMER"]}>
-                <Checkout />
               </RequireAuth>
             }
           />

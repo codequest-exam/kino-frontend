@@ -22,9 +22,7 @@ export default function Movie() {
       });
   }, [id]);
 
-  // function redirectToShowings(id: number) {
-  //   console.log("redirecting to showings for movie with id: " + id);
-  // }
+
   if (loading) {
     return <h2>Loading...</h2>;
   }

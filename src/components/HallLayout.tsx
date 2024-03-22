@@ -1,13 +1,16 @@
 import { /*SeatStatus,*/ Seat, HallStats, SeatStatus } from "../pages/SeatReservation";
-
+// import { useState } from "react";
 type HallLayoutProps = {
   HallStats: HallStats;
   seats: Seat[];
   handleSeatClick: (id: number) => void;
   handleConfirmClick: () => void;
+  activeSubmit: boolean;
 };
 
-export default function HallLayout({ HallStats, seats, handleSeatClick, handleConfirmClick }: HallLayoutProps) {
+export default function HallLayout({ HallStats, seats, handleSeatClick, handleConfirmClick, activeSubmit }: HallLayoutProps) {
+  // export default function HallLayout({ HallStats, seats, handleSeatClick, handleConfirmClick, setEmail }: HallLayoutProps) {
+
   return (
     <div>
       <div
@@ -24,7 +27,9 @@ export default function HallLayout({ HallStats, seats, handleSeatClick, handleCo
             key={seat.id}
             style={{
               backgroundColor: seat.status === SeatStatus.AVAILABLE ? "green" : seat.status === SeatStatus.RESERVED ? "grey" : "red",
-              // backgroundColor: seat.status ===  ? "red" : seat.status === "reserved" ? "grey" : "green",
+              // change opacity based on priceclass
+              opacity: seat.priceClass === "cowboy" ? "0.7" : seat.priceClass === "standard" ? "0.8" : "1",
+
               margin: "5px",
               padding: "10px",
               borderRadius: "5px",
@@ -40,7 +45,10 @@ export default function HallLayout({ HallStats, seats, handleSeatClick, handleCo
           </button>
         ))}
       </div>
-      <button onClick={handleConfirmClick}>Confirm Reservation</button>
+
+      <button onClick={handleConfirmClick} disabled={!activeSubmit} style={{ color: "black" }}>
+        {activeSubmit ? "Submit reservation" : "You must enter an email or login to continue"}
+      </button>
     </div>
   );
 }

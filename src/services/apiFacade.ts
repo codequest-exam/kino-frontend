@@ -80,7 +80,6 @@ async function getSeatsInHall(id: number): Promise<Array<Seat>> {
 
 async function getShowingsByMovie(id: string) {
   const res = await fetch(SHOWING_URL + "/movie/" + id).then(handleHttpErrors);
-  console.log(res);
   return res;
 }
 
@@ -89,9 +88,15 @@ async function getReservedSeats(id: string) {
 }
 
 async function addReservation(newReservation: newReservation, loggedIn: boolean) {
-  const options = makeOptions("POST", newReservation, loggedIn);
-  console.log("options", options);
-
+  if (newReservation.reservedSeats === undefined) throw new Error("No seats selected");
+  const cleanedReservation = {
+    showing: { id: newReservation.showing.id },
+    reservedSeats: newReservation.reservedSeats.map(seat => {
+      return { id: seat.id };
+    }),
+    email: newReservation.email,
+  };
+  const options = makeOptions("POST", cleanedReservation, loggedIn);
   return await fetch(API_URL + "/reservations", options).then(handleHttpErrors);
 }
 async function getReservations(): Promise<Array<Reservation>> {
@@ -106,9 +111,6 @@ async function getReservations(): Promise<Array<Reservation>> {
 async function getReservationsByUsername(username: string): Promise<Array<Reservation>> {
   const options = makeOptions("GET", null, true);
   const res = await fetch(API_URL + `/reservations/user/${username}`, options).then(handleHttpErrors);
-  console.log(res, "res");
-  console.log(username, "username");
-
   return res;
 }
 

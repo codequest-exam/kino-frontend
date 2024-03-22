@@ -5,23 +5,29 @@ import { Reservation as APIReservation } from "../../services/Interfaces";
 import "./myReservations.css";
 
 const MyReservations = () => {
-  const { currentUser } = useAuth();
+  const {username} = useAuth();
   const [reservations, setReservations] = useState<Array<APIReservation>>([]);
   const [error, setError] = useState("");
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    if (currentUser) {
-      getReservationsByUsername(currentUser.username)
-        .then((res) => {
-          setReservations(res);
-          setLoading(false);
-        })
-        .catch(() => setError("Error fetching reservations, the server might be down."));
-    }
-  }, [currentUser]);
+    function test() {
+    
+      
 
-  if (!currentUser) {
+      if (username !== null) {
+        setLoading(true)
+        getReservationsByUsername(username)
+          .then(res => setReservations(res))
+          .catch(() => setError("Error fetching reservations, the server might be down."));
+          setLoading(false)
+      }
+    }
+
+    test();
+  }, [username]);
+
+  if (!username) {
     return <h2>No user found</h2>;
   }
 
@@ -52,6 +58,7 @@ const MyReservations = () => {
               <p className="reservation-text">
                 <b>Price:</b> {reservation.price} dkk
               </p>
+              <p><b>Showing ID</b> {reservation.showing.id}</p>
               <p className="reservation-text">
                 <b>Hall:</b> {reservation.showing.hall.hallNumber}
               </p>
