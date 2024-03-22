@@ -100,10 +100,12 @@ async function addReservation(newReservation: newReservation, loggedIn: boolean)
   return await fetch(API_URL + "/reservations", options).then(handleHttpErrors);
 }
 async function getReservations(): Promise<Array<Reservation>> {
+  console.log(API_URL, "apiurl");
   const options = makeOptions("GET", null, true);
   if (LAST_FETCH.movies > Date.now() - CACHE_TIME) return [...reservations];
   const res = await fetch(API_URL + "/reservations", options).then(handleHttpErrors);
   reservations = [...res];
+
   return res;
 }
 async function getReservationsByUsername(username: string): Promise<Array<Reservation>> {

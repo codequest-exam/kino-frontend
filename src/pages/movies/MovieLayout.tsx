@@ -8,7 +8,7 @@ export default function MovieLayout() {
     <>
       <h1>Movies</h1>
       <div className="outlet-container">
-        {outlet || <h3>Select a movie to see details</h3>}
+        {outlet || <h3>Select a movie to see details!</h3>}
         <Outlet />
       </div>
       <div style={{ display: "flex" }}>
