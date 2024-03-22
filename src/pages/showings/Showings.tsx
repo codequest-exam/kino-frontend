@@ -34,7 +34,7 @@ export default function Showings() {
       await deleteShowing(id);
       setShowings(await getShowings());
     } catch (error) {
-      console.error("Error:", error);
+      setError("Error deleting showing, the server might be down.");
     }
   };
 

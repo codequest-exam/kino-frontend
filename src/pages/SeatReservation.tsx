@@ -60,8 +60,6 @@ function SeatReservation({ setTempOrder }: { setTempOrder: (newReservation: newR
     const fetchSeats = async () => {
       if (id === undefined) return;
       const reservedSeats = await getReservedSeats(id);
-      console.log("reservedSeats", reservedSeats);
-
       takenSeatsRef.current = reservedSeats;
       getHallLayout();
     };
@@ -78,13 +76,11 @@ function SeatReservation({ setTempOrder }: { setTempOrder: (newReservation: newR
       for (const seat of seatsInHall) {
         seat.status = takenSeatsRef.current.includes(seat.seatNumber) ? SeatStatus.RESERVED : SeatStatus.AVAILABLE;
       }
-      // console.log("seatsInHall", seatsInHall);
 
       setSeats([...seatsInHall]);
     };
 
     fetchSeats();
-    // getHallLayout();
   }, []);
 
   function calcPrice(seats: Seat[]) {
@@ -106,7 +102,6 @@ function SeatReservation({ setTempOrder }: { setTempOrder: (newReservation: newR
       priceObject.totalSeats += 1;
       priceObject[seat.priceClass as keyof PriceInfo] += 1;
     });
-    // limit decimals to 2
     priceObject.priceWithGroupDiscount = priceObject.totalSeats >= 10 ? (priceObject.price * 0.93 * 100) / 100 : priceObject.price;
 
     priceObject.priceWithReservationFee = priceObject.totalSeats <= 5 && priceObject.totalSeats >= 1 ? priceObject.price * 1.03 : priceObject.price;
@@ -119,7 +114,6 @@ function SeatReservation({ setTempOrder }: { setTempOrder: (newReservation: newR
     console.log("event", event);
 
     setEmail(event);
-    // check for elligble mmail
     if (event.length > 5) setActiveSubmit(true);
     else setActiveSubmit(false);
   }
@@ -144,8 +138,6 @@ function SeatReservation({ setTempOrder }: { setTempOrder: (newReservation: newR
   };
 
   async function handleConfirmClick() {
-    // array as number
-    // const reservedSeats: { id: number }[] = [];
     if (id === undefined) {
       setErrorMsg("MISSING SHOW ID IN HANDLE CONFIRM CLICKED");
       return;
@@ -187,7 +179,6 @@ function SeatReservation({ setTempOrder }: { setTempOrder: (newReservation: newR
           handleConfirmClick={handleConfirmClick}
           activeSubmit={activeSubmit}
         />
-        {/* <HallLayout HallStats={hallLayout} seats={seats} handleSeatClick={handleSeatClick} handleConfirmClick={handleConfirmClick} setEmail={setEmail} /> */}
       </>
       {priceInfo && <PriceDisplay priceInfo={priceInfo} />}
       {errorMsg && <p style={{ color: "red" }}>{errorMsg}</p>}
