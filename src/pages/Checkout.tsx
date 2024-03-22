@@ -89,7 +89,7 @@ export default function Checkout({ tempOrder }: { tempOrder: newReservation }) {
         {/* <l>{tempOrder.priceInfo.cowboy}</l> */}
         <button
           onClick={() => {
-            handleReservation(tempOrder);
+            handleReservation();
           }}
         >
           Bekræft

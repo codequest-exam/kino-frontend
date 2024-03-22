@@ -5,7 +5,6 @@ import MovieLayout from "./pages/movies/MovieLayout";
 import Login from "./security/Login";
 import Logout from "./security/Logout";
 import AddShowing from "./pages/showings/AddShowing";
-// import TicketPurchase from "./pages/TicketPurchase";
 import RequireAuth from "./security/RequireAuth";
 import ReservationLayout from "./pages/reservations/ReservationLayout";
 import Movie from "./pages/movies/Movie";
@@ -15,7 +14,6 @@ import AddUser from "./pages/AddUser";
 import ShowingsForMovie from "./pages/showings/ShowingsForMovie";
 import SeatBookingController from "./pages/SeatBookingController";
 import MyReservations from "./pages/reservations/MyReservations";
-import Checkout from "./pages/Checkout";
 import "./app.css";
 
 function App() {
@@ -67,14 +65,6 @@ function App() {
             element={
               <RequireAuth roles={["ADMIN"]}>
                 <Users />
-              </RequireAuth>
-            }
-          />
-          <Route
-            path="/checkout"
-            element={
-              <RequireAuth roles={["ADMIN", "EMPLOYEE", "CUSTOMER"]}>
-                <Checkout />
               </RequireAuth>
             }
           />
