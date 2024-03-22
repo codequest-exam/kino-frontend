@@ -21,10 +21,7 @@ const ReservationList: React.FC<Props> = ({ searchTerm }) => {
       .catch(() => setError("Error fetching reservations, the server might be down."));
   }, [searchTerm]);
 
-  const filterReservationsByEmail = reservations.filter((reservation) =>
-    reservation.email?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    reservation.user?.email?.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  const filterReservationsByEmail = reservations.filter((reservation) => reservation.email?.toLowerCase().includes(searchTerm.toLowerCase()) || reservation.user?.email?.toLowerCase().includes(searchTerm.toLowerCase()));
 
   const formatTime = filterReservationsByEmail.map((reservation) => {
     const date = new Date(reservation.showing.startTime);
@@ -36,31 +33,20 @@ const ReservationList: React.FC<Props> = ({ searchTerm }) => {
     });
 
     return (
-
       <tr key={reservation.id}>
         <td className="center-text">{reservation.id}</td>
         <td>{reservation.showing.movie.title}</td>
         <td>
           {formattedTime} {formattedDate}
         </td>
-        <td>{reservation.user && reservation.user.email 
-              ? reservation.user.email 
-              : reservation.email}</td>
+        <td>{reservation.user && reservation.user.email ? reservation.user.email : reservation.email}</td>
         <td>{reservation.user && reservation.user.userName ? reservation.user.userName : "Anonymous"}</td>
-        <td>{reservation.price} dkk,-</td>
+        <td>{reservation.price} DKK,-</td>
         <td>{reservation.showing.id}</td>
         <td>{reservation.showing.hall.cinema.name}</td>
         <td>{reservation.showing.hall.hallNumber}</td>
-        <td className="center-text">
-          {reservation.reservedSeats.map((seat) => (
-            <span key={seat.id}>{seat.seatNumber}</span>
-          ))}
-        </td>
-        <td className="center-text">
-          {reservation.reservedSeats.map((seat) => (
-            <span key={seat.id}>{seat.seatRowNumber}</span>
-          ))}
-        </td>
+        <td className="center-text">{reservation.reservedSeats.map((seat) => seat.seatNumber).join(", ")}</td>
+        <td className="center-text">{reservation.reservedSeats.map((seat) => seat.seatRowNumber).join(", ")}</td>
         <td className="center-text">{reservation.showing.is3d ? "Yes" : "No"}</td>
         <td className="center-text">{reservation.showing.isImax ? "Yes" : "No"}</td>
       </tr>
