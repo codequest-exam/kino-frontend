@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import {  getReservations} from "../../services/apiFacade";
+import { getReservations } from "../../services/apiFacade";
 import { Reservation as APIReservation } from "../../services/Interfaces";
 // import {  Reservation as APIReservation,  getReservations} from "../../services/apiFacade";
 import "./reservations.css";
@@ -11,17 +11,21 @@ interface Props {
 const ReservationList: React.FC<Props> = ({ searchTerm }) => {
   const [reservations, setReservations] = useState<Array<APIReservation>>([]);
   const [error, setError] = useState("");
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     getReservations()
-      .then((res) => setReservations(res))
+      .then((res) => {
+        setReservations(res);
+        setLoading(false);
+      })
       .catch(() => setError("Error fetching reservations, the server might be down."));
-      
   }, [searchTerm]);
 
-  const filterReservationsByEmail = reservations.filter((reservation) =>
-    reservation.email.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  const filterReservationsByEmail = reservations.filter((reservation) => 
+  (reservation.user && reservation.user.email 
+              ? reservation.user.email 
+              : reservation.email).toLowerCase().includes(searchTerm.toLowerCase()));
 
   const formatTime = filterReservationsByEmail.map((reservation) => {
     const date = new Date(reservation.showing.startTime);
@@ -39,22 +43,17 @@ const ReservationList: React.FC<Props> = ({ searchTerm }) => {
         <td>
           {formattedTime} {formattedDate}
         </td>
-        <td>
-          {reservation.user && reservation.user.email
-            ? reservation.user.email
-            : reservation.email}
-        </td>
-        <td>
-          {reservation.user && reservation.user.userName
-            ? reservation.user.userName
-            : "Anonymous"}
-        </td>
+        <td>{reservation.user && reservation.user.email 
+              ? reservation.user.email 
+              : reservation.email}</td>
+        <td>{reservation.user && reservation.user.userName ? reservation.user.userName : "Anonymous"}</td>
         <td>{reservation.price} dkk,-</td>
+        <td>{reservation.showing.id}</td>
         <td>{reservation.showing.hall.cinema.name}</td>
         <td>{reservation.showing.hall.hallNumber}</td>
         <td className="center-text">
           {reservation.reservedSeats.map((seat) => (
-            <span key={seat.id}>{seat.seatNumber},</span>
+            <span key={seat.id}>{seat.seatNumber}</span>
           ))}
         </td>
         <td className="center-text">
@@ -62,12 +61,8 @@ const ReservationList: React.FC<Props> = ({ searchTerm }) => {
             <span key={seat.id}>{seat.seatRowNumber}</span>
           ))}
         </td>
-        <td className="center-text">
-          {reservation.showing.is3d ? "Yes" : "No"}
-        </td>
-        <td className="center-text">
-          {reservation.showing.isImax ? "Yes" : "No"}
-        </td>
+        <td className="center-text">{reservation.showing.is3d ? "Yes" : "No"}</td>
+        <td className="center-text">{reservation.showing.isImax ? "Yes" : "No"}</td>
       </tr>
     );
   });
@@ -75,6 +70,7 @@ const ReservationList: React.FC<Props> = ({ searchTerm }) => {
   if (error !== "") {
     return <h2 style={{ color: "red" }}>{error}</h2>;
   }
+  if (loading) return <h2>Loading...</h2>;
 
   return (
     <>
@@ -87,6 +83,7 @@ const ReservationList: React.FC<Props> = ({ searchTerm }) => {
             <th>Email</th>
             <th>User Name</th>
             <th>Price</th>
+            <th>Showing ID</th>
             <th>Cinema</th>
             <th>Hall</th>
             <th>Seat</th>

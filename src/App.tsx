@@ -2,7 +2,6 @@ import { Routes, Route } from "react-router-dom";
 import Layout from "./Layout";
 import Home from "./pages/Home";
 import MovieLayout from "./pages/movies/MovieLayout";
-import Cinemas from "./pages/Cinemas";
 import Login from "./security/Login";
 import Logout from "./security/Logout";
 import AddShowing from "./pages/showings/AddShowing";
@@ -16,6 +15,7 @@ import AddUser from "./pages/AddUser";
 import ShowingsForMovie from "./pages/showings/ShowingsForMovie";
 import SeatBookingController from "./pages/SeatBookingController";
 import MyReservations from "./pages/reservations/MyReservations";
+import Checkout from "./pages/Checkout";
 import "./app.css";
 
 function App() {
@@ -39,7 +39,6 @@ function App() {
             }
           />{" "}
           <Route path="/showings/:id" element={<ShowingsForMovie />} />
-          {/* <Route path="/checkout" element={<Checkout />} /> */}
           <Route
             path="/add-showing"
             element={
@@ -72,8 +71,15 @@ function App() {
               </RequireAuth>
             }
           />
+          <Route
+            path="/checkout"
+            element={
+              <RequireAuth roles={["ADMIN", "EMPLOYEE", "CUSTOMER"]}>
+                <Checkout />
+              </RequireAuth>
+            }
+          />
           <Route path="/users/add" element={<AddUser />} />
-          <Route path="/ticket-purchase" element={<TicketPurchase />} />
           <Route path="/login" element={<Login />} />
           <Route path="/logout" element={<Logout />} />
           <Route path="*" element={<h2>Page Not Found</h2>} />
