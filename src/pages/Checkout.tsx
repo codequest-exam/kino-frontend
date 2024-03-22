@@ -18,11 +18,7 @@ export default function Checkout({ tempOrder, setOrderReady }: Reservation) {
   async function handleReservation() {
     try {
       setLoading(true);
-      console.log("temp order", tempOrder);
-
-      const res = await addReservation(tempOrder, auth.isLoggedIn());
-      console.log(res, "res");
-      console.log("Reservation successful");
+      await addReservation(tempOrder, auth.isLoggedIn());
       setLoading(false);
       setSuccess(true);
     } catch (error) {

@@ -68,8 +68,6 @@ function SeatReservation({
     const fetchSeats = async () => {
       if (id === undefined) return;
       const reservedSeats = await getReservedSeats(id);
-      console.log("reservedSeats", reservedSeats);
-
       takenSeatsRef.current = reservedSeats;
       getHallLayout();
     };
@@ -86,7 +84,6 @@ function SeatReservation({
       for (const seat of seatsInHall) {
         seat.status = takenSeatsRef.current.includes(seat.seatNumber) ? SeatStatus.RESERVED : SeatStatus.AVAILABLE;
       }
-      // console.log("seatsInHall", seatsInHall);
 
       setSeats([...seatsInHall]);
       console.log("tempOrder", tempOrder);
@@ -104,12 +101,10 @@ function SeatReservation({
     };
 
     fetchSeats();
-    // getHallLayout();
   }, []);
 
   function calcPrice(seats: Seat[] | undefined) {
     if (seats === undefined) return;
-    // console.log("seats", seats);
 
     const priceObject: PriceInfo = {
       price: 0,
@@ -126,7 +121,6 @@ function SeatReservation({
       priceObject.totalSeats += 1;
       priceObject[seat.priceClass as keyof PriceInfo] += 1;
     });
-    // limit decimals to 2
     priceObject.priceWithGroupDiscount = priceObject.totalSeats >= 10 ? (priceObject.price * 0.93 * 100) / 100 : priceObject.price;
     priceObject.priceWithReservationFee =
       priceObject.totalSeats <= 5 && priceObject.totalSeats >= 1 ? (priceObject.price * 1.03 * 100) / 100 : priceObject.price;
